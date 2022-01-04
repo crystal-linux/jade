@@ -5,8 +5,6 @@ use tokio_stream::wrappers::UnboundedReceiverStream;
 use uuid::Uuid;
 use warp::ws::{Message, WebSocket};
 
-use toml;
-
 
 pub async fn client_connection(ws: WebSocket, clients: Clients) {
     println!("establishing client connection... {:?}", ws);

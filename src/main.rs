@@ -1,17 +1,7 @@
 mod mods;
-use std::{collections::HashMap, convert::Infallible, sync::Arc, fs, fs::File, io::prelude::*, env};
+use std::{collections::HashMap, convert::Infallible, sync::Arc, env};
 use tokio::sync::{mpsc, Mutex};
 use warp::{ws::Message, Filter, Rejection};
-use toml;
-use serde_derive::Deserialize;
-
-#[derive(Deserialize)]
-struct General {
-    websocket_ip: String,
-    websocket_port: String,
-    restore_conf: String,
-}
-
 
 #[derive(Debug, Clone)]
 pub struct Client {
