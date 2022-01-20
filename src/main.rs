@@ -1,3 +1,6 @@
+mod installer;
+
+use crate::installer::*;
 use clap::{App, Arg, SubCommand}; 
 
 fn main() {
@@ -10,20 +13,13 @@ fn main() {
                 .arg(
                     Arg::with_name("mode")
                         .help("If jade should automatically partition (mode = auto) or the user manually partitioned it (mode = manual)")
+                        .possible_values(&["auto", "manual"])
                         .required(true),
                 )
                 .arg(
-                    Arg::with_name("root")
-                        .help("The root partition(mode = manual) or device to partition(mode = manual)")
-                        .required(true),
-                )
-                .arg(
-                    Arg::with_name("boot")
-                        .help("The boot partition to use (only read if mode is manual)")
-                )
-                .arg(
-                    Arg::with_name("swap")
-                        .help("The swap partition to use (only read if mode is manual)")
+                    Arg::with_name("device")
+                        .help("The device to partition")
+                        .required_if("mode", "auto"),
                 )
         )
         .subcommand(
@@ -56,11 +52,6 @@ fn main() {
                         .required(true),
                 )
                 .arg(
-                    Arg::with_name("wifi")
-                        .help("If wifi is used (will launch nmtui if set to true)")
-                        .required(true),
-                )
-                .arg(
                     Arg::with_name("ipv6")
                         .help("Wether ipv6 should be enabled")
                         .required(true),
@@ -87,6 +78,7 @@ fn main() {
                                 .help("The password to set")
                                 .required(true),
                         )
+                    )
                 .subcommand(
                     SubCommand::with_name("rootPass")
                         .about("Set the root password")
@@ -96,7 +88,6 @@ fn main() {
                                 .required(true),
                         ),
                 )
-            ),
         )
         .subcommand(
             SubCommand::with_name("desktops")
@@ -120,20 +111,7 @@ fn main() {
 
 
     if let Some(app) = app.subcommand_matches("partition") {
-        let mode = app.value_of("mode").unwrap();
-        let root = app.value_of("root").unwrap_or("none");
-        let boot = app.value_of("boot").unwrap_or(root);
-        let swap = app.value_of("swap").unwrap_or("none");
-        let device = if app.value_of("mode").unwrap() == "auto" {
-            root
-        } else {
-            "none"
-        };
-        println!("mode: {}", mode);
-        println!("root: {}", root);
-        println!("boot: {}", boot);
-        println!("swap: {}", swap);
-        println!("device: {}", device);
+        partition::partition(app.value_of("device").unwrap(), app.value_of("mode").unwrap());
     } else if let Some(app) = app.subcommand_matches("locale") {
         let kbrlayout = app.value_of("keyboard").unwrap();
         let timezn = app.value_of("timezone").unwrap();
@@ -142,31 +120,18 @@ fn main() {
         println!("timezone: {}", timezn);
         println!("locales: {:?}", locale);
     } else if let Some(app) = app.subcommand_matches("networking") {
-        let hostname = app.value_of("hostname").unwrap();
-        let wifi = app.value_of("wifi").unwrap();
-        let ipv6 = app.value_of("ipv6").unwrap();
-        println!("hostname: {}", hostname);
-        println!("wifi: {}", wifi);
-        println!("ipv6: {}", ipv6);
+        network::enable_ipv6(app.value_of("ipv6").unwrap().parse::<bool>().unwrap());
+        network::set_hostname(app.value_of("hostname").unwrap())
     } else if let Some(app) = app.subcommand_matches("users") {
         if let Some(app) = app.subcommand_matches("newUser") {
-            let username = app.value_of("username").unwrap();
-            let hasroot = app.value_of("hasroot").unwrap();
-            let password = app.value_of("password").unwrap();
-            println!("username: {}", username);
-            println!("hasroot: {}", hasroot);
-            println!("password: {}", password);
+            users::new_user(app.value_of("username").unwrap(), app.value_of("hasroot").unwrap().parse::<bool>().unwrap(), app.value_of("password").unwrap());
         } else if let Some(app) = app.subcommand_matches("rootPass") {
             let rootpass = app.value_of("rootPass").unwrap();
             println!("{}", rootpass);
+            users::root_pass(app.value_of("rootPass").unwrap());
         }
     } else if let Some(app) = app.subcommand_matches("desktops") {
-        let desktopsetup = app.value_of("desktopsetup").unwrap();
-        let de = app.value_of("de").unwrap_or("none");
-        let dm = app.value_of("dm").unwrap_or("none");
-        println!("desktopsetup: {}", desktopsetup);
-        println!("de: {}", de);
-        println!("dm: {}", dm);
+        desktops::choose_pkgs(app.value_of("desktopsetup").unwrap(), app.value_of("de").unwrap_or("none"), app.value_of("dm").unwrap_or("none"));
     } else {
         println!("Running TUI installer");
     }
