@@ -1,6 +1,7 @@
-mod installer;
+mod functions;
+mod internal;
 
-use crate::installer::*;
+use crate::functions::*;
 use clap::{App, Arg, SubCommand}; 
 
 fn main() {
@@ -96,17 +97,7 @@ fn main() {
                     Arg::with_name("desktopsetup")
                         .help("The desktop setup to use")
                         .required(true),
-                )
-                .arg(
-                    Arg::with_name("de")
-                        .help("The Desktop envionment to install (only read if desktopsetup is set to custom)")
-                        .required_if("desktopsetup", "custom"),
-                )
-                .arg(
-                    Arg::with_name("dm")
-                        .help("The Display Manager to install (only read if desktopsetup is set to custom)") 
-                        .required_if("desktopsetup", "custom"),
-                    ),
+                ),
     ).get_matches();    
 
 
@@ -131,7 +122,7 @@ fn main() {
             users::root_pass(app.value_of("rootPass").unwrap());
         }
     } else if let Some(app) = app.subcommand_matches("desktops") {
-        desktops::choose_pkgs(app.value_of("desktopsetup").unwrap(), app.value_of("de").unwrap_or("none"), app.value_of("dm").unwrap_or("none"));
+        desktops::choose_pkgs(app.value_of("desktopsetup").unwrap());
     } else {
         println!("Running TUI installer");
     }
