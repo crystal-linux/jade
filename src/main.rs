@@ -2,7 +2,7 @@ mod functions;
 mod internal;
 
 use crate::functions::*;
-use clap::{App, Arg, SubCommand}; 
+use clap::{App, Arg, SubCommand};
 
 fn main() {
     let app = App::new("jade")
@@ -98,11 +98,13 @@ fn main() {
                         .help("The desktop setup to use")
                         .required(true),
                 ),
-    ).get_matches();    
-
+    ).get_matches();
 
     if let Some(app) = app.subcommand_matches("partition") {
-        partition::partition(app.value_of("device").unwrap(), app.value_of("mode").unwrap());
+        partition::partition(
+            app.value_of("device").unwrap(),
+            app.value_of("mode").unwrap(),
+        );
     } else if let Some(app) = app.subcommand_matches("locale") {
         let kbrlayout = app.value_of("keyboard").unwrap();
         let timezn = app.value_of("timezone").unwrap();
@@ -115,7 +117,11 @@ fn main() {
         network::set_hostname(app.value_of("hostname").unwrap())
     } else if let Some(app) = app.subcommand_matches("users") {
         if let Some(app) = app.subcommand_matches("newUser") {
-            users::new_user(app.value_of("username").unwrap(), app.value_of("hasroot").unwrap().parse::<bool>().unwrap(), app.value_of("password").unwrap());
+            users::new_user(
+                app.value_of("username").unwrap(),
+                app.value_of("hasroot").unwrap().parse::<bool>().unwrap(),
+                app.value_of("password").unwrap(),
+            );
         } else if let Some(app) = app.subcommand_matches("rootPass") {
             let rootpass = app.value_of("rootPass").unwrap();
             println!("{}", rootpass);

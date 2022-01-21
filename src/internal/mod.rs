@@ -1,3 +1,4 @@
+pub mod files;
 pub mod install;
 pub mod strings;
 
@@ -15,10 +16,6 @@ pub fn crash(a: String, b: i32) {
 
 pub fn log(a: String) {
     strings::log(a);
-}
-
-pub fn prompt(a: String, b: bool) -> bool {
-    strings ::prompt(a, b)
 }
 
 #[macro_export]

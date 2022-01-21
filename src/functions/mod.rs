@@ -1,4 +1,4 @@
-pub mod partition;
-pub mod network;
-pub mod users;
 pub mod desktops;
+pub mod network;
+pub mod partition;
+pub mod users;
