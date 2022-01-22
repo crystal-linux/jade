@@ -2,8 +2,8 @@ use crate::internal::*;
 
 pub fn set_hostname(hostname: &str) {
     println!("Setting hostname to {}", hostname);
-    files::create_file("/etc/hostname");
-    let return_val = files::append_file("/etc/hostname", hostname);
+    files::create_file("/mnt/etc/hostname");
+    let return_val = files::append_file("/mnt/etc/hostname", hostname);
     match return_val {
         Ok(_) => {
             log(format!("Set hostname to {}", hostname));
@@ -19,7 +19,7 @@ pub fn set_hostname(hostname: &str) {
 
 pub fn enable_ipv6(ipv6: bool) {
     if ipv6 {
-        let return_val = files::append_file("/etc/hosts", "::1 localhost");
+        let return_val = files::append_file("/mnt/etc/hosts", "::1 localhost");
         match return_val {
             Ok(_) => {
                 log("Enabled IPv6".to_string());

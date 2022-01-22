@@ -2,7 +2,7 @@ use crate::internal::exec::*;
 use crate::internal::*;
 
 pub fn new_user(username: &str, hasroot: bool, password: &str) {
-    let return_val = exec(
+    let return_val = exec_chroot(
         "useradd",
         vec![
             String::from("-m"),
@@ -23,7 +23,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
         }
     }
     if hasroot {
-        let return_val = exec(
+        let return_val = exec_chroot(
             "usermod",
             vec![
                 String::from("-a"),
@@ -41,11 +41,9 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             }
         }
     }
-    let return_val = exec(
-        "arch-chroot",
+    let return_val = exec_chroot(
+        "usermod",
         vec![
-            String::from("/mnt"),
-            String::from("usermod"),
             String::from("--password"),
             String::from("$(echo"),
             String::from(format!("${}", password)),
@@ -72,11 +70,9 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
 
 pub fn root_pass(root_pass: &str) {
     println!("Setting root password to '{}'", root_pass);
-    let return_val = exec(
-        "arch-chroot",
+    let return_val = exec_chroot(
+        "usermod",
         vec![
-            String::from("/mnt"),
-            String::from("usermod"),
             String::from("--password"),
             String::from("$(echo"),
             String::from(format!("${{{}}}", root_pass)),
