@@ -1,7 +1,7 @@
 use crate::internal::*;
 
 pub fn choose_pkgs(desktop_setup: &str) {
-    println!("Installing {}", desktop_setup);
+    log(format!("Installing {}", desktop_setup));
     match desktop_setup {
         "onyx" => {
             install(vec![

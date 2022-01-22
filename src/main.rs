@@ -22,6 +22,12 @@ fn main() {
                         .help("The device to partition")
                         .required_if("mode", "auto"),
                 )
+                .arg(
+                    Arg::with_name("efi")
+                        .help("If the install destination should be partitioned with EFI")
+                        .long("efi")
+                        .takes_value(false),
+                ),
         )
         .subcommand(
             SubCommand::with_name("locale")
@@ -104,6 +110,7 @@ fn main() {
         partition::partition(
             app.value_of("device").unwrap(),
             app.value_of("mode").unwrap(),
+            app.is_present("efi"),
         );
     } else if let Some(app) = app.subcommand_matches("locale") {
         let kbrlayout = app.value_of("keyboard").unwrap();

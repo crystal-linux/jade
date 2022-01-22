@@ -1,9 +1,8 @@
 use crate::uwu;
-use std::io::Write;
+use std::env;
 use std::process::exit;
 use std::str::FromStr;
 use std::time::UNIX_EPOCH;
-use std::{env, io};
 pub fn info(a: String) {
     let a = if env::var("JADE_UWU").unwrap_or_else(|_| "".to_string()) == "true" {
         uwu!(&a)

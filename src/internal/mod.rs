@@ -1,3 +1,4 @@
+pub mod exec;
 pub mod files;
 pub mod install;
 pub mod strings;

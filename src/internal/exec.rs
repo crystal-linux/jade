@@ -1,0 +1,6 @@
+use std::process::Command;
+
+pub fn exec(command: &str, args: Vec<String>) -> Result<std::process::Output, std::io::Error> {
+    let returncode = Command::new(command).args(args).output();
+    returncode
+}
