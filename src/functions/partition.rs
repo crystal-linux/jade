@@ -81,23 +81,33 @@ pub fn partition(device: &str, mode: &str, efi: bool) {
 
 fn part_nvme(device: &str, efi: bool) {
     if efi {
-        returncode_eval(exec("mkfs.vfat", vec![
-            String::from(format!("{}p1", device)),
-        ]));
-        returncode_eval(exec("mkfs.btrfs", vec![
-            String::from(format!("{}p2", device)),
-        ]));
+        returncode_eval(exec(
+            "mkfs.vfat",
+            vec![String::from(format!("{}p1", device))],
+        ));
+        returncode_eval(exec(
+            "mkfs.btrfs",
+            vec![String::from(format!("{}p2", device))],
+        ));
         mount(format!("{}p2", device), "/mnt", "");
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@"),
-        ]));
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@home"),
-        ]));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@"),
+            ],
+        ));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@home"),
+            ],
+        ));
         umount("/mnt");
         mount(format!("{}p2", device), "/mnt/", "subvol=@");
         files::create_directory("/mnt/boot");
@@ -106,23 +116,33 @@ fn part_nvme(device: &str, efi: bool) {
         mount(format!("{}p2", device), "/mnt/home", "subvol=@home");
         mount(format!("{}p1", device), "/mnt/boot/efi", "");
     } else {
-        returncode_eval(exec("mkfs.ext4", vec![
-            String::from(format!("{}p1", device)),
-        ]));
-        returncode_eval(exec("mkfs.btrfs", vec![
-            String::from(format!("{}p2", device)),
-        ]));
+        returncode_eval(exec(
+            "mkfs.ext4",
+            vec![String::from(format!("{}p1", device))],
+        ));
+        returncode_eval(exec(
+            "mkfs.btrfs",
+            vec![String::from(format!("{}p2", device))],
+        ));
         mount(format!("{}p2", device), "/mnt/", "");
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@"),
-        ]));
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@home"),
-        ]));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@"),
+            ],
+        ));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@home"),
+            ],
+        ));
         umount("/mnt");
         mount(format!("{}p2", device), "/mnt/", "subvol=@");
         files::create_directory("/mnt/boot");
@@ -134,23 +154,33 @@ fn part_nvme(device: &str, efi: bool) {
 
 fn part_disk(device: &str, efi: bool) {
     if efi {
-        returncode_eval(exec("mkfs.vfat", vec![
-            String::from(format!("{}1", device)),
-        ]));
-        returncode_eval(exec("mkfs.btrfs", vec![
-            String::from(format!("{}2", device)),
-        ]));
+        returncode_eval(exec(
+            "mkfs.vfat",
+            vec![String::from(format!("{}1", device))],
+        ));
+        returncode_eval(exec(
+            "mkfs.btrfs",
+            vec![String::from(format!("{}2", device))],
+        ));
         mount(format!("{}2", device), "/mnt", "");
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@"),
-        ]));
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@home"),
-        ]));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@"),
+            ],
+        ));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@home"),
+            ],
+        ));
         umount("/mnt");
         mount(format!("{}2", device), "/mnt/", "subvol=@");
         files::create_directory("/mnt/boot");
@@ -159,23 +189,33 @@ fn part_disk(device: &str, efi: bool) {
         mount(format!("{}2", device), "/mnt/home", "subvol=@home");
         mount(format!("{}1", device), "/mnt/boot/efi", "");
     } else {
-        returncode_eval(exec("mkfs.ext4", vec![
-            String::from(format!("{}1", device)),
-        ]));
-        returncode_eval(exec("mkfs.btrfs", vec![
-            String::from(format!("{}2", device)),
-        ]));
+        returncode_eval(exec(
+            "mkfs.ext4",
+            vec![String::from(format!("{}1", device))],
+        ));
+        returncode_eval(exec(
+            "mkfs.btrfs",
+            vec![String::from(format!("{}2", device))],
+        ));
         mount(format!("{}2", device), "/mnt/", "");
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@"),
-        ]));
-        returncode_eval(exec_workdir("btrfs", "/mnt", vec![
-            String::from("subvolume"),
-            String::from("create"),
-            String::from("@home"),
-        ]));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@"),
+            ],
+        ));
+        returncode_eval(exec_workdir(
+            "btrfs",
+            "/mnt",
+            vec![
+                String::from("subvolume"),
+                String::from("create"),
+                String::from("@home"),
+            ],
+        ));
         umount("/mnt");
         mount(format!("{}2", device), "/mnt/", "subvol=@");
         files::create_directory("/mnt/boot");
@@ -187,18 +227,19 @@ fn part_disk(device: &str, efi: bool) {
 
 fn mount(partition: String, mountpoint: &str, options: &str) {
     let options = if options.is_empty() { "\"\"" } else { options };
-    returncode_eval(exec("mount", vec![
-        String::from(partition),
-        String::from(mountpoint),
-        String::from("-o"),
-        String::from(options),
-    ]));
+    returncode_eval(exec(
+        "mount",
+        vec![
+            String::from(partition),
+            String::from(mountpoint),
+            String::from("-o"),
+            String::from(options),
+        ],
+    ));
 }
 
 fn umount(mountpoint: &str) {
-    returncode_eval(exec("umount", vec![
-        String::from(mountpoint),
-    ]));
+    returncode_eval(exec("umount", vec![String::from(mountpoint)]));
 }
 
 fn returncode_eval(return_code: std::result::Result<std::process::Output, std::io::Error>) {
