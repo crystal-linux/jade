@@ -46,7 +46,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
         vec![
             String::from("--password"),
             String::from("$(echo"),
-            String::from(format!("${}", password)),
+            format!("${}", password),
             String::from("|"),
             String::from("openssl"),
             String::from("passwd"),
@@ -75,7 +75,7 @@ pub fn root_pass(root_pass: &str) {
         vec![
             String::from("--password"),
             String::from("$(echo"),
-            String::from(format!("${{{}}}", root_pass)),
+            format!("${{{}}}", root_pass),
             String::from("|"),
             String::from("openssl"),
             String::from("passwd"),

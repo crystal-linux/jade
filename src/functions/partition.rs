@@ -83,11 +83,11 @@ fn part_nvme(device: &str, efi: bool) {
     if efi {
         returncode_eval(exec(
             "mkfs.vfat",
-            vec![String::from(format!("{}p1", device))],
+            vec![format!("{}p1", device)],
         ));
         returncode_eval(exec(
             "mkfs.btrfs",
-            vec![String::from(format!("{}p2", device))],
+            vec![format!("{}p2", device)],
         ));
         mount(format!("{}p2", device), "/mnt", "");
         returncode_eval(exec_workdir(
@@ -118,11 +118,11 @@ fn part_nvme(device: &str, efi: bool) {
     } else {
         returncode_eval(exec(
             "mkfs.ext4",
-            vec![String::from(format!("{}p1", device))],
+            vec![format!("{}p1", device)],
         ));
         returncode_eval(exec(
             "mkfs.btrfs",
-            vec![String::from(format!("{}p2", device))],
+            vec![format!("{}p2", device)],
         ));
         mount(format!("{}p2", device), "/mnt/", "");
         returncode_eval(exec_workdir(
@@ -156,11 +156,11 @@ fn part_disk(device: &str, efi: bool) {
     if efi {
         returncode_eval(exec(
             "mkfs.vfat",
-            vec![String::from(format!("{}1", device))],
+            vec![format!("{}1", device)],
         ));
         returncode_eval(exec(
             "mkfs.btrfs",
-            vec![String::from(format!("{}2", device))],
+            vec![format!("{}2", device)],
         ));
         mount(format!("{}2", device), "/mnt", "");
         returncode_eval(exec_workdir(
@@ -191,11 +191,11 @@ fn part_disk(device: &str, efi: bool) {
     } else {
         returncode_eval(exec(
             "mkfs.ext4",
-            vec![String::from(format!("{}1", device))],
+            vec![format!("{}1", device)],
         ));
         returncode_eval(exec(
             "mkfs.btrfs",
-            vec![String::from(format!("{}2", device))],
+            vec![format!("{}2", device)],
         ));
         mount(format!("{}2", device), "/mnt/", "");
         returncode_eval(exec_workdir(
@@ -230,7 +230,7 @@ fn mount(partition: String, mountpoint: &str, options: &str) {
     returncode_eval(exec(
         "mount",
         vec![
-            String::from(partition),
+            partition,
             String::from(mountpoint),
             String::from("-o"),
             String::from(options),

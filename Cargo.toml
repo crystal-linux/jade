@@ -1,5 +1,7 @@
 [package]
 name = "jade"
+description = "The new installer for crystal linux, contains backend and TUI"
+authors = ["Amy <axtlos@tar.black>"]
 version = "0.1.0"
 edition = "2021"
 
