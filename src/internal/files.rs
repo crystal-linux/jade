@@ -17,7 +17,7 @@ pub fn create_file(path: &str) {
 pub fn append_file(path: &str, content: &str) -> std::io::Result<()> {
     log(format!(
         "[ \x1b[2;1;32mOK\x1b[0m ] Append '{}' to file {}",
-        content.replace("\n", ""),
+        content.trim_end(),
         path
     ));
     let mut file = OpenOptions::new().append(true).open(path)?;
