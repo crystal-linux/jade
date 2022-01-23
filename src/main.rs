@@ -191,7 +191,7 @@ fn main() {
         }
     } else if app.subcommand_matches("install-base").is_some() {
         base::install_base_packages();
-    } else if app.subcommand_matches("install-base").is_some() {
+    } else if app.subcommand_matches("genfstab").is_some() {
         base::genfstab();
     } else {
         println!("Running TUI installer");
