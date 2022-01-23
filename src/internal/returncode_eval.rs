@@ -2,7 +2,7 @@ use crate::internal::*;
 
 pub fn exec_eval(
     return_code: std::result::Result<std::process::ExitStatus, std::io::Error>,
-    logmsg: &str
+    logmsg: &str,
 ) {
     match &return_code {
         Ok(_) => {

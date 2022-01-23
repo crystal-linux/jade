@@ -309,16 +309,9 @@ fn mount(partition: &str, mountpoint: &str, options: &str) {
         exec_eval(
             exec(
                 "mount",
-                vec![
-                    String::from(partition),
-                    String::from(mountpoint),
-                ],
+                vec![String::from(partition), String::from(mountpoint)],
             ),
-            format!(
-                "mount {} with no options at {}",
-                partition, mountpoint
-            )
-            .as_str(),
+            format!("mount {} with no options at {}", partition, mountpoint).as_str(),
         );
     }
 }

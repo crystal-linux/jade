@@ -13,7 +13,13 @@ pub fn choose_pkgs(desktop_setup: &str) {
             ]);
         }
         "gnome" => {
-            install(vec!["xorg", "gnome", "gnome-tweaks", "chrome-gnome-shell", "gdm",]);
+            install(vec![
+                "xorg",
+                "gnome",
+                "gnome-tweaks",
+                "chrome-gnome-shell",
+                "gdm",
+            ]);
         }
         "kde" => {
             install(vec![
