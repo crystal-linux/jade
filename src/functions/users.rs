@@ -30,11 +30,13 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
     }
     exec_eval(
         exec_chroot(
-            "usermod",
+            "bash",
             vec![
+                String::from("-c"),
+                String::from("usermod"),
                 String::from("--password"),
                 String::from("$(echo"),
-                format!("${}", password),
+                format!("${{{}}}", password),
                 String::from("|"),
                 String::from("openssl"),
                 String::from("passwd"),
@@ -51,8 +53,10 @@ pub fn root_pass(root_pass: &str) {
     println!("Setting root password to '{}'", root_pass);
     exec_eval(
         exec_chroot(
-            "usermod",
+            "bash",
             vec![
+                String::from("-c"),
+                String::from("usermod"),
                 String::from("--password"),
                 String::from("$(echo"),
                 format!("${{{}}}", root_pass),

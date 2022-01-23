@@ -23,6 +23,13 @@ pub fn install_base_packages() {
     ]);
 }
 
+pub fn genfstab() {
+    exec_eval(
+        exec_chroot("genfstab", vec![String::from("-U"), String::from("/mnt")]),
+        "Generate fstab",
+    );
+}
+
 pub fn install_bootloader_efi(efidir: &str) {
     install::install(vec!["grub", "efibootmgr"]);
     exec_eval(

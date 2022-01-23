@@ -5,6 +5,7 @@ pub fn choose_pkgs(desktop_setup: &str) {
     match desktop_setup {
         "onyx" => {
             install(vec![
+                "xorg",
                 "onyx",
                 "lightdm",
                 "lightdm-gtk-greeter",
@@ -12,10 +13,11 @@ pub fn choose_pkgs(desktop_setup: &str) {
             ]);
         }
         "gnome" => {
-            install(vec!["gnome", "gnome-tweaks", "chrome-gnome-shell", "gdm"]);
+            install(vec!["xorg", "gnome", "gnome-tweaks", "chrome-gnome-shell", "gdm",]);
         }
         "kde" => {
             install(vec![
+                "xorg",
                 "kde",
                 "plasma",
                 "plasma-wayland-session",
@@ -25,6 +27,7 @@ pub fn choose_pkgs(desktop_setup: &str) {
         }
         "budgie" => {
             install(vec![
+                "xorg",
                 "budgie-desktop",
                 "gnome",
                 "lightdm",
@@ -34,6 +37,7 @@ pub fn choose_pkgs(desktop_setup: &str) {
         }
         "cinnamon" => {
             install(vec![
+                "xorg",
                 "cinnamon",
                 "lightdm",
                 "lightdm-gtk-greeter",
@@ -44,6 +48,7 @@ pub fn choose_pkgs(desktop_setup: &str) {
         }
         "mate" => {
             install(vec![
+                "xorg",
                 "mate",
                 "lightdm",
                 "lightdm-gtk-greeter",
@@ -53,6 +58,7 @@ pub fn choose_pkgs(desktop_setup: &str) {
         }
         "xfce" => {
             install(vec![
+                "xorg",
                 "xfce4",
                 "lightdm",
                 "lightdm-gtk-greeter",
@@ -62,6 +68,7 @@ pub fn choose_pkgs(desktop_setup: &str) {
         }
         "enlightenment" => {
             install(vec![
+                "xorg",
                 "enlightenment",
                 "lightdm",
                 "lightdm-gtk-greeter",

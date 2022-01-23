@@ -39,6 +39,11 @@ jade bootloader grub-efi /boot/efi
 jade bootloader grub-legacy /dev/sda
 ```
 
+### generate fstab
+```sh
+jade genfstab
+```
+
 ### configuring locale settings
 ```sh
 # set the keyboard layout to colemak, the timezone to Europe/Berlin and set en_US.UTF-8 as the locale

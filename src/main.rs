@@ -35,6 +35,10 @@ fn main() {
                 .about("Install base packages")
         )
         .subcommand(
+            SubCommand::with_name("genfstab")
+                .about("Generate fstab")
+        )
+        .subcommand(
             SubCommand::with_name("bootloader")
                 .about("Install bootloader")
                 .subcommand(
