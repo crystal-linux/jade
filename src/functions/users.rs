@@ -33,16 +33,10 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             "bash",
             vec![
                 String::from("-c"),
-                String::from("'usermod"),
-                String::from("--password"),
-                String::from("$(echo"),
-                String::from(password),
-                String::from("|"),
-                String::from("openssl"),
-                String::from("passwd"),
-                String::from("-1"),
-                String::from("-stdin)"),
-                format!("{}'", username),
+                format!(
+                    r#"'usermod --password $(echo {} | openssl passwd -1 -stdin) {}'"#,
+                    password, username
+                ),
             ],
         ),
         format!("Set password for user {}", username).as_str(),
