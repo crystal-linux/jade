@@ -61,7 +61,10 @@ fn main() {
                 .arg(
                     Arg::with_name("ipv6")
                         .help("Wether ipv6 should be enabled")
-                        .required(true),
+                        .short("i6")
+                        .long("ipv6")
+                        .required(true)
+                        .takes_value(false),
                 )
         )
         .subcommand(
@@ -125,7 +128,7 @@ fn main() {
         locale::set_keyboard(kbrlayout);
         locale::set_timezone(timezn);
     } else if let Some(app) = app.subcommand_matches("networking") {
-        network::enable_ipv6(app.value_of("ipv6").unwrap().parse::<bool>().unwrap());
+        network::enable_ipv6(app.is_present("ipv6"));
         network::set_hostname(app.value_of("hostname").unwrap())
     } else if let Some(app) = app.subcommand_matches("users") {
         if let Some(app) = app.subcommand_matches("newUser") {
