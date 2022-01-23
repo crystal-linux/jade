@@ -46,7 +46,7 @@ jade networking getcryst.al --ipv6
 jade users newUser nonRootaver false easytohack
 
 # make a user called rootHaver, with sudo and omgsosuperhardtohack as the password
-jade users rootHaver true omgsosuperhardtohack
+jade users newUser rootHaver true omgsosuperhardtohack
 ```
 
 ### set root password
