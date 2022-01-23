@@ -27,6 +27,10 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             ),
             format!("Add user {} to wheel group", username).as_str(),
         );
+        files_eval(
+            files::append_file("/mnt/etc/sudoers", "%wheel ALL=(ALL) ALL"),
+            "Add wheel group to sudoers",
+        );
     }
     exec_eval(
         exec_chroot(
@@ -44,7 +48,6 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
 }
 
 pub fn root_pass(root_pass: &str) {
-    println!("Setting root password to '{}'", root_pass);
     exec_eval(
         exec_chroot(
             "bash",
