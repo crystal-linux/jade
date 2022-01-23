@@ -6,7 +6,7 @@ pub fn create_file(path: &str) {
     let returncode = File::create(path);
     match returncode {
         Ok(_) => {
-            log(format!("Create {}: Sucess", path));
+            log(format!("[ \x1b[2;1;32mOK\x1b[0m ] Create {}", path));
         }
         Err(e) => {
             crash(format!("Create {}: Failed with error {}", path, e), 1);
