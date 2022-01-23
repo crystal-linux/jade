@@ -200,7 +200,7 @@ fn part_disk(device: &str, efi: bool) {
             format!("format {}1 as fat32", device).as_str(),
         );
         exec_eval(
-            exec("mkfs.btrfs", vec![format!("{}2", device)]),
+            exec("mkfs.btrfs", vec!["-f".to_string(), format!("{}2", device)]),
             format!("format {}2 as btrfs", device).as_str(),
         );
         mount(format!("{}2", device).as_str(), "/mnt", "");
@@ -244,7 +244,7 @@ fn part_disk(device: &str, efi: bool) {
             format!("format {}1 as ext4", device).as_str(),
         );
         exec_eval(
-            exec("mkfs.btrfs", vec![format!("{}2", device)]),
+            exec("mkfs.btrfs", vec!["-f".to_string(), format!("{}2", device)]),
             format!("format {}2 as btrfs", device).as_str(),
         );
         mount(format!("{}2", device).as_str(), "/mnt/", "");
@@ -288,23 +288,39 @@ fn part_disk(device: &str, efi: bool) {
 }
 
 fn mount(partition: &str, mountpoint: &str, options: &str) {
-    let options = if options.is_empty() { "\"\"" } else { options };
-    exec_eval(
-        exec(
-            "mount",
-            vec![
-                String::from(partition),
-                String::from(mountpoint),
-                String::from("-o"),
-                String::from(options),
-            ],
-        ),
-        format!(
-            "mount {} with options {} at {}",
-            partition, options, mountpoint
-        )
-        .as_str(),
-    );
+    if !options.is_empty() {
+        exec_eval(
+            exec(
+                "mount",
+                vec![
+                    String::from(partition),
+                    String::from(mountpoint),
+                    String::from("-o"),
+                    String::from(options),
+                ],
+            ),
+            format!(
+                "mount {} with options {} at {}",
+                partition, options, mountpoint
+            )
+            .as_str(),
+        );
+    } else {
+        exec_eval(
+            exec(
+                "mount",
+                vec![
+                    String::from(partition),
+                    String::from(mountpoint),
+                ],
+            ),
+            format!(
+                "mount {} with no options at {}",
+                partition, mountpoint
+            )
+            .as_str(),
+        );
+    }
 }
 
 fn umount(mountpoint: &str) {
