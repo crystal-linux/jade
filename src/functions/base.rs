@@ -25,7 +25,15 @@ pub fn install_base_packages() {
 
 pub fn genfstab() {
     exec_eval(
-        exec_chroot("genfstab", vec![String::from("-U"), String::from("/mnt")]),
+        exec_chroot(
+            "genfstab",
+            vec![
+                String::from("-U"),
+                String::from("/mnt"),
+                String::from(">>"),
+                String::from("/mnt/etc/fstab"),
+            ],
+        ),
         "Generate fstab",
     );
 }
