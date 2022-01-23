@@ -3,13 +3,13 @@ use std::fs::{File, OpenOptions};
 use std::io::prelude::*;
 
 pub fn create_file(path: &str) {
-    let return_val = File::create(path);
-    match return_val {
-        Ok(_file) => {
-            log(format!("Created file {}", path));
+    let returncode = File::create(path);
+    match returncode {
+        Ok(_) => {
+            log(format!("Create {}: Sucess", path));
         }
         Err(e) => {
-            crash(format!("Failed to create file {}, Error: {}", path, e), 1);
+            crash(format!("Create {}: Failed with error {}", path, e), 1);
         }
     }
 }
@@ -21,18 +21,6 @@ pub fn append_file(path: &str, content: &str) -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn create_directory(path: &str) {
-    let return_val = std::fs::create_dir(path);
-    match return_val {
-        Ok(_) => {
-            log(format!("Created directory {}", path));
-        }
-        Err(e) => {
-            crash(
-                format!("Failed to create directory {}, Error: {}", path, e),
-                1,
-            );
-        }
-    }
+pub fn create_directory(path: &str) -> std::io::Result<()> {
+    std::fs::create_dir(path)
 }
-

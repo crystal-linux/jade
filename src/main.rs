@@ -8,6 +8,7 @@ fn main() {
     let app = App::new("jade")
         .version(env!("CARGO_PKG_VERSION"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
+        .author(env!("CARGO_PKG_AUTHORS"))
         .subcommand(
             SubCommand::with_name("partition")
                 .about("Partition the install destination")
@@ -27,6 +28,32 @@ fn main() {
                         .help("If the install destination should be partitioned with EFI")
                         .long("efi")
                         .takes_value(false),
+                ),
+        )
+        .subcommand(
+            SubCommand::with_name("install-base")
+                .about("Install base packages")
+        )
+        .subcommand(
+            SubCommand::with_name("bootloader")
+                .about("Install bootloader")
+                .subcommand(
+                    SubCommand::with_name("grub-efi")
+                        .about("Install grub-efi")
+                        .arg(
+                            Arg::with_name("efidir")
+                                .help("The directory to install the EFI bootloader to")
+                                .required(true),
+                        ),   
+                )
+                .subcommand(
+                    SubCommand::with_name("grub-legacy")
+                        .about("Install grub-legacy")
+                        .arg(
+                            Arg::with_name("device")
+                                .help("The device to install the bootloader to")
+                                .required(true),
+                        ),
                 ),
         )
         .subcommand(
@@ -59,13 +86,19 @@ fn main() {
                         .required(true),
                 )
                 .arg(
+                    Arg::with_name("create-hosts")
+                        .help("create /etc/hosts")
+                        .long("hosts")
+                        .takes_value(false),
+                )
+                .arg(
                     Arg::with_name("ipv6")
                         .help("Wether ipv6 should be enabled")
                         .short("i6")
                         .long("ipv6")
                         .required(true)
                         .takes_value(false),
-                )
+                ),
         )
         .subcommand(
             SubCommand::with_name("users")
@@ -128,7 +161,8 @@ fn main() {
         locale::set_keyboard(kbrlayout);
         locale::set_timezone(timezn);
     } else if let Some(app) = app.subcommand_matches("networking") {
-        network::enable_ipv6(app.is_present("ipv6"));
+        if app.is_present("ipv6") { network::enable_ipv6() }
+        if app.is_present("create-hosts") { network::create_hosts() }
         network::set_hostname(app.value_of("hostname").unwrap())
     } else if let Some(app) = app.subcommand_matches("users") {
         if let Some(app) = app.subcommand_matches("newUser") {
@@ -144,6 +178,14 @@ fn main() {
         }
     } else if let Some(app) = app.subcommand_matches("desktops") {
         desktops::choose_pkgs(app.value_of("desktopsetup").unwrap());
+    } else if let Some(app) = app.subcommand_matches("bootloader") {
+        if let Some(app) = app.subcommand_matches("grub-efi") {
+            base::install_bootloader_efi(app.value_of("efidir").unwrap());
+        } else if let Some(app) = app.subcommand_matches("grub-legacy") {
+            base::install_bootloader_legacy(app.value_of("device").unwrap());
+        }
+    } else if let Some(_) = app.subcommand_matches("install-base") {
+        base::install_base_packages();
     } else {
         println!("Running TUI installer");
     }

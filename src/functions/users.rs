@@ -2,7 +2,7 @@ use crate::internal::exec::*;
 use crate::internal::*;
 
 pub fn new_user(username: &str, hasroot: bool, password: &str) {
-    let return_val = exec_chroot(
+    exec_eval(exec_chroot(
         "useradd",
         vec![
             String::from("-m"),
@@ -10,20 +10,9 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             String::from("/bin/bash"),
             String::from(username),
         ],
-    );
-    match return_val {
-        Ok(_) => {
-            log(format!("Created user {}", username));
-        }
-        Err(e) => {
-            crash(
-                format!("Failed to create user {}, Error: {}", username, e),
-                1,
-            );
-        }
-    }
+    ), format!("Create user {}", username).as_str());
     if hasroot {
-        let return_val = exec_chroot(
+        exec_eval(exec_chroot(
             "usermod",
             vec![
                 String::from("-a"),
@@ -31,17 +20,9 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
                 String::from("wheel"),
                 String::from(username),
             ],
-        );
-        match return_val {
-            Ok(_) => {
-                log(format!("Added user {} to group wheel", username));
-            }
-            Err(e) => {
-                crash(format!("Failed to add user {}, Error: {}", username, e), 1);
-            }
-        }
+        ), format!("Add user {} to wheel group", username).as_str());
     }
-    let return_val = exec_chroot(
+    exec_eval(exec_chroot(
         "usermod",
         vec![
             String::from("--password"),
@@ -54,23 +35,12 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             String::from("-stdin)"),
             String::from(username),
         ],
-    );
-    match return_val {
-        Ok(_) => {
-            log(format!("Set password for user {}", username));
-        }
-        Err(e) => {
-            crash(
-                format!("Failed to set password for user {}, Error: {}", username, e),
-                1,
-            );
-        }
-    }
+    ), format!("Set password for user {}", username).as_str());
 }
 
 pub fn root_pass(root_pass: &str) {
     println!("Setting root password to '{}'", root_pass);
-    let return_val = exec_chroot(
+    exec_eval(exec_chroot(
         "usermod",
         vec![
             String::from("--password"),
@@ -83,13 +53,5 @@ pub fn root_pass(root_pass: &str) {
             String::from("-stdin)"),
             String::from("root"),
         ],
-    );
-    match return_val {
-        Ok(_) => {
-            log("Set root password".to_string());
-        }
-        Err(e) => {
-            crash(format!("Failed to set root password, Error: {}", e), 1);
-        }
-    }
+    ), "set root password");
 }
