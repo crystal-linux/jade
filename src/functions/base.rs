@@ -2,6 +2,7 @@ use crate::internal::exec::*;
 use crate::internal::*;
 
 pub fn install_base_packages() {
+    files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
     install::install(vec![
         "base",
         "linux",
@@ -25,11 +26,13 @@ pub fn install_base_packages() {
 
 pub fn genfstab() {
     exec_eval(
-        exec_chroot(
-            "bash",
+        exec(
+            "genfstab",
             vec![
-                String::from("-c"),
-                String::from("'genfstab -U /mnt >> /mnt/etc/fstab'"),
+                String::from("-U"),
+                String::from("/mnt"),
+                String::from(">>"),
+                String::from("/mnt/etc/fstab"),
             ],
         ),
         "Generate fstab",

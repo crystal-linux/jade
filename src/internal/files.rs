@@ -14,6 +14,24 @@ pub fn create_file(path: &str) {
     }
 }
 
+pub fn copy_file(path: &str, destpath: &str) {
+    let return_code = std::fs::copy(path, destpath);
+    match return_code {
+        Ok(_) => {
+            log(format!(
+                "[ \x1b[2;1;32mOK\x1b[0m ] Copy {} to {}",
+                path, destpath
+            ));
+        }
+        Err(e) => {
+            crash(
+                format!("Copy {} to {}: Failed with error {}", path, destpath, e),
+                1,
+            );
+        }
+    }
+}
+
 pub fn append_file(path: &str, content: &str) -> std::io::Result<()> {
     log(format!(
         "[ \x1b[2;1;32mOK\x1b[0m ] Append '{}' to file {}",
