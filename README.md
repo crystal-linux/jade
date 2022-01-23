@@ -1,3 +1,4 @@
+<p align="center">
   <a href="https://git.getcryst.al/crystal/ame/">
     <img src="https://git.getcryst.al/crystal/branding/raw/branch/main/logos/crystal-logo-minimal.png" alt="Logo" width="150" height="150">
   </a>
