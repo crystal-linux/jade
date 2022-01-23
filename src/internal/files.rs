@@ -15,7 +15,7 @@ pub fn create_file(path: &str) {
 }
 
 pub fn append_file(path: &str, content: &str) -> std::io::Result<()> {
-    log(format!("Appending {} to file {}", content, path));
+    log(format!("Appending {} to file {}", content.replace("\n", ""), path));
     let mut file = OpenOptions::new().append(true).open(path)?;
     file.write_all(content.as_bytes())?;
     Ok(())
