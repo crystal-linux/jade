@@ -25,10 +25,29 @@ jade partition auto /dev/sda --efi
 jade partition auto /dev/nvmen0
 ```
 
+### install base packages
+```sh
+jade install-base
+```
+
+### install bootloader
+```sh
+# install as efi with esp being /boot/efi
+jade bootloader grub-efi /boot/efi
+
+# install as legacy on /dev/sda
+jade bootloader grub-legacy /dev/sda
+```
+
 ### configuring locale settings
 ```sh
 # set the keyboard layout to colemak, the timezone to Europe/Berlin and set en_US.UTF-8 as the locale
 jade locale colemak Europe/Berlin "en_US.UTF-8 UTF-8"
+```
+
+### create /etc/hosts
+```sh
+jade networking --hosts
 ```
 
 ### configue network settings

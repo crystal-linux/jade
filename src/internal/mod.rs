@@ -1,8 +1,8 @@
 pub mod exec;
 pub mod files;
 pub mod install;
-pub mod strings;
 pub mod returncode_eval;
+pub mod strings;
 
 pub fn install(pkgs: Vec<&str>) {
     install::install(pkgs);
@@ -20,7 +20,10 @@ pub fn files_eval(returncode: std::result::Result<(), std::io::Error>, logmsg: &
     returncode_eval::files_eval(returncode, logmsg);
 }
 
-pub fn exec_eval(returncode: std::result::Result<std::process::ExitStatus, std::io::Error>, logmsg: &str) {
+pub fn exec_eval(
+    returncode: std::result::Result<std::process::ExitStatus, std::io::Error>,
+    logmsg: &str,
+) {
     returncode_eval::exec_eval(returncode, logmsg);
 }
 

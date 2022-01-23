@@ -44,7 +44,7 @@ fn main() {
                             Arg::with_name("efidir")
                                 .help("The directory to install the EFI bootloader to")
                                 .required(true),
-                        ),   
+                        ),
                 )
                 .subcommand(
                     SubCommand::with_name("grub-legacy")
@@ -96,7 +96,6 @@ fn main() {
                         .help("Wether ipv6 should be enabled")
                         .short("i6")
                         .long("ipv6")
-                        .required(true)
                         .takes_value(false),
                 ),
         )
@@ -161,8 +160,12 @@ fn main() {
         locale::set_keyboard(kbrlayout);
         locale::set_timezone(timezn);
     } else if let Some(app) = app.subcommand_matches("networking") {
-        if app.is_present("ipv6") { network::enable_ipv6() }
-        if app.is_present("create-hosts") { network::create_hosts() }
+        if app.is_present("ipv6") {
+            network::enable_ipv6()
+        }
+        if app.is_present("create-hosts") {
+            network::create_hosts()
+        }
         network::set_hostname(app.value_of("hostname").unwrap())
     } else if let Some(app) = app.subcommand_matches("users") {
         if let Some(app) = app.subcommand_matches("newUser") {
@@ -184,7 +187,7 @@ fn main() {
         } else if let Some(app) = app.subcommand_matches("grub-legacy") {
             base::install_bootloader_legacy(app.value_of("device").unwrap());
         }
-    } else if let Some(_) = app.subcommand_matches("install-base") {
+    } else if app.subcommand_matches("install-base").is_some() {
         base::install_base_packages();
     } else {
         println!("Running TUI installer");

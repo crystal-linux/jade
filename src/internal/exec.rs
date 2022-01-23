@@ -7,7 +7,7 @@ pub fn exec(command: &str, args: Vec<String>) -> Result<std::process::ExitStatus
 
 pub fn exec_chroot(
     command: &str,
-    args: Vec<String>
+    args: Vec<String>,
 ) -> Result<std::process::ExitStatus, std::io::Error> {
     let returncode = Command::new("arch-chroot")
         .args(&["/mnt", command])
