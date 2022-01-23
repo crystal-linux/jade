@@ -57,7 +57,7 @@ pub fn root_pass(root_pass: &str) {
             vec![
                 String::from("-c"),
                 format!(
-                    "'usermod --password $(echo {} | openssl passwd -1 -stdin) root'",
+                    r#"'usermod --password $(echo {} | openssl passwd -1 -stdin) root'"#,
                     root_pass
                 ),
             ],
