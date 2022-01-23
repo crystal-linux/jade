@@ -179,8 +179,6 @@ fn main() {
                 app.value_of("password").unwrap(),
             );
         } else if let Some(app) = app.subcommand_matches("rootPass") {
-            let rootpass = app.value_of("rootPass").unwrap();
-            println!("{}", rootpass);
             users::root_pass(app.value_of("rootPass").unwrap());
         }
     } else if let Some(app) = app.subcommand_matches("desktops") {

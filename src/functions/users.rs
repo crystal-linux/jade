@@ -56,16 +56,10 @@ pub fn root_pass(root_pass: &str) {
             "bash",
             vec![
                 String::from("-c"),
-                String::from("'usermod"),
-                String::from("--password"),
-                String::from("$(echo"),
-                String::from(root_pass),
-                String::from("|"),
-                String::from("openssl"),
-                String::from("passwd"),
-                String::from("-1"),
-                String::from("-stdin)"),
-                String::from("root'"),
+                format!(
+                    "'usermod --password $(echo {} | openssl passwd -1 -stdin) root'",
+                    root_pass
+                ),
             ],
         ),
         "set root password",
