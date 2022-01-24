@@ -31,6 +31,10 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             files::append_file("/mnt/etc/sudoers", "%wheel ALL=(ALL) ALL"),
             "Add wheel group to sudoers",
         );
+        files_eval(
+            files::append_file("/mnt/etc/sudoers", "Defaults pwfeedback"),
+            "Add pwfeedback to sudoers",
+        );
     }
     exec_eval(
         exec_chroot(
