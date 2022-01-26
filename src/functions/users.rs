@@ -28,11 +28,11 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             format!("Add user {} to wheel group", username).as_str(),
         );
         files_eval(
-            files::append_file("/mnt/etc/sudoers", "%wheel ALL=(ALL) ALL"),
+            files::append_file("/mnt/etc/sudoers", "\n%wheel ALL=(ALL) ALL\n"),
             "Add wheel group to sudoers",
         );
         files_eval(
-            files::append_file("/mnt/etc/sudoers", "Defaults pwfeedback"),
+            files::append_file("/mnt/etc/sudoers", "\nDefaults pwfeedback\n"),
             "Add pwfeedback to sudoers",
         );
     }
