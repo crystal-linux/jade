@@ -28,12 +28,10 @@ pub fn install_base_packages() {
 pub fn genfstab() {
     exec_eval(
         exec(
-            "genfstab",
+            "bash",
             vec![
-                String::from("-U"),
-                String::from("/mnt"),
-                String::from(">>"),
-                String::from("/mnt/etc/fstab"),
+                String::from("-c"),
+                String::from("genfstab -U /mnt >> /mnt/etc/fstab"),
             ],
         ),
         "Generate fstab",
