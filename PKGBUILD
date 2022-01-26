@@ -9,7 +9,7 @@ url="https://git.tar.black/crystal/programs/jade"
 license=('Nolicense')
 source=("git+https://git.tar.black/crystal/programs/jade")
 sha256sums=('SKIP')
-depends=()
+depends=('parted')
 makedepends=('cargo')
 
 build() {
