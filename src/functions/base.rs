@@ -2,6 +2,7 @@ use crate::internal::exec::*;
 use crate::internal::*;
 
 pub fn install_base_packages() {
+    files::create_dir_all("/mnt/etc").unwrap();
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
     install::install(vec![
         "base",
