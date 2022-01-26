@@ -138,6 +138,11 @@ pub fn choose_pkgs(desktop_setup: &str) {
             crash("Unknown desktop setup".to_string(), 1);
         }
     }
+    install(vec!["networkmanager"]);
+    exec_eval(
+        exec_chroot("systemctl", vec![String::from("enable"), String::from("NetworkManager")]),
+        "Enable network manager"
+    );
 }
 
 fn enable_dm(dm: &str) {
