@@ -39,6 +39,10 @@ fn main() {
                 .about("Generate fstab")
         )
         .subcommand(
+            SubCommand::with_name("setup-timeshift")
+                .about("Setup timeshift")
+        )
+        .subcommand(
             SubCommand::with_name("bootloader")
                 .about("Install bootloader")
                 .subcommand(
@@ -154,7 +158,12 @@ fn main() {
     } else if let Some(app) = app.subcommand_matches("locale") {
         let kbrlayout = app.value_of("keyboard").unwrap();
         let timezn = app.value_of("timezone").unwrap();
-        locale::set_locale(app.values_of("locales").unwrap().collect::<Vec<&str>>().join(" "));
+        locale::set_locale(
+            app.values_of("locales")
+                .unwrap()
+                .collect::<Vec<&str>>()
+                .join(" "),
+        );
         locale::set_keyboard(kbrlayout);
         locale::set_timezone(timezn);
     } else if let Some(app) = app.subcommand_matches("networking") {
@@ -187,6 +196,8 @@ fn main() {
         base::install_base_packages();
     } else if app.subcommand_matches("genfstab").is_some() {
         base::genfstab();
+    } else if app.subcommand_matches("setup-timeshift").is_some() {
+        base::setup_timeshift();
     } else {
         println!("Running TUI installer");
     }

@@ -30,10 +30,7 @@ pub fn set_locale(locale: String) {
             "add locales to locale.gen",
         );
     }
-    exec_eval(
-        exec_chroot("locale-gen", vec![]),
-        "generate locales",
-    );
+    exec_eval(exec_chroot("locale-gen", vec![]), "generate locales");
     files::create_file("/mnt/etc/locale.conf");
     files_eval(
         files::append_file("/mnt/etc/locale.conf", "LANG=en_US.UTF-8"),

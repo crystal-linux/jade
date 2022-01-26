@@ -19,8 +19,6 @@ pub fn install_base_packages() {
         "archlinux-keyring",
         "neofetch",
         "btrfs-progs",
-        "timeshift",
-        "timeshift-autosnap",
         "which",
     ]);
 }
@@ -76,4 +74,12 @@ pub fn install_bootloader_legacy(device: &str) {
         ),
         "create grub.cfg",
     );
+}
+
+pub fn setup_timeshift() {
+    install(vec!["timeshift", "timeshift-autosnap"]);
+    exec_eval(
+        exec_chroot("timeshift", vec![String::from("--btrfs")]),
+        "setup timeshift",
+    )
 }

@@ -140,8 +140,11 @@ pub fn choose_pkgs(desktop_setup: &str) {
     }
     install(vec!["networkmanager"]);
     exec_eval(
-        exec_chroot("systemctl", vec![String::from("enable"), String::from("NetworkManager")]),
-        "Enable network manager"
+        exec_chroot(
+            "systemctl",
+            vec![String::from("enable"), String::from("NetworkManager")],
+        ),
+        "Enable network manager",
     );
 }
 
