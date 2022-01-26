@@ -21,15 +21,17 @@ pub fn set_timezone(timezone: &str) {
 
 pub fn set_locale(locale: String) {
     files_eval(
-        files::append_file("/mnt/etc/locale.gen", "en_US.UTF-8 UTF-8"),
+        files::append_file("/mnt/etc/locale.gen", "en_US.UTF-8 UTF-8\n"),
         "add en_US.UTF-8 UTF-8 to locale.gen",
     );
-    files_eval(
-        files::append_file("/mnt/etc/locale.gen", locale.as_str()),
-        "add locales to locale.gen",
-    );
+    for i in locale.split(' ') {
+        files_eval(
+            files::append_file("/mnt/etc/locale.gen", format!("{}\n", i).as_str()),
+            "add locales to locale.gen",
+        );
+    }
     exec_eval(
-        exec_chroot("locale-gen", vec!["".to_string()]),
+        exec_chroot("locale-gen", vec![]),
         "generate locales",
     );
     files::create_file("/mnt/etc/locale.conf");

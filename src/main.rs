@@ -154,13 +154,7 @@ fn main() {
     } else if let Some(app) = app.subcommand_matches("locale") {
         let kbrlayout = app.value_of("keyboard").unwrap();
         let timezn = app.value_of("timezone").unwrap();
-        let locale: String = app
-            .values_of("locales")
-            .unwrap()
-            .into_iter()
-            .map(|s| s.to_string())
-            .collect();
-        locale::set_locale(locale);
+        locale::set_locale(app.values_of("locales").unwrap().collect::<Vec<&str>>().join(" "));
         locale::set_keyboard(kbrlayout);
         locale::set_timezone(timezn);
     } else if let Some(app) = app.subcommand_matches("networking") {
