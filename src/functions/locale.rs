@@ -24,9 +24,17 @@ pub fn set_locale(locale: String) {
         files::append_file("/mnt/etc/locale.gen", "en_US.UTF-8 UTF-8\n"),
         "add en_US.UTF-8 UTF-8 to locale.gen",
     );
-    for i in locale.split(' ') {
+    for i in (0..locale.split(' ').count()).step_by(2) {
         files_eval(
-            files::append_file("/mnt/etc/locale.gen", format!("{}\n", i).as_str()),
+            files::append_file(
+                "/mnt/etc/locale.gen",
+                format!(
+                    "{} {}\n",
+                    locale.split(' ').collect::<Vec<&str>>()[i],
+                    locale.split(' ').collect::<Vec<&str>>()[i + 1]
+                )
+                .as_str(),
+            ),
             "add locales to locale.gen",
         );
     }

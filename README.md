@@ -88,6 +88,11 @@ jade desktops onyx
 jade desktops gnome
 ```
 
+### setup timeshift
+```sh
+jade setup-timeshift
+```
+
 ## How to build:
 
 Tested on latest Cargo (1.60.0-nightly)
