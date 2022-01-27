@@ -37,7 +37,7 @@ pub fn genfstab() {
 }
 
 pub fn install_bootloader_efi(efidir: &str) {
-    install::install(vec!["grub", "efibootmgr"]);
+    install::install(vec!["grub", "efibootmgr", "grub-btrfs"]);
     exec_eval(
         exec_chroot(
             "grub-install",
@@ -60,7 +60,7 @@ pub fn install_bootloader_efi(efidir: &str) {
 }
 
 pub fn install_bootloader_legacy(device: &str) {
-    install::install(vec!["grub"]);
+    install::install(vec!["grub", "grub-btrfs"]);
     exec_eval(
         exec_chroot(
             "grub-install",
