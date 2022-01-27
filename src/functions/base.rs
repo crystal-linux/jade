@@ -45,6 +45,7 @@ pub fn install_bootloader_efi(efidir: &str) {
                 String::from("--target=x86_64-efi"),
                 format!("--efi-directory={}", efidir),
                 String::from("--bootloader-id=crystal"),
+                String::from("--removable"),
             ],
         ),
         "install grub as efi",
