@@ -50,11 +50,6 @@ jade genfstab
 jade locale colemak Europe/Berlin "en_US.UTF-8 UTF-8"
 ```
 
-### create /etc/hosts
-```sh
-jade networking --hosts
-```
-
 ### configue network settings
 ```sh
 # set the hostname to getcryst.al with ipv6 disabled
