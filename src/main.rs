@@ -140,6 +140,15 @@ fn main() {
                 )
         )
         .subcommand(
+            SubCommand::with_name("config")
+                .about("read a jade installation config")
+                .arg(
+                    Arg::with_name("config")
+                        .help("The config to read")
+                        .required(true),
+                ),
+            )
+        .subcommand(
             SubCommand::with_name("desktops")
                 .about("Graphical stuff (Desktop environment and Display Manager)")
                 .arg(
@@ -198,6 +207,8 @@ fn main() {
         base::genfstab();
     } else if app.subcommand_matches("setup-timeshift").is_some() {
         base::setup_timeshift();
+    } else if app.subcommand_matches("config").is_some() {
+        crate::internal::config::read_config();
     } else {
         println!("Running TUI installer");
     }

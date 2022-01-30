@@ -9,3 +9,5 @@ edition = "2021"
 
 [dependencies]
 clap = "2.34.0"
+serde_json = "1.0.59"
+serde = { version = "1.0.117", features = [ "derive" ] }

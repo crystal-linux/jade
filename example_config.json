@@ -1,0 +1,43 @@
+{
+    "partition": {
+        "device": "sda",
+        "mode": "auto",
+        "efi": true
+    },
+    "bootloader": {
+        "type": "grub-efi",
+        "location": "/boot/efi"
+    },
+    "locale": {
+        "locale": [
+            "en_US.UTF-8 UTF-8"
+        ],
+        "keymap": "colemak",
+        "timezone": "Europe/Berlin"
+    },
+    "networking": {
+        "hostname": "jade-test",
+        "ipv6": false
+    },
+    "users": [
+        {
+            "name": "jade",
+            "password": "jade",
+            "hasroot": true
+        },
+        {
+            "name": "jade2",
+            "password": "jade2",
+            "hasroot": false
+        }
+    ],
+    "rootpass": "jaderoot",
+    "desktop": "onyx",
+    "timeshift": true,
+    "extra_packages": [
+        "firefox",
+        "vim",
+        "git",
+        "tmux"
+    ]
+}
