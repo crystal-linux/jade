@@ -199,8 +199,8 @@ fn main() {
         base::genfstab();
     } else if app.subcommand_matches("setup-timeshift").is_some() {
         base::setup_timeshift();
-    } else if app.subcommand_matches("config").is_some() {
-        crate::internal::config::read_config();
+    } else if let Some(app) = app.subcommand_matches("config") {
+        crate::internal::config::read_config(app.value_of("config").unwrap());
     } else {
         println!("Running TUI installer");
     }
