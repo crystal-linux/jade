@@ -94,12 +94,6 @@ fn main() {
                         .required(true),
                 )
                 .arg(
-                    Arg::with_name("create-hosts")
-                        .help("create /etc/hosts")
-                        .long("hosts")
-                        .takes_value(false),
-                )
-                .arg(
                     Arg::with_name("ipv6")
                         .help("Wether ipv6 should be enabled")
                         .short("i6")
@@ -165,21 +159,19 @@ fn main() {
             app.is_present("efi"),
         );
     } else if let Some(app) = app.subcommand_matches("locale") {
-        let kbrlayout = app.value_of("keyboard").unwrap();
-        let timezn = app.value_of("timezone").unwrap();
         locale::set_locale(
             app.values_of("locales")
                 .unwrap()
                 .collect::<Vec<&str>>()
                 .join(" "),
         );
-        locale::set_keyboard(kbrlayout);
-        locale::set_timezone(timezn);
+        locale::set_keyboard(app.value_of("keyboard").unwrap());
+        locale::set_timezone(app.value_of("timezone").unwrap());
     } else if let Some(app) = app.subcommand_matches("networking") {
         if app.is_present("ipv6") {
+            network::create_hosts();
             network::enable_ipv6()
-        }
-        if app.is_present("create-hosts") {
+        } else {
             network::create_hosts()
         }
         network::set_hostname(app.value_of("hostname").unwrap())
