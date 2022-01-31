@@ -85,7 +85,7 @@ pub fn partition(device: &str, mode: &str, efi: bool) {
                         String::from("primary"),
                         String::from("btrfs"),
                         String::from("512MIB"),
-                        String::from("100&"),
+                        String::from("100%"),
                     ],
                 ),
                 "create btrfs root partition",
