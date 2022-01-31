@@ -26,6 +26,7 @@ pub fn partition(device: &str, mode: &str, efi: bool) {
                         String::from("-s"),
                         String::from(device),
                         String::from("mkpart"),
+                        String::from("primary"),
                         String::from("fat32"),
                         String::from("0"),
                         String::from("300"),
@@ -40,6 +41,7 @@ pub fn partition(device: &str, mode: &str, efi: bool) {
                         String::from("-s"),
                         String::from(device),
                         String::from("mkpart"),
+                        String::from("primary"),
                         String::from("btrfs"),
                         String::from("300"),
                         String::from("100%"),
@@ -67,12 +69,12 @@ pub fn partition(device: &str, mode: &str, efi: bool) {
                         String::from("-s"),
                         String::from(device),
                         String::from("mkpart"),
-                        String::from("btrfs"),
+                        String::from("ext4"),
+                        String::from("1MIB"),
                         String::from("512MIB"),
-                        String::from("100&"),
                     ],
                 ),
-                "create btrfs root partition",
+                "create bios boot partition",
             );
             exec_eval(
                 exec(
@@ -81,12 +83,12 @@ pub fn partition(device: &str, mode: &str, efi: bool) {
                         String::from("-s"),
                         String::from(device),
                         String::from("mkpart"),
-                        String::from("ext4"),
-                        String::from("1MIB"),
+                        String::from("btrfs"),
                         String::from("512MIB"),
+                        String::from("100&"),
                     ],
                 ),
-                "create bios boot partition",
+                "create btrfs root partition",
             );
         }
     }
