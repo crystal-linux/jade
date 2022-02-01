@@ -47,7 +47,7 @@ jade genfstab
 ### configuring locale settings
 ```sh
 # set the keyboard layout to colemak, the timezone to Europe/Berlin and set en_US.UTF-8 as the locale
-jade locale colemak Europe/Berlin "en_US.UTF-8 UTF-8"
+jade locale colemak Europe/Berlin en_US.UTF-8 UTF-8
 ```
 
 ### configue network settings

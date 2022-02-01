@@ -17,6 +17,9 @@ pub fn log(a: String) {
     strings::log(a);
 }
 
+pub fn info(a: String) {
+    strings::info(a);
+}
 pub fn files_eval(returncode: std::result::Result<(), std::io::Error>, logmsg: &str) {
     returncode_eval::files_eval(returncode, logmsg);
 }

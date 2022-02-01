@@ -90,46 +90,60 @@ pub fn read_config(configpath: &str) {
     }
     let config: Config = config.unwrap();
 
-    println!("---------Setup Partitions---------");
-    println!("{}", config.partition.device);
-    println!("{}", config.partition.mode);
-    println!("{}", config.partition.efi);
+    info(format!(
+        "Block device to use : /dev/{}",
+        config.partition.device
+    ));
+    info(format!("Partitioning mode : {}", config.partition.mode));
+    info(format!("Partitioning for EFI : {}", config.partition.efi));
     partition::partition(
-        config.partition.device.as_str(),
+        format!("/dev/{}", config.partition.device).as_str(),
         config.partition.mode.as_str(),
         config.partition.efi,
     );
     base::install_base_packages();
     base::genfstab();
-    println!("---------Install Bootloader---------");
-    println!("{}", config.bootloader.r#type);
-    println!("{}", config.bootloader.location);
+    println!();
+    info(format!(
+        "Installing bootloader : {}",
+        config.bootloader.r#type
+    ));
+    info(format!(
+        "Installing bootloader to : {}",
+        config.bootloader.location
+    ));
     if config.bootloader.r#type == "grub-efi" {
         base::install_bootloader_efi(config.bootloader.location.as_str());
     } else if config.bootloader.r#type == "grub-legacy" {
         base::install_bootloader_legacy(config.bootloader.location.as_str());
     }
-    println!("---------Set Locale---------");
-    println!("{:?}", config.locale.locale);
-    println!("{}", config.locale.keymap);
-    println!("{}", config.locale.timezone);
+    println!();
+    info(format!("Adding Locales : {:?}", config.locale.locale));
+    info(format!("Using keymap : {}", config.locale.keymap));
+    info(format!("Setting timezone : {}", config.locale.timezone));
     locale::set_locale(config.locale.locale.join(" "));
     locale::set_keyboard(config.locale.keymap.as_str());
     locale::set_timezone(config.locale.timezone.as_str());
-    println!("---------Set Networking---------");
-    println!("{}", config.networking.hostname);
-    println!("{}", config.networking.ipv6);
+    println!();
+    info(format!("Hostname : {}", config.networking.hostname));
+    info(format!("Enabling ipv6 : {}", config.networking.ipv6));
     network::set_hostname(config.networking.hostname.as_str());
     network::create_hosts();
     if config.networking.ipv6 {
         network::enable_ipv6();
     }
-    println!("---------Create Users---------");
+    println!();
     println!("---------");
     for i in 0..config.users.len() {
-        println!("{}", config.users[i].name);
-        println!("{}", config.users[i].password);
-        println!("{}", config.users[i].hasroot);
+        info(format!("Creating user : {}", config.users[i].name));
+        info(format!(
+            "Setting use password : {}",
+            config.users[i].password
+        ));
+        info(format!(
+            "Enabling root for user : {}",
+            config.users[i].hasroot
+        ));
         users::new_user(
             config.users[i].name.as_str(),
             config.users[i].hasroot,
@@ -137,19 +151,20 @@ pub fn read_config(configpath: &str) {
         );
         println!("---------");
     }
-    println!("---------Set Rootpass---------");
-    println!("{}", config.rootpass);
+    println!();
+    info(format!("Setting root password : {}", config.rootpass));
     users::root_pass(config.rootpass.as_str());
-    println!("---------Install Desktop---------");
-    println!("{}", config.desktop);
-    desktops::choose_pkgs(config.desktop.as_str());
-    println!("---------Setup Timeshift---------");
-    println!("{}", config.timeshift);
+    println!();
+    info(format!("Installing desktop : {}", config.desktop));
+    if config.desktop == "none" || config.desktop.is_empty() {
+        desktops::choose_pkgs(config.desktop.as_str());
+    }
+    println!();
+    info(format!("Enabling timeshift : {}", config.timeshift));
     if config.timeshift {
         base::setup_timeshift();
     }
-    println!("---------Install Extra packages---------");
-    println!("{:?}", config.extra_packages);
+    info(format!("Extra packages : {:?}", config.extra_packages));
     let mut extra_packages: Vec<&str> = Vec::new();
     for i in 0..config.extra_packages.len() {
         extra_packages.push(config.extra_packages[i].as_str());

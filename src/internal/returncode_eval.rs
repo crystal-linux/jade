@@ -10,7 +10,7 @@ pub fn exec_eval(
         }
         Err(e) => {
             crash(
-                format!("{}  ERROR: {}", logmsg, e),
+                format!("[ \x1b[2;1;32mFAILED\x1b[0m ] {}  ERROR: {}", logmsg, e),
                 return_code.unwrap_err().raw_os_error().unwrap(),
             );
         }
@@ -24,7 +24,7 @@ pub fn files_eval(return_code: std::result::Result<(), std::io::Error>, logmsg: 
         }
         Err(e) => {
             crash(
-                format!("{}  ERROR: {}", logmsg, e),
+                format!("[ \x1b[2;1;32mFAILED\x1b[0m ] {} ERROR: {}", logmsg, e),
                 return_code.unwrap_err().raw_os_error().unwrap(),
             );
         }
