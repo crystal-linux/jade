@@ -36,7 +36,8 @@ pub fn choose_pkgs(desktop_setup: &str) {
                 "xorg",
                 "plasma",
                 "plasma-wayland-session",
-                "kde-applications",
+                "kde-utilities",
+                "kde-system",
                 "sddm",
             ]);
             enable_dm("sddm");
