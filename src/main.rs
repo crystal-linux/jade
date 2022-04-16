@@ -134,6 +134,10 @@ fn main() {
                 )
         )
         .subcommand(
+            SubCommand::with_name("nix")
+                .about("Install nix"),
+        )
+        .subcommand(
             SubCommand::with_name("config")
                 .about("read a jade installation config")
                 .arg(
@@ -199,9 +203,11 @@ fn main() {
         base::genfstab();
     } else if app.subcommand_matches("setup-timeshift").is_some() {
         base::setup_timeshift();
+    } else if app.subcommand_matches("nix").is_some() {
+        base::install_homemgr();
     } else if let Some(app) = app.subcommand_matches("config") {
         crate::internal::config::read_config(app.value_of("config").unwrap());
     } else {
-        println!("Running TUI installer");
+        println!("{}", app.usage());
     }
 }

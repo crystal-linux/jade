@@ -84,3 +84,7 @@ pub fn setup_timeshift() {
         "setup timeshift",
     )
 }
+
+pub fn install_homemgr() {
+    install(vec!["nix"]);
+}

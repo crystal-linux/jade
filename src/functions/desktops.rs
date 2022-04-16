@@ -34,7 +34,6 @@ pub fn choose_pkgs(desktop_setup: &str) {
         "kde" => {
             install(vec![
                 "xorg",
-                "kde",
                 "plasma",
                 "plasma-wayland-session",
                 "kde-applications",
