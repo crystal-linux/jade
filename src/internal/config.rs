@@ -156,7 +156,7 @@ pub fn read_config(configpath: &str) {
     users::root_pass(config.rootpass.as_str());
     println!();
     info(format!("Installing desktop : {}", config.desktop));
-    if config.desktop == "none" || config.desktop.is_empty() {
+    if config.desktop != "none" || !config.desktop.is_empty() {
         desktops::choose_pkgs(config.desktop.as_str());
     }
     println!();
