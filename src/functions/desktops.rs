@@ -3,7 +3,7 @@ use crate::internal::*;
 
 pub fn choose_pkgs(desktop_setup: &str) {
     log(format!("Installing {}", desktop_setup));
-    match desktop_setup.to_lowercase() {
+    match desktop_setup.to_lowercase().as_str() {
         "onyx" => {
             install(vec![
                 "xorg",
