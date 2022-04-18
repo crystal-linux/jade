@@ -102,7 +102,7 @@ pub fn partition(device: &str, mode: &str, efi: bool) {
 fn part_nvme(device: &str, efi: bool) {
     if efi {
         exec_eval(
-            exec("mkfs.vfat", vec![format!("{}p1", device)]),
+            exec("mkfs.vfat", vec!["-f".to_string(), format!("{}p1", device)]),
             format!("format {}p1 as fat32", device).as_str(),
         );
         exec_eval(
