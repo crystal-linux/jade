@@ -170,4 +170,5 @@ pub fn read_config(configpath: &str) {
         extra_packages.push(config.extra_packages[i].as_str());
     }
     install(extra_packages);
+    println!("Installation finished! You may reboot now!")
 }
