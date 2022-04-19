@@ -119,7 +119,7 @@ fn main() {
                         )
                         .arg(
                             Arg::with_name("password")
-                                .help("The password to set")
+                                .help("The password to set. NOTE: Takes hashed password, use `openssl passwd -1 <password>` to generate the hash.")
                                 .required(true),
                         )
                     )
@@ -128,7 +128,7 @@ fn main() {
                         .about("Set the root password")
                         .arg(
                             Arg::with_name("rootPass")
-                                .help("The root password to set")
+                                .help("The password to set. NOTE: Takes hashed password, use `openssl passwd -1 <password>` to generate the hash._")
                                 .required(true),
                         ),
                 )

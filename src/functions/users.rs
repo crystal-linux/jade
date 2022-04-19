@@ -9,6 +9,8 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
                 String::from("-m"),
                 String::from("-s"),
                 String::from("/bin/bash"),
+                String::from("-p"),
+                String::from(password),
                 String::from(username),
             ],
         ),
@@ -36,19 +38,6 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             "Add pwfeedback to sudoers",
         );
     }
-    exec_eval(
-        exec_chroot(
-            "bash",
-            vec![
-                String::from("-c"),
-                format!(
-                    r#"'usermod --password $(echo {} | openssl passwd -1 -stdin) {}'"#,
-                    password, username
-                ),
-            ],
-        ),
-        format!("Set password for user {}", username).as_str(),
-    );
 }
 
 pub fn root_pass(root_pass: &str) {
@@ -58,8 +47,7 @@ pub fn root_pass(root_pass: &str) {
             vec![
                 String::from("-c"),
                 format!(
-                    r#"'usermod --password $(echo {} | openssl passwd -1 -stdin) root'"#,
-                    root_pass
+                    r#"'usermod --password {root_pass} root'"#
                 ),
             ],
         ),
