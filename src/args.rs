@@ -7,6 +7,9 @@ use std::path::PathBuf;
 pub struct Opt {
     #[clap(subcommand)]
     pub command: Command,
+
+    #[clap(long, short, parse(from_occurrences))]
+    pub verbose: usize,
 }
 
 #[derive(Debug, Subcommand)]

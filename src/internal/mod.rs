@@ -5,43 +5,20 @@ pub mod install;
 pub mod returncode_eval;
 pub mod strings;
 
-pub fn install(pkgs: Vec<&str>) {
-    install::install(pkgs);
-}
-
-pub fn crash<S: AsRef<str>>(a: S, b: i32) -> ! {
-    strings::crash(a.as_ref().to_string(), b);
-}
-
-pub fn log(a: String) {
-    strings::log(a);
-}
-
-pub fn info(a: String) {
-    strings::info(a);
-}
-pub fn files_eval(returncode: std::result::Result<(), std::io::Error>, logmsg: &str) {
-    returncode_eval::files_eval(returncode, logmsg);
-}
-
-pub fn exec_eval(
-    returncode: std::result::Result<std::process::ExitStatus, std::io::Error>,
-    logmsg: &str,
-) {
-    returncode_eval::exec_eval(returncode, logmsg);
-}
+pub use install::install;
+pub use returncode_eval::*;
+pub use strings::crash;
 
 #[macro_export]
 macro_rules! uwu {
     ($x:expr) => {{
-        let uwu: String = String::from_str($x).unwrap();
-        let uwu = uwu.replace("l", "w");
-        let uwu = uwu.replace("L", "W");
-        let uwu = uwu.replace("r", "w");
-        let uwu = uwu.replace("R", "W");
-        let uwu = uwu.replace("na", "nya");
-        let uwu = uwu.replace("Na", "Nya");
-        let uwu = uwu.replace("NA", "NYA");
-        uwu
+        let uwu: String = $x.to_string();
+        uwu.replace("l", "w")
+            .replace("L", "W")
+            .replace("r", "w")
+            .replace("R", "W")
+            .replace("na", "nya")
+            .replace("Na", "Nya")
+            .replace("NA", "NYA")
     }};
 }

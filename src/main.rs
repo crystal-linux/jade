@@ -1,6 +1,7 @@
 mod args;
 mod functions;
 mod internal;
+mod logging;
 
 use crate::args::{BootloaderSubcommand, Command, Opt, UsersSubcommand};
 use crate::functions::*;
@@ -8,6 +9,7 @@ use clap::Parser;
 
 fn main() {
     let opt: Opt = Opt::parse();
+    logging::init(opt.verbose);
     match opt.command {
         Command::Partition(args) => {
             partition::partition(args.device, args.mode, args.efi);

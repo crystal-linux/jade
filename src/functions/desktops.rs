@@ -3,7 +3,7 @@ use crate::internal::exec::*;
 use crate::internal::*;
 
 pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
-    log(format!("Installing {:?}", desktop_setup));
+    log::debug!("Installing {:?}", desktop_setup);
     match desktop_setup {
         DesktopSetup::Onyx => install_onyx(),
         DesktopSetup::Gnome => install_gnome(),
@@ -166,7 +166,7 @@ fn install_onyx() {
 }
 
 fn enable_dm(dm: &str) {
-    log(format!("Enabling {}", dm));
+    log::debug!("Enabling {}", dm);
     exec_eval(
         exec_chroot("systemctl", vec![String::from("enable"), String::from(dm)]),
         format!("Enable {}", dm).as_str(),

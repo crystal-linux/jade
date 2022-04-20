@@ -9,7 +9,7 @@ pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool) {
     }
     match mode {
         PartitionMode::Auto => {
-            log(format!("automatically partitioning {device:?}"));
+            log::debug!("automatically partitioning {device:?}");
             if efi {
                 partition_with_efi(&device);
             } else {
@@ -17,7 +17,7 @@ pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool) {
             }
         }
         PartitionMode::Manual => {
-            log("Manual partitioning".to_string());
+            log::debug!("Manual partitioning");
         }
     }
     if device.to_string_lossy().contains("nvme") {

@@ -11,3 +11,6 @@ edition = "2021"
 clap = {version = "3.1.10", features = ["derive"] }
 serde_json = "1.0.59"
 serde = { version = "1.0.117", features = [ "derive" ] }
+log = "0.4.16"
+flexi_logger = {version = "0.22.3", features = ["colors"] }
+lazy_static = "1.4.0"
