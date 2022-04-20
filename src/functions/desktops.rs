@@ -113,6 +113,9 @@ fn install_budgie() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
+        "xdg-desktop-portal",
+        "xdg-desktop-portal-gtk",
+        "xdg-utils",
     ]);
     files_eval(
         files::append_file(
