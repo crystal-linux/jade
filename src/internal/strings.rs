@@ -4,7 +4,7 @@ use std::process::exit;
 use std::str::FromStr;
 use std::time::UNIX_EPOCH;
 
-pub fn crash(a: String, b: i32) {
+pub fn crash(a: String, b: i32) -> ! {
     let a = if env::var("JADE_UWU").unwrap_or_else(|_| "".to_string()) == "true" {
         uwu!(&a)
     } else {

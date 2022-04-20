@@ -1,112 +1,134 @@
+use crate::args::PartitionMode;
 use crate::internal::exec::*;
 use crate::internal::*;
+use std::path::{Path, PathBuf};
 
-pub fn partition(device: &str, mode: &str, efi: bool) {
-    if mode == "manual" {
-        log("Manual partitioning".to_string());
-    } else {
-        log(format!("automatically partitioning {}", device));
-        if efi {
-            exec_eval(
-                exec(
-                    "parted",
-                    vec![
-                        String::from("-s"),
-                        String::from(device),
-                        String::from("mklabel"),
-                        String::from("gpt"),
-                    ],
-                ),
-                format!("create gpt label on {}", device).as_str(),
-            );
-            exec_eval(
-                exec(
-                    "parted",
-                    vec![
-                        String::from("-s"),
-                        String::from(device),
-                        String::from("mkpart"),
-                        String::from("fat32"),
-                        String::from("0"),
-                        String::from("300"),
-                    ],
-                ),
-                "create EFI partition",
-            );
-            exec_eval(
-                exec(
-                    "parted",
-                    vec![
-                        String::from("-s"),
-                        String::from(device),
-                        String::from("mkpart"),
-                        String::from("btrfs"),
-                        String::from("300"),
-                        String::from("100%"),
-                    ],
-                ),
-                "Create btrfs root partition",
-            );
-        } else {
-            exec_eval(
-                exec(
-                    "parted",
-                    vec![
-                        String::from("-s"),
-                        String::from(device),
-                        String::from("mklabel"),
-                        String::from("msdos"),
-                    ],
-                ),
-                format!("Create msdos label on {}", device).as_str(),
-            );
-            exec_eval(
-                exec(
-                    "parted",
-                    vec![
-                        String::from("-s"),
-                        String::from(device),
-                        String::from("mkpart"),
-                        String::from("primary"),
-                        String::from("ext4"),
-                        String::from("1MIB"),
-                        String::from("512MIB"),
-                    ],
-                ),
-                "create bios boot partition",
-            );
-            exec_eval(
-                exec(
-                    "parted",
-                    vec![
-                        String::from("-s"),
-                        String::from(device),
-                        String::from("mkpart"),
-                        String::from("primary"),
-                        String::from("btrfs"),
-                        String::from("512MIB"),
-                        String::from("100%"),
-                    ],
-                ),
-                "create btrfs root partition",
-            );
+pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool) {
+    if !device.exists() {
+        crash(format!("The device {device:?} doesn't exist"), 1);
+    }
+    match mode {
+        PartitionMode::Auto => {
+            log(format!("automatically partitioning {device:?}"));
+            if efi {
+                partition_with_efi(&device);
+            } else {
+                partition_no_efi(&device);
+            }
+        }
+        PartitionMode::Manual => {
+            log("Manual partitioning".to_string());
         }
     }
-    if device.contains("nvme") {
-        part_nvme(device, efi);
+    if device.to_string_lossy().contains("nvme") {
+        part_nvme(&device, efi);
     } else {
-        part_disk(device, efi);
+        part_disk(&device, efi);
     }
 }
 
-fn part_nvme(device: &str, efi: bool) {
+fn partition_no_efi(device: &Path) {
+    let device = device.to_string_lossy().to_string();
+    exec_eval(
+        exec(
+            "parted",
+            vec![
+                String::from("-s"),
+                String::from(&device),
+                String::from("mklabel"),
+                String::from("msdos"),
+            ],
+        ),
+        format!("Create msdos label on {}", device).as_str(),
+    );
+    exec_eval(
+        exec(
+            "parted",
+            vec![
+                String::from("-s"),
+                String::from(&device),
+                String::from("mkpart"),
+                String::from("primary"),
+                String::from("ext4"),
+                String::from("1MIB"),
+                String::from("512MIB"),
+            ],
+        ),
+        "create bios boot partition",
+    );
+    exec_eval(
+        exec(
+            "parted",
+            vec![
+                String::from("-s"),
+                device,
+                String::from("mkpart"),
+                String::from("primary"),
+                String::from("btrfs"),
+                String::from("512MIB"),
+                String::from("100%"),
+            ],
+        ),
+        "create btrfs root partition",
+    );
+}
+
+fn partition_with_efi(device: &Path) {
+    let device = device.to_string_lossy().to_string();
+    exec_eval(
+        exec(
+            "parted",
+            vec![
+                String::from("-s"),
+                String::from(&device),
+                String::from("mklabel"),
+                String::from("gpt"),
+            ],
+        ),
+        format!("create gpt label on {}", &device).as_str(),
+    );
+    exec_eval(
+        exec(
+            "parted",
+            vec![
+                String::from("-s"),
+                String::from(&device),
+                String::from("mkpart"),
+                String::from("fat32"),
+                String::from("0"),
+                String::from("300"),
+            ],
+        ),
+        "create EFI partition",
+    );
+    exec_eval(
+        exec(
+            "parted",
+            vec![
+                String::from("-s"),
+                device,
+                String::from("mkpart"),
+                String::from("btrfs"),
+                String::from("300"),
+                String::from("100%"),
+            ],
+        ),
+        "Create btrfs root partition",
+    );
+}
+
+fn part_nvme(device: &Path, efi: bool) {
+    let device = device.to_string_lossy().to_string();
     if efi {
         exec_eval(
             exec("mkfs.vfat", vec![format!("{}p1", device)]),
             format!("format {}p1 as fat32", device).as_str(),
         );
         exec_eval(
-            exec("mkfs.btrfs", vec!["-f".to_string(), format!("{}p2", device)]),
+            exec(
+                "mkfs.btrfs",
+                vec!["-f".to_string(), format!("{}p2", device)],
+            ),
             format!("format {}p2 as btrfs", device).as_str(),
         );
         mount(format!("{}p2", device).as_str(), "/mnt", "");
@@ -154,7 +176,10 @@ fn part_nvme(device: &str, efi: bool) {
             format!("format {}p1 as ext4", device).as_str(),
         );
         exec_eval(
-            exec("mkfs.btrfs", vec!["-f".to_string(), format!("{}p2", device)]),
+            exec(
+                "mkfs.btrfs",
+                vec!["-f".to_string(), format!("{}p2", device)],
+            ),
             format!("format {}p2 as btrfs", device).as_str(),
         );
         mount(format!("{}p2", device).as_str(), "/mnt/", "");
@@ -195,7 +220,8 @@ fn part_nvme(device: &str, efi: bool) {
     }
 }
 
-fn part_disk(device: &str, efi: bool) {
+fn part_disk(device: &Path, efi: bool) {
+    let device = device.to_string_lossy().to_string();
     if efi {
         exec_eval(
             exec("mkfs.vfat", vec![format!("{}1", device)]),

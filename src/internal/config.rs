@@ -1,6 +1,8 @@
+use crate::args::{DesktopSetup, PartitionMode};
 use crate::functions::*;
 use crate::internal::*;
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize)]
 struct Config {
@@ -10,7 +12,7 @@ struct Config {
     networking: Networking,
     users: Vec<Users>,
     rootpass: String,
-    desktop: String,
+    desktop: Option<DesktopSetup>,
     timeshift: bool,
     extra_packages: Vec<String>,
 }
@@ -18,7 +20,7 @@ struct Config {
 #[derive(Serialize, Deserialize)]
 struct Partition {
     device: String,
-    mode: String,
+    mode: PartitionMode,
     efi: bool,
 }
 
@@ -48,22 +50,17 @@ struct Users {
     hasroot: bool,
 }
 
-pub fn read_config(configpath: &str) {
-    let data = std::fs::read_to_string(configpath);
+pub fn read_config(configpath: PathBuf) {
+    let data = std::fs::read_to_string(&configpath);
     match &data {
         Ok(_) => {
             log(format!(
-                "[ \x1b[2;1;32mOK\x1b[0m ] {}",
-                format!("Read config file {}", configpath).as_str()
+                "[ \x1b[2;1;32mOK\x1b[0m ] Read config file {configpath:?}"
             ));
         }
         Err(e) => {
             crash(
-                format!(
-                    "{}  ERROR: {}",
-                    format!("Read config file {}", configpath).as_str(),
-                    e
-                ),
+                format!("Read config file {configpath:?}  ERROR: {}", e),
                 e.raw_os_error().unwrap(),
             );
         }
@@ -73,19 +70,11 @@ pub fn read_config(configpath: &str) {
     match &config {
         Ok(_) => {
             log(format!(
-                "[ \x1b[2;1;32mOK\x1b[0m ] {}",
-                format!("Parse config file {}", configpath).as_str()
+                "[ \x1b[2;1;32mOK\x1b[0m ] Parse config file {configpath:?}",
             ));
         }
         Err(e) => {
-            crash(
-                format!(
-                    "{}  ERROR: {}",
-                    format!("Parse config file {}", configpath).as_str(),
-                    e
-                ),
-                1,
-            );
+            crash(format!("Parse config file {configpath:?}  ERROR: {}", e), 1);
         }
     }
     let config: Config = config.unwrap();
@@ -94,11 +83,11 @@ pub fn read_config(configpath: &str) {
         "Block device to use : /dev/{}",
         config.partition.device
     ));
-    info(format!("Partitioning mode : {}", config.partition.mode));
+    info(format!("Partitioning mode : {:?}", config.partition.mode));
     info(format!("Partitioning for EFI : {}", config.partition.efi));
     partition::partition(
-        format!("/dev/{}", config.partition.device).as_str(),
-        config.partition.mode.as_str(),
+        PathBuf::from("/dev/").join(config.partition.device),
+        config.partition.mode,
         config.partition.efi,
     );
     base::install_base_packages();
@@ -113,9 +102,9 @@ pub fn read_config(configpath: &str) {
         config.bootloader.location
     ));
     if config.bootloader.r#type == "grub-efi" {
-        base::install_bootloader_efi(config.bootloader.location.as_str());
+        base::install_bootloader_efi(PathBuf::from(config.bootloader.location));
     } else if config.bootloader.r#type == "grub-legacy" {
-        base::install_bootloader_legacy(config.bootloader.location.as_str());
+        base::install_bootloader_legacy(PathBuf::from(config.bootloader.location));
     }
     println!();
     info(format!("Adding Locales : {:?}", config.locale.locale));
@@ -155,9 +144,9 @@ pub fn read_config(configpath: &str) {
     info(format!("Setting root password : {}", config.rootpass));
     users::root_pass(config.rootpass.as_str());
     println!();
-    info(format!("Installing desktop : {}", config.desktop));
-    if config.desktop != "none" || !config.desktop.is_empty() {
-        desktops::choose_pkgs(config.desktop.as_str());
+    info(format!("Installing desktop : {:?}", config.desktop));
+    if let Some(desktop) = &config.desktop {
+        desktops::install_desktop_setup(*desktop);
     }
     println!();
     info(format!("Enabling timeshift : {}", config.timeshift));

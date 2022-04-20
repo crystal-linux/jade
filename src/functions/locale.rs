@@ -24,6 +24,7 @@ pub fn set_locale(locale: String) {
         files::append_file("/mnt/etc/locale.gen", "en_US.UTF-8 UTF-8\n"),
         "add en_US.UTF-8 UTF-8 to locale.gen",
     );
+    // TODO: Refactor this
     for i in (0..locale.split(' ').count()).step_by(2) {
         files_eval(
             files::append_file(
