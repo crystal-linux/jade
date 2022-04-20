@@ -155,7 +155,7 @@ pub struct NewUserArgs {
     pub username: String,
 
     /// If the user should have root privileges
-    #[clap(long, aliases=&["has-root"])]
+    #[clap(long, aliases=&["has-root", "sudoer", "root"])]
     pub hasroot: bool,
 
     /// The password to set. NOTE: Takes hashed password, use `openssl passwd -1 <password>` to generate the hash.
