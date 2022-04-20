@@ -6,11 +6,11 @@ pub fn exec_eval(
 ) {
     match &return_code {
         Ok(_) => {
-            log(format!("[ \x1b[2;1;32mOK\x1b[0m ] {}", logmsg));
+            log::info!("{}", logmsg);
         }
         Err(e) => {
             crash(
-                format!("[ \x1b[2;1;32mFAILED\x1b[0m ] {}  ERROR: {}", logmsg, e),
+                format!("{}  ERROR: {}", logmsg, e),
                 return_code.unwrap_err().raw_os_error().unwrap(),
             );
         }
@@ -20,11 +20,11 @@ pub fn exec_eval(
 pub fn files_eval(return_code: std::result::Result<(), std::io::Error>, logmsg: &str) {
     match &return_code {
         Ok(_) => {
-            log(format!("[ \x1b[2;1;32mOK\x1b[0m ] {}", logmsg));
+            log::info!("{}", logmsg);
         }
         Err(e) => {
             crash(
-                format!("[ \x1b[2;1;32mFAILED\x1b[0m ] {} ERROR: {}", logmsg, e),
+                format!("{} ERROR: {}", logmsg, e),
                 return_code.unwrap_err().raw_os_error().unwrap(),
             );
         }

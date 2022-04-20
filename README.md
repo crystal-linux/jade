@@ -62,10 +62,10 @@ jade networking getcryst.al --ipv6
 ### configure users
 ```sh
 # make a new user called nonRootHaver, without sudo and easytohack as the password
-jade users newUser nonRootaver false easytohack
+jade users newUser nonRootaver easytohack
 
 # make a user called rootHaver, with sudo and omgsosuperhardtohack as the password
-jade users newUser rootHaver true omgsosuperhardtohack
+jade users newUser rootHaver omgsosuperhardtohack --sudoer
 ```
 
 ### set root password
@@ -86,6 +86,18 @@ jade desktops gnome
 ### setup timeshift
 ```sh
 jade setup-timeshift
+```
+
+### debug logging
+
+debug messages:
+```sh
+jade -v
+```
+
+traces:
+```sh
+jade -vv
 ```
 
 ## How to build:
