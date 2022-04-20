@@ -60,6 +60,7 @@ pub enum Command {
         config: PathBuf,
     },
 
+    /// Install a graphical desktop setup
     #[clap(name = "desktops")]
     Desktops {
         /// The desktop setup to use
