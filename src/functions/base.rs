@@ -53,7 +53,18 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
                 String::from("--removable"),
             ],
         ),
-        "install grub as efi",
+        "install grub as efi with --removable",
+    );
+    exec_eval(
+        exec_chroot(
+            "grub-install",
+            vec![
+                String::from("--target=x86_64-efi"),
+                format!("--efi-directory={}", efidir),
+                String::from("--bootloader-id=crystal"),
+            ],
+        ),
+        "install grub as efi without --removable",
     );
     exec_eval(
         exec_chroot(
