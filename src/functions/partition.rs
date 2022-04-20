@@ -1,7 +1,7 @@
 use crate::args::PartitionMode;
 use crate::internal::exec::*;
 use crate::internal::*;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool) {
     if !device.exists() {
@@ -27,7 +27,7 @@ pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool) {
     }
 }
 
-fn partition_no_efi(device: &PathBuf) {
+fn partition_no_efi(device: &Path) {
     let device = device.to_string_lossy().to_string();
     exec_eval(
         exec(
@@ -61,7 +61,7 @@ fn partition_no_efi(device: &PathBuf) {
             "parted",
             vec![
                 String::from("-s"),
-                String::from(device),
+                device,
                 String::from("mkpart"),
                 String::from("primary"),
                 String::from("btrfs"),
@@ -73,7 +73,7 @@ fn partition_no_efi(device: &PathBuf) {
     );
 }
 
-fn partition_with_efi(device: &PathBuf) {
+fn partition_with_efi(device: &Path) {
     let device = device.to_string_lossy().to_string();
     exec_eval(
         exec(
@@ -106,7 +106,7 @@ fn partition_with_efi(device: &PathBuf) {
             "parted",
             vec![
                 String::from("-s"),
-                String::from(device),
+                device,
                 String::from("mkpart"),
                 String::from("btrfs"),
                 String::from("300"),
@@ -117,7 +117,7 @@ fn partition_with_efi(device: &PathBuf) {
     );
 }
 
-fn part_nvme(device: &PathBuf, efi: bool) {
+fn part_nvme(device: &Path, efi: bool) {
     let device = device.to_string_lossy().to_string();
     if efi {
         exec_eval(
@@ -220,7 +220,7 @@ fn part_nvme(device: &PathBuf, efi: bool) {
     }
 }
 
-fn part_disk(device: &PathBuf, efi: bool) {
+fn part_disk(device: &Path, efi: bool) {
     let device = device.to_string_lossy().to_string();
     if efi {
         exec_eval(

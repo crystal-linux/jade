@@ -73,7 +73,7 @@ pub fn install_bootloader_legacy(device: PathBuf) {
     exec_eval(
         exec_chroot(
             "grub-install",
-            vec![String::from("--target=i386-pc"), String::from(device)],
+            vec![String::from("--target=i386-pc"), device],
         ),
         "install grub as legacy",
     );
