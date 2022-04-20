@@ -39,11 +39,14 @@ fn format_log_entry(
     let msg = record.args().to_string();
     let level = record.level();
     let msg = apply_uwu(level, msg);
+    let (h, m, s) = now.now().time().as_hms();
     write!(
         w,
-        "[ {} ] {} {}",
+        "[ {} ] {}:{}:{} {}",
         style(level).paint(level.to_string()),
-        now.now(),
+        h,
+        m,
+        s,
         msg
     )
 }
