@@ -8,6 +8,7 @@ use crate::functions::*;
 use clap::Parser;
 
 fn main() {
+    human_panic::setup_panic!();
     let opt: Opt = Opt::parse();
     logging::init(opt.verbose);
     match opt.command {
