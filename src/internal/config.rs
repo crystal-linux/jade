@@ -1,4 +1,5 @@
 use crate::args::{DesktopSetup, PartitionMode};
+use crate::args;
 use crate::functions::*;
 use crate::internal::*;
 use serde::{Deserialize, Serialize};
@@ -22,6 +23,7 @@ struct Partition {
     device: String,
     mode: PartitionMode,
     efi: bool,
+    partitions: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -77,10 +79,19 @@ pub fn read_config(configpath: PathBuf) {
     log::info!("Block device to use : /dev/{}", config.partition.device);
     log::info!("Partitioning mode : {:?}", config.partition.mode);
     log::info!("Partitioning for EFI : {}", config.partition.efi);
+    let mut partitions: Vec<args::Partition> = Vec::new();
+    for partition in config.partition.partitions {
+        partitions.push(args::Partition::new(
+            partition.split(':').collect::<Vec<&str>>()[0].to_string(),
+            partition.split(':').collect::<Vec<&str>>()[1].to_string(),
+            partition.split(':').collect::<Vec<&str>>()[2].to_string(),
+        ));
+    }
     partition::partition(
         PathBuf::from("/dev/").join(config.partition.device),
         config.partition.mode,
         config.partition.efi,
+        partitions,
     );
     base::install_base_packages();
     base::genfstab();

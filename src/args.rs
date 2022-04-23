@@ -80,13 +80,43 @@ pub struct PartitionArgs {
     pub mode: PartitionMode,
 
     /// The device to partition
-    #[clap(required_if_eq("mode", "PartitionMode::Manual"))]
+    #[clap(required_if_eq("mode", "PartitionMode::Auto"))]
     pub device: PathBuf,
 
     /// If the install destination should be partitioned with EFI
     #[clap(long)]
     pub efi: bool,
+
+    /// The partitions to use for manual partitioning
+    #[clap(required_if_eq("mode", "Partition::Manual"), parse(try_from_str = parse_partitions))]
+    pub partitions: Vec<Partition>,
 }
+
+#[derive(Debug)]
+pub struct Partition {
+    pub mountpoint: String,
+    pub blockdevice: String,
+    pub filesystem: String,
+}
+
+impl Partition {
+    pub fn new(mountpoint: String, blockdevice: String, filesystem: String) -> Self {
+        Self {
+            mountpoint,
+            blockdevice,
+            filesystem,
+        }
+    }
+}
+
+pub fn parse_partitions(s: &str) -> Result<Partition, &'static str> {
+    Ok(Partition::new(
+        s.split(' ').collect::<Vec<&str>>()[0].to_string(),
+        s.split(' ').collect::<Vec<&str>>()[1].to_string(),
+        s.split(' ').collect::<Vec<&str>>()[2].to_string(),
+    ))
+}
+
 
 #[derive(Debug, ArgEnum, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Serialize, Deserialize)]
 pub enum PartitionMode {

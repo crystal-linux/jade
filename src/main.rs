@@ -12,7 +12,7 @@ fn main() {
     logging::init(opt.verbose);
     match opt.command {
         Command::Partition(args) => {
-            partition::partition(args.device, args.mode, args.efi);
+            partition::partition(args.device, args.mode, args.efi, args.partitions);
         }
         Command::InstallBase => {
             base::install_base_packages();

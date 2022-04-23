@@ -1,9 +1,163 @@
 use crate::args::PartitionMode;
+use crate::args;
 use crate::internal::exec::*;
 use crate::internal::*;
 use std::path::{Path, PathBuf};
 
-pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool) {
+/*mkfs.bfs mkfs.cramfs mkfs.ext3  mkfs.fat mkfs.msdos  mkfs.xfs
+mkfs.btrfs mkfs.ext2  mkfs.extd  mkfs.minix mkfs.vfat */
+
+pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String) {
+    match filesystem.as_str() {
+        "vfat" => {
+            exec_eval(
+                exec(
+                    "mkfs.vfat",
+                    vec![
+                        String::from("-F"),
+                        String::from("32"),
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as vfat",
+            )
+        }
+        "bfs" => {
+            exec_eval(
+                exec(
+                    "mkfs.bfs",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as bfs",
+            )
+        }
+        "cramfs" => {
+            exec_eval(
+                exec(
+                    "mkfs.cramfs",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as cramfs",
+            )
+        }
+        "ext3" => {
+            exec_eval(
+                exec(
+                    "mkfs.ext3",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as ext3",
+            )
+        }
+        "fat" => {
+            exec_eval(
+                exec(
+                    "mkfs.fat",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as fat",
+            )
+        }
+        "msdos" => {
+            exec_eval(
+                exec(
+                    "mkfs.msdos",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as msdos",
+            )
+        }
+        "xfs" => {
+            exec_eval(
+                exec(
+                    "mkfs.xfs",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as xfs",
+            )
+        }
+        "btrfs" => {
+            exec_eval(
+                exec(
+                    "mkfs.btrfs",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as btrfs",
+            )
+        }
+        "ext2" => {
+            exec_eval(
+                exec(
+                    "mkfs.ext2",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as ext2",
+            )
+        }
+        "extd" => {
+            exec_eval(
+                exec(
+                    "mkfs.extd",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as extd",
+            )
+        }
+        "minix" => {
+            exec_eval(
+                exec(
+                    "mkfs.minix",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as minix",
+            )
+        }
+        "vfat" => {
+            exec_eval(
+                exec(
+                    "mkfs.vfat",
+                    vec![
+                        String::from(blockdevice),
+                    ],
+                ),
+                "Formatting {blockdevice} as vfat",
+            )
+        }
+        _ => {
+            crash(
+                "Unknown filesystem {filesystem}, used in partition {blockdevice}",
+                1,
+            );
+        }
+    }
+    files_eval(
+        files::create_directory(&mountpoint),
+        "Creating mountpoint {mountpoint} for {blockdevice}",
+    );
+    mount(&blockdevice, &mountpoint, "");
+}
+
+pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: Vec<args::Partition>) {
     if !device.exists() {
         crash(format!("The device {device:?} doesn't exist"), 1);
     }
@@ -18,6 +172,13 @@ pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool) {
         }
         PartitionMode::Manual => {
             log::debug!("Manual partitioning");
+            for i in 0..partitions.len() {
+                fmt_mount(
+                    &partitions[i].mountpoint,
+                    &partitions[i].filesystem,
+                    &partitions[i].blockdevice,
+                );
+            }
         }
     }
     if device.to_string_lossy().contains("nvme") {
