@@ -132,17 +132,6 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                 "Formatting {blockdevice} as minix",
             )
         }
-        "vfat" => {
-            exec_eval(
-                exec(
-                    "mkfs.vfat",
-                    vec![
-                        String::from(blockdevice),
-                    ],
-                ),
-                "Formatting {blockdevice} as vfat",
-            )
-        }
         _ => {
             crash(
                 "Unknown filesystem {filesystem}, used in partition {blockdevice}",
