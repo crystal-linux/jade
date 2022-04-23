@@ -5,7 +5,7 @@ use crate::internal::*;
 use std::path::{Path, PathBuf};
 
 /*mkfs.bfs mkfs.cramfs mkfs.ext3  mkfs.fat mkfs.msdos  mkfs.xfs
-mkfs.btrfs mkfs.ext2  mkfs.extd  mkfs.minix mkfs.vfat */
+mkfs.btrfs mkfs.ext2  mkfs.ext4  mkfs.minix mkfs.vfat */
 
 pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String) {
     match filesystem.as_str() {
@@ -19,7 +19,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as vfat",
+                format!("Formatting {blockdevice} as vfat").as_str(),
             )
         }
         "bfs" => {
@@ -30,7 +30,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as bfs",
+                format!("Formatting {blockdevice} as bfs").as_str(),
             )
         }
         "cramfs" => {
@@ -41,7 +41,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as cramfs",
+                format!("Formatting {blockdevice} as cramfs").as_str(),
             )
         }
         "ext3" => {
@@ -52,7 +52,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as ext3",
+                format!("Formatting {blockdevice} as ext3").as_str(),
             )
         }
         "fat" => {
@@ -63,7 +63,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as fat",
+                format!("Formatting {blockdevice} as fat").as_str(),
             )
         }
         "msdos" => {
@@ -74,7 +74,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as msdos",
+                format!("Formatting {blockdevice} as msdos").as_str(),
             )
         }
         "xfs" => {
@@ -85,7 +85,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as xfs",
+                format!("Formatting {blockdevice} as xfs").as_str(),
             )
         }
         "btrfs" => {
@@ -96,7 +96,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as btrfs",
+                format!("Formatting {blockdevice} as btrfs").as_str(),
             )
         }
         "ext2" => {
@@ -107,18 +107,18 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as ext2",
+                format!("Formatting {blockdevice} as ext2").as_str(),
             )
         }
-        "extd" => {
+        "ext4" => {
             exec_eval(
                 exec(
-                    "mkfs.extd",
+                    "mkfs.ext4",
                     vec![
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as extd",
+                format!("Formatting {blockdevice} as ext4").as_str(),
             )
         }
         "minix" => {
@@ -129,24 +129,32 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                         String::from(blockdevice),
                     ],
                 ),
-                "Formatting {blockdevice} as minix",
+                format!("Formatting {blockdevice} as minix").as_str(),
             )
         }
         _ => {
             crash(
-                "Unknown filesystem {filesystem}, used in partition {blockdevice}",
+                format!("Unknown filesystem {filesystem}, used in partition {blockdevice}"),
                 1,
             );
         }
     }
-    files_eval(
-        files::create_directory(&mountpoint),
-        "Creating mountpoint {mountpoint} for {blockdevice}",
+    exec_eval(
+        exec(
+            "mkdir",
+            vec![
+                String::from("-p"),
+                String::from(mountpoint),
+            ],
+        ),
+        format!("Creating mountpoint {mountpoint} for {blockdevice}").as_str(),
     );
     mount(&blockdevice, &mountpoint, "");
 }
 
 pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: Vec<args::Partition>) {
+
+    println!("{:?}", mode);
     match mode {
         PartitionMode::Auto => {
             if !device.exists() {
@@ -158,10 +166,20 @@ pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: Ve
             } else {
                 partition_no_efi(&device);
             }
+            if device.to_string_lossy().contains("nvme") {
+                part_nvme(&device, efi);
+            } else {
+                part_disk(&device, efi);
+            }
         }
         PartitionMode::Manual => {
             log::debug!("Manual partitioning");
             for i in 0..partitions.len() {
+                println!("{:?}", partitions);
+                println!("{}", partitions.len());
+                println!("{}", &partitions[i].mountpoint);
+                println!("{}", &partitions[i].filesystem);
+                println!("{}", &partitions[i].blockdevice);
                 fmt_mount(
                     &partitions[i].mountpoint,
                     &partitions[i].filesystem,
@@ -169,11 +187,6 @@ pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: Ve
                 );
             }
         }
-    }
-    if device.to_string_lossy().contains("nvme") {
-        part_nvme(&device, efi);
-    } else {
-        part_disk(&device, efi);
     }
 }
 

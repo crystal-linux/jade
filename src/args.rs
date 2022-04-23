@@ -110,10 +110,11 @@ impl Partition {
 }
 
 pub fn parse_partitions(s: &str) -> Result<Partition, &'static str> {
+    println!("{}", s);
     Ok(Partition::new(
-        s.split(' ').collect::<Vec<&str>>()[0].to_string(),
-        s.split(' ').collect::<Vec<&str>>()[1].to_string(),
-        s.split(' ').collect::<Vec<&str>>()[2].to_string(),
+        s.split(':').collect::<Vec<&str>>()[0].to_string(),
+        s.split(':').collect::<Vec<&str>>()[1].to_string(),
+        s.split(':').collect::<Vec<&str>>()[2].to_string(),
     ))
 }
 
