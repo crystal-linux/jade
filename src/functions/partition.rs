@@ -147,11 +147,11 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
 }
 
 pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: Vec<args::Partition>) {
-    if !device.exists() {
-        crash(format!("The device {device:?} doesn't exist"), 1);
-    }
     match mode {
         PartitionMode::Auto => {
+            if !device.exists() {
+                crash(format!("The device {device:?} doesn't exist"), 1);
+            }
             log::debug!("automatically partitioning {device:?}");
             if efi {
                 partition_with_efi(&device);
