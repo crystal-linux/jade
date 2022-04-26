@@ -132,6 +132,12 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
                 format!("Formatting {blockdevice} as minix").as_str(),
             )
         }
+        "don't format" => {
+            log::debug!("Not formatting {}", blockdevice);
+        }
+        "noformat" => {
+            log::debug!("Not formatting {}", blockdevice);
+        }
         _ => {
             crash(
                 format!("Unknown filesystem {filesystem}, used in partition {blockdevice}"),
