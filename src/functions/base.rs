@@ -39,16 +39,17 @@ pub fn genfstab() {
 
 pub fn install_bootloader_efi(efidir: PathBuf) {
     install::install(vec!["grub", "efibootmgr", "grub-btrfs"]);
-    if !efidir.exists() {
+    let efidir = std::path::Path::new("/mnt").join(efidir);
+    let efi_str = efidir.to_str().unwrap();
+    if !std::path::Path::new(&format!("/mnt{efi_str}")).exists() {
         crash(format!("The efidir {efidir:?} doesn't exist"), 1);
     }
-    let efidir = efidir.to_string_lossy().to_string();
     exec_eval(
         exec_chroot(
             "grub-install",
             vec![
                 String::from("--target=x86_64-efi"),
-                format!("--efi-directory={}", efidir),
+                format!("--efi-directory={}" , efi_str),
                 String::from("--bootloader-id=crystal"),
                 String::from("--removable"),
             ],
@@ -60,7 +61,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
             "grub-install",
             vec![
                 String::from("--target=x86_64-efi"),
-                format!("--efi-directory={}", efidir),
+                format!("--efi-directory={}", efi_str),
                 String::from("--bootloader-id=crystal"),
             ],
         ),

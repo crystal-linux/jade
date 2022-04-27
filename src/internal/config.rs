@@ -91,7 +91,7 @@ pub fn read_config(configpath: PathBuf) {
         PathBuf::from("/dev/").join(config.partition.device),
         config.partition.mode,
         config.partition.efi,
-        partitions,
+        &mut partitions,
     );
     base::install_base_packages();
     base::genfstab();

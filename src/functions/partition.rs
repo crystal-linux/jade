@@ -158,7 +158,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
     mount(&blockdevice, &mountpoint, "");
 }
 
-pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: Vec<args::Partition>) {
+pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: &mut Vec<args::Partition>) {
 
     println!("{:?}", mode);
     match mode {
@@ -180,6 +180,7 @@ pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: Ve
         }
         PartitionMode::Manual => {
             log::debug!("Manual partitioning");
+            partitions.sort_by(|a, b| a.mountpoint.len().cmp(&b.mountpoint.len()));
             for i in 0..partitions.len() {
                 println!("{:?}", partitions);
                 println!("{}", partitions.len());
