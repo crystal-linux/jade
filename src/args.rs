@@ -220,4 +220,7 @@ pub enum DesktopSetup {
 
     #[clap(name = "enlightenment")]
     Enlightenment,
+
+    #[clap(name = "None/DIY")]
+    None,
 }
