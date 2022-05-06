@@ -118,3 +118,10 @@ pub fn setup_timeshift() {
 pub fn install_homemgr() {
     install(vec!["nix"]);
 }
+
+pub fn install_flatpak() {
+    install(vec!["flatpak"]);
+    exec_eval(
+        exec_chroot("flatpak", vec![String::from("remote-add"), String::from("--if-not-exists"), String::from("flathub"), String::from("https://flathub.org/repo/flathub.flatpakrepo")]),
+    )
+}

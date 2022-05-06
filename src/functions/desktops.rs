@@ -14,7 +14,6 @@ pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
         DesktopSetup::Xfce => install_xfce(),
         DesktopSetup::Enlightenment => install_enlightenment(),
         DesktopSetup::None => log::debug!("No desktop setup selected"),
-        _ => crash("Unsupported desktop setup", 1),
     }
     install_networkmanager();
 }

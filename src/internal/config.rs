@@ -15,6 +15,7 @@ struct Config {
     rootpass: String,
     desktop: Option<DesktopSetup>,
     timeshift: bool,
+    flatpak: bool,
     extra_packages: Vec<String>,
 }
 
@@ -143,6 +144,11 @@ pub fn read_config(configpath: PathBuf) {
     log::info!("Enabling timeshift : {}", config.timeshift);
     if config.timeshift {
         base::setup_timeshift();
+    }
+    println!();
+    log::info!("Enabling flatpak : {}", config.flatpak);
+    if config.flatpak {
+        base::setup_flatpak();
     }
     log::info!("Extra packages : {:?}", config.extra_packages);
     let mut extra_packages: Vec<&str> = Vec::new();

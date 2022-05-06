@@ -55,6 +55,9 @@ fn main() {
         },
         Command::Nix => {
             base::install_homemgr();
+        },
+        Command::Flatpak => {
+            base::install_flatpak();
         }
         Command::Config { config } => {
             crate::internal::config::read_config(config);

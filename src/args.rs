@@ -56,6 +56,10 @@ pub enum Command {
     #[clap(name = "nix")]
     Nix,
 
+    /// Install flatpak and enable flathub
+    #[clap(name = "flatpak")]
+    Flatpak,
+
     /// Read jade installation config
     #[clap(name = "config")]
     Config {
