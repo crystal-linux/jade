@@ -60,6 +60,10 @@ pub enum Command {
     #[clap(name = "flatpak")]
     Flatpak,
 
+    /// Setup unakite
+    #[clap(name = "unakite")]
+    Unakite,
+
     /// Read jade installation config
     #[clap(name = "config")]
     Config {

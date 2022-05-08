@@ -7,8 +7,8 @@ use std::path::{Path, PathBuf};
 /*mkfs.bfs mkfs.cramfs mkfs.ext3  mkfs.fat mkfs.msdos  mkfs.xfs
 mkfs.btrfs mkfs.ext2  mkfs.ext4  mkfs.minix mkfs.vfat */
 
-pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String) {
-    match filesystem.as_str() {
+pub fn fmt_mount(mountpoint: &str, filesystem: &str, blockdevice: &str) {
+    match filesystem {
         "vfat" => {
             exec_eval(
                 exec(
@@ -155,7 +155,7 @@ pub fn fmt_mount(mountpoint: &String, filesystem: &String, blockdevice: &String)
         ),
         format!("Creating mountpoint {mountpoint} for {blockdevice}").as_str(),
     );
-    mount(&blockdevice, &mountpoint, "");
+    mount(blockdevice, mountpoint, "");
 }
 
 pub fn partition(device: PathBuf, mode: PartitionMode, efi: bool, partitions: &mut Vec<args::Partition>) {

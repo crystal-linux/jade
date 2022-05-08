@@ -59,6 +59,9 @@ fn main() {
         Command::Flatpak => {
             base::install_flatpak();
         }
+        Command::Unakite => {
+            unakite::setup_unakite();
+        },
         Command::Config { config } => {
             crate::internal::config::read_config(config);
         }

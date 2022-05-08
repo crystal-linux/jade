@@ -148,7 +148,7 @@ pub fn read_config(configpath: PathBuf) {
     println!();
     log::info!("Enabling flatpak : {}", config.flatpak);
     if config.flatpak {
-        base::setup_flatpak();
+        base::install_flatpak();
     }
     log::info!("Extra packages : {:?}", config.extra_packages);
     let mut extra_packages: Vec<&str> = Vec::new();

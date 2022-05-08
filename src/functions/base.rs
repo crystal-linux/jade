@@ -39,7 +39,7 @@ pub fn genfstab() {
 }
 
 pub fn install_bootloader_efi(efidir: PathBuf) {
-    install::install(vec!["grub", "efibootmgr", "grub-btrfs", "crystal-grub-theme"]);
+    install::install(vec!["grub", "efibootmgr", "grub-btrfs", "crystal-grub-theme", "os-prober"]);
     let efidir = std::path::Path::new("/mnt").join(efidir);
     let efi_str = efidir.to_str().unwrap();
     if !std::path::Path::new(&format!("/mnt{efi_str}")).exists() {
@@ -82,7 +82,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
 }
 
 pub fn install_bootloader_legacy(device: PathBuf) {
-    install::install(vec!["grub", "grub-btrfs", "crystal-grub-theme"]);
+    install::install(vec!["grub", "grub-btrfs", "crystal-grub-theme", "os-prober"]);
     if !device.exists() {
         crash(format!("The device {device:?} does not exist"), 1);
     }
@@ -123,5 +123,6 @@ pub fn install_flatpak() {
     install(vec!["flatpak"]);
     exec_eval(
         exec_chroot("flatpak", vec![String::from("remote-add"), String::from("--if-not-exists"), String::from("flathub"), String::from("https://flathub.org/repo/flathub.flatpakrepo")]),
+        "add flathub remote",
     )
 }
