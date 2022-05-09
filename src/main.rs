@@ -59,8 +59,14 @@ fn main() {
         Command::Flatpak => {
             base::install_flatpak();
         }
-        Command::Unakite => {
-            unakite::setup_unakite();
+        Command::Unakite(args) => {
+            unakite::setup_unakite(
+                &args.root,
+                &args.oldroot,
+                args.efi,
+                &args.efidir,
+                &args.bootdev,
+            );
         },
         Command::Config { config } => {
             crate::internal::config::read_config(config);

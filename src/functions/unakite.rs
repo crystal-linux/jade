@@ -1,6 +1,9 @@
 use crate::internal::exec::*;
 use crate::internal::*;
-
+use crate::functions::*;
+use crate::functions::partition::mount;
+use std::path::PathBuf;
+use crate::args::DesktopSetup;
 pub fn install_bootloader_efi(efidir: PathBuf) {
     install::install(vec!["grub", "efibootmgr", "grub-btrfs", "crystal-grub-theme"]);
     let efidir = std::path::Path::new("/mnt").join(efidir);
@@ -32,7 +35,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
         "install unakite grub as efi without --removable",
     );
     files_eval(
-        append_file("/mnt/etc/default/grub", "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\""),
+        files::append_file("/mnt/etc/default/grub", "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\""),
         "enable crystal grub theme"
     );
     exec_eval(
@@ -44,99 +47,99 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
     );
 }
 
-pub fn remount(root: &str, oldroot: &stre, efi: bool, efidir: &str, bootdev: &str, firstrun: bool) {
+pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str, firstrun: bool) {
     if efi && firstrun {
         exec_eval(
             exec(
                 "umount",
                 vec![String::from(bootdev)],
             ),
-            format!("Unmount {}", bootdev),
-        )
+            &format!("Unmount {}", bootdev),
+        );
         exec_eval(
             exec(
                 "umount",
                 vec![String::from("/")],
             ),
-            format!("Unmount old root"),
+            &format!("Unmount old root"),
         );
-        mount(root, "/");
-        mount(bootdev, efidir);
+        mount(root, "/", "");
+        mount(bootdev, efidir, "");
     } else if efi && !firstrun {
         exec_eval(
             exec(
                 "umount",
                 vec![String::from(bootdev)],
             ),
-            format!("Unmount {}", bootdev),
-        )
+            &format!("Unmount {}", bootdev),
+        );
         exec_eval(
             exec(
                 "umount",
                 vec![String::from("/")],
             ),
-            format!("Unmount unakite root"),
+            &format!("Unmount unakite root"),
         );
-        mount(root, "/");
-        mount(bootdev, efidir);
+        mount(root, "/", "");
+        mount(bootdev, efidir, "");
     } else if !efi && firstrun {
         exec_eval(
             exec(
                 "umount",
                 vec![String::from(bootdev)],
             ),
-            format!("Unmount {}", bootdev),
-        )
+            &format!("Unmount {}", bootdev),
+        );
         exec_eval(
             exec(
                 "umount",
                 vec![String::from("/")],
             ),
-            format!("Unmount old root"),
+            &format!("Unmount old root"),
         );
-        mount(root, "/");
-        mount(bootdev, "/boot");
+        mount(root, "/", "");
+        mount(bootdev, "/boot", "");
     } else if !efi && !firstrun {
         exec_eval(
             exec(
                 "umount",
                 vec![String::from(bootdev)],
             ),
-            format!("Unmount {}", bootdev),
+            &format!("Unmount {}", bootdev),
         );
         exec_eval(
             exec(
                 "umount",
                 vec![String::from("/")],
             ),
-            format!("Unmount unakite root"),
+            &format!("Unmount unakite root"),
         );
-        mount(oldroot, "/");
-        mount(bootdev, "/boot");
+        mount(oldroot, "/", "");
+        mount(bootdev, "/boot", "");
     } else {
         panic!("Unknown state");
     }
 }
 
-pub fn setup_unakite(root: &str, oldroot: &stre, efi: bool, efidir: &str, bootdev: &str) {
+pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str) {
     log::debug!("Setting up Unakite");
-    remount_efi(root, oldroot, efi, efidir, bootdev, true);
+    remount(root, oldroot, efi, efidir, bootdev, true);
     base::install_base_packages();
     base::genfstab();
     if efi {
         install_bootloader_efi(PathBuf::from(efidir));
     }
-    locale::set_locale("");
+    locale::set_locale("".to_string());
     locale::set_timezone("Europe/Berlin"); // TODO: get the proper timezone
     network::set_hostname("unakite");
-    network::create_hosts("");
+    network::create_hosts();
     users::new_user(
         "unakite",
         true,
         "Cp7oN04ZY0PsA", // unakite
-    )
+    );
     users::root_pass("Cp7oN04ZY0PsA"); // unakite
-    desktops::install_desktop_desktup_setup(DesktopSetup::Xfce);
+    desktops::install_desktop_setup(DesktopSetup::Xfce);
     install(vec!["gparted", "firefox"]);
     remount(root, oldroot, efi, efidir, bootdev, false);
 }

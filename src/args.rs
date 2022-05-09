@@ -62,7 +62,7 @@ pub enum Command {
 
     /// Setup unakite
     #[clap(name = "unakite")]
-    Unakite,
+    Unakite(UnakiteArgs),
 
     /// Read jade installation config
     #[clap(name = "config")]
@@ -98,6 +98,25 @@ pub struct PartitionArgs {
     /// The partitions to use for manual partitioning
     #[clap(required_if_eq("mode", "Partition::Manual"), parse(try_from_str = parse_partitions))]
     pub partitions: Vec<Partition>,
+}
+
+#[derive(Debug, Args)]
+pub struct UnakiteArgs {
+    /// root device of unakite
+    #[clap(long)]
+    pub root: String,
+    /// root device of crystal
+    #[clap(long)]
+    pub oldroot: String,
+    /// wether it is efi
+    #[clap(long)]
+    pub efi: bool,
+    /// boot directory (if not efi) or efi directory (if efi)
+    #[clap(long)]
+    pub efidir: String,
+    /// device of boot device
+    #[clap(long)]
+    pub bootdev: String,
 }
 
 #[derive(Debug)]

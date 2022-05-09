@@ -485,7 +485,7 @@ fn part_disk(device: &Path, efi: bool) {
     }
 }
 
-fn mount(partition: &str, mountpoint: &str, options: &str) {
+pub fn mount(partition: &str, mountpoint: &str, options: &str) {
     if !options.is_empty() {
         exec_eval(
             exec(
