@@ -61,7 +61,7 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
                 "umount",
                 vec![String::from("/")],
             ),
-            &format!("Unmount old root"),
+            "Unmount old root",
         );
         mount(root, "/", "");
         mount(bootdev, efidir, "");
@@ -78,7 +78,7 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
                 "umount",
                 vec![String::from("/")],
             ),
-            &format!("Unmount unakite root"),
+            "Unmount unakite root",
         );
         mount(root, "/", "");
         mount(bootdev, efidir, "");
@@ -95,7 +95,7 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
                 "umount",
                 vec![String::from("/")],
             ),
-            &format!("Unmount old root"),
+            "Unmount old root",
         );
         mount(root, "/", "");
         mount(bootdev, "/boot", "");
@@ -112,7 +112,7 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
                 "umount",
                 vec![String::from("/")],
             ),
-            &format!("Unmount unakite root"),
+            "Unmount unakite root",
         );
         mount(oldroot, "/", "");
         mount(bootdev, "/boot", "");
