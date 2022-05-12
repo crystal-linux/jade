@@ -93,6 +93,7 @@ pub fn fmt_mount(mountpoint: &str, filesystem: &str, blockdevice: &str) {
                 exec(
                     "mkfs.btrfs",
                     vec![
+                        String::from("-f"),
                         String::from(blockdevice),
                     ],
                 ),

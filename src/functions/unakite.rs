@@ -59,11 +59,21 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
         exec_eval(
             exec(
                 "umount",
-                vec![String::from("/")],
+                vec![String::from(oldroot)],
             ),
             "Unmount old root",
         );
-        mount(root, "/", "");
+        mount(root, "/mnt", "");
+        exec_eval(
+            exec(
+                "mkdir",
+                vec![
+                    String::from("-p"),
+                    String::from(efidir),
+                ],
+            ),
+            format!("Creating mountpoint {efidir} for {bootdev}").as_str(),
+        );
         mount(bootdev, efidir, "");
     } else if efi && !firstrun {
         exec_eval(
@@ -76,11 +86,11 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
         exec_eval(
             exec(
                 "umount",
-                vec![String::from("/")],
+                vec![String::from(root)],
             ),
             "Unmount unakite root",
         );
-        mount(root, "/", "");
+        mount(oldroot, "/mnt", "");
         mount(bootdev, efidir, "");
     } else if !efi && firstrun {
         exec_eval(
@@ -93,12 +103,22 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
         exec_eval(
             exec(
                 "umount",
-                vec![String::from("/")],
+                vec![String::from(oldroot)],
             ),
             "Unmount old root",
         );
-        mount(root, "/", "");
-        mount(bootdev, "/boot", "");
+        mount(root, "/mnt", "");
+        exec_eval(
+            exec(
+                "mkdir",
+                vec![
+                    String::from("-p"),
+                    String::from("/mnt/boot"),
+                ],
+            ),
+            format!("Creating mountpoint /boot for {bootdev}").as_str(),
+        );
+        mount(bootdev, "/mnt/boot", "");
     } else if !efi && !firstrun {
         exec_eval(
             exec(
@@ -110,12 +130,12 @@ pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str
         exec_eval(
             exec(
                 "umount",
-                vec![String::from("/")],
+                vec![String::from(root)],
             ),
             "Unmount unakite root",
         );
-        mount(oldroot, "/", "");
-        mount(bootdev, "/boot", "");
+        mount(oldroot, "/mnt", "");
+        mount(bootdev, "/mnt/boot", "");
     } else {
         panic!("Unknown state");
     }
@@ -127,9 +147,9 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
     base::install_base_packages();
     base::genfstab();
     if efi {
-        install_bootloader_efi(PathBuf::from(efidir));
+        install_bootloader_efi(PathBuf::from(efidir.replace("/mnt", "")));
     }
-    locale::set_locale("".to_string());
+    locale::set_locale("en_US.UTF-8 UTF-8".to_string());
     locale::set_timezone("Europe/Berlin"); // TODO: get the proper timezone
     network::set_hostname("unakite");
     network::create_hosts();
