@@ -13,7 +13,7 @@ struct Config {
     networking: Networking,
     users: Vec<Users>,
     rootpass: String,
-    desktop: Option<DesktopSetup>,
+    desktop: String,
     timeshift: bool,
     flatpak: bool,
     extra_packages: Vec<String>,
@@ -137,8 +137,20 @@ pub fn read_config(configpath: PathBuf) {
     users::root_pass(config.rootpass.as_str());
     println!();
     log::info!("Installing desktop : {:?}", config.desktop);
-    if let Some(desktop) = &config.desktop {
+    /*if let Some(desktop) = &config.desktop {
         desktops::install_desktop_setup(*desktop);
+    }*/
+    match config.desktop.as_str() {
+        "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
+        "plasma" => desktops::install_desktop_setup(DesktopSetup::Kde),
+        "mate" => desktops::install_desktop_setup(DesktopSetup::Mate),
+        "gnome" => desktops::install_desktop_setup(DesktopSetup::Gnome),
+        "cinnamon" => desktops::install_desktop_setup(DesktopSetup::Cinnamon),
+        "xfce" => desktops::install_desktop_setup(DesktopSetup::Xfce),
+        "budgie" => desktops::install_desktop_setup(DesktopSetup::Budgie),
+        "enlightenment" => desktops::install_desktop_setup(DesktopSetup::Enlightenment),
+        "None/DIY" => desktops::install_desktop_setup(DesktopSetup::None),
+        _ => log::info!("No desktop setup selected!"),
     }
     println!();
     log::info!("Enabling timeshift : {}", config.timeshift);

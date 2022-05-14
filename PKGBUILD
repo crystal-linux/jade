@@ -1,7 +1,7 @@
 # Maintainer: Matt C <mdc028[at]bucknell[dot]edu>
 
 pkgname=jade
-pkgver=1.0.3
+pkgver=1.0.4
 pkgrel=2
 pkgdesc="Scriptable backend & TUI Installer for Crystal Linux"
 arch=('x86_64')
