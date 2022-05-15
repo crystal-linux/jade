@@ -146,9 +146,6 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
     remount(root, oldroot, efi, efidir, bootdev, true);
     base::install_base_packages();
     base::genfstab();
-    if efi {
-        install_bootloader_efi(PathBuf::from(efidir.replace("/mnt", "")));
-    }
     locale::set_locale("en_US.UTF-8 UTF-8".to_string());
     locale::set_timezone("Europe/Berlin"); // TODO: get the proper timezone
     network::set_hostname("unakite");
@@ -158,8 +155,42 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
         true,
         "Cp7oN04ZY0PsA", // unakite
     );
+    exec_eval(
+        exec(
+            "sed",
+            vec![
+                String::from("-i"),
+                String::from("-e"),
+                String::from("s/crystal/unakite/g"),
+                String::from("/mnt/etc/os-release"),
+            ],
+        ),
+        "Change os-release",
+    );
+    exec_eval(
+        exec(
+            "sed",
+            vec![
+                String::from("-i"),
+                String::from("-e"),
+                String::from("s/Crystal/Unakite/g"),
+                String::from("/mnt/etc/os-release"),
+            ],
+        ),
+        "Change os-release",
+    );
+    if efi {
+        install_bootloader_efi(PathBuf::from(efidir.replace("/mnt", "")));
+    }
     users::root_pass("Cp7oN04ZY0PsA"); // unakite
     desktops::install_desktop_setup(DesktopSetup::Xfce);
     install(vec!["gparted", "firefox"]);
     remount(root, oldroot, efi, efidir, bootdev, false);
+    exec_eval(
+        exec_chroot(
+            "grub-mkconfig",
+            vec![String::from("-o"), String::from("/boot/grub/grub.cfg")],
+        ),
+        "Recreate grub.cfg in crystal"
+    );
 }

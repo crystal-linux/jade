@@ -17,6 +17,7 @@ struct Config {
     timeshift: bool,
     flatpak: bool,
     extra_packages: Vec<String>,
+    unakite: Unakite,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -51,6 +52,15 @@ struct Users {
     name: String,
     password: String,
     hasroot: bool,
+}
+
+#[derive(Serialize, Deserialize)]
+struct Unakite {
+    enable: bool,
+    root: String,
+    oldroot: String,
+    efidir: String,
+    bootdev: String,
 }
 
 pub fn read_config(configpath: PathBuf) {
@@ -88,11 +98,13 @@ pub fn read_config(configpath: PathBuf) {
             partition.split(':').collect::<Vec<&str>>()[2].to_string(),
         ));
     }
+    let device = PathBuf::from("/dev/").join(config.partition.device.as_str());
     partition::partition(
-        PathBuf::from("/dev/").join(config.partition.device),
+        device,
         config.partition.mode,
         config.partition.efi,
         &mut partitions,
+        config.unakite.enable
     );
     base::install_base_packages();
     base::genfstab();
@@ -168,5 +180,23 @@ pub fn read_config(configpath: PathBuf) {
         extra_packages.push(config.extra_packages[i].as_str());
     }
     install(extra_packages);
+    log::info!("Setup unakite");
+    if config.partition.mode == PartitionMode::Auto && !config.partition.efi && config.unakite.enable && !config.partition.device.to_string().contains("nvme") {
+        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
+        unakite::setup_unakite(format!("{}2",root.to_str().unwrap()).as_str(), format!("{}3",root.to_str().unwrap()).as_str(), config.partition.efi, "/boot", format!("{}1",root.to_str().unwrap()).as_str())
+    } else if config.partition.mode == PartitionMode::Auto && config.partition.efi && config.unakite.enable && !config.partition.device.to_string().contains("nvme") {
+        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
+        unakite::setup_unakite(format!("{}2",root.to_str().unwrap()).as_str(), format!("{}3",root.to_str().unwrap()).as_str(), config.partition.efi, "/boot/efi", format!("{}1",root.to_str().unwrap()).as_str())
+    } else if config.unakite.enable {
+        unakite::setup_unakite(&config.unakite.root, &config.unakite.oldroot, config.partition.efi, &config.unakite.efidir, &config.unakite.bootdev);
+    } else if config.partition.mode == PartitionMode::Auto && config.partition.efi && config.unakite.enable && config.partition.device.to_string().contains("nvme") {
+        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
+        unakite::setup_unakite(format!("{}p2",root.to_str().unwrap()).as_str(), format!("{}p3",root.to_str().unwrap()).as_str(), config.partition.efi, "/boot/efi", format!("{}p1",root.to_str().unwrap()).as_str())
+    } else if config.partition.mode == PartitionMode::Auto && !config.partition.efi && config.unakite.enable && config.partition.device.to_string().contains("nvme") {
+        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
+        unakite::setup_unakite(format!("{}p2",root.to_str().unwrap()).as_str(), format!("{}p3",root.to_str().unwrap()).as_str(), config.partition.efi, "/boot", format!("{}p1",root.to_str().unwrap()).as_str())
+    } else {
+        log::info!("Unakite disabled");
+    }
     println!("Installation finished! You may reboot now!")
 }

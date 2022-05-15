@@ -14,7 +14,7 @@ fn main() {
     match opt.command {
         Command::Partition(args) => {
             let mut partitions = args.partitions;
-            partition::partition(args.device, args.mode, args.efi, &mut partitions);
+            partition::partition(args.device, args.mode, args.efi, &mut partitions, args.unakite);
         }
         Command::InstallBase => {
             base::install_base_packages();
