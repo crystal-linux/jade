@@ -24,6 +24,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
                     String::from("-a"),
                     String::from("-G"),
                     String::from("wheel"),
+                    String::from("nix-users"),
                     String::from(username),
                 ],
             ),
