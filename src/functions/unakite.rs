@@ -185,6 +185,16 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
     users::root_pass("Cp7oN04ZY0PsA"); // unakite
     desktops::install_desktop_setup(DesktopSetup::Xfce);
     install(vec!["gparted", "firefox"]);
+    exec_eval(
+        exec(
+            "cp",
+            vec![
+                String::from("/tmp/jade.json"),
+                String::from("/mnt/etc/installSettings.json"),
+            ]
+        ),
+        "Copy jade.json to /etc/installSettings.json in unakite",
+    );
     remount(root, oldroot, efi, efidir, bootdev, false);
     exec_eval(
         exec_chroot(
