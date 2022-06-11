@@ -4,6 +4,7 @@ pkgname=jade
 pkgver=1.0.4
 pkgrel=2
 pkgdesc="Scriptable backend & TUI Installer for Crystal Linux"
+license=('GPL3')
 arch=('x86_64')
 url="https://git.tar.black/crystal/programs/jade"
 license=('Nolicense')
