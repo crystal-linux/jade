@@ -7,7 +7,6 @@ use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize)]
 struct Config {
-    kernel: String,
     partition: Partition,
     bootloader: Bootloader,
     locale: Locale,
@@ -19,6 +18,7 @@ struct Config {
     flatpak: bool,
     extra_packages: Vec<String>,
     unakite: Unakite,
+    kernel: String,
 }
 
 #[derive(Serialize, Deserialize)]

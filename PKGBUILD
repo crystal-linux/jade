@@ -1,4 +1,4 @@
-# Maintainer: Matt C <mdc028[at]bucknell[dot]edu>
+# Maintainer: Matt C <matt[at]getcryst[dot]al>
 
 pkgname=jade
 pkgver=1.0.5
