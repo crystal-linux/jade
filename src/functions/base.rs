@@ -2,13 +2,29 @@ use crate::internal::exec::*;
 use crate::internal::*;
 use crate::internal::files::append_file;
 use std::path::PathBuf;
+use log::warn;
 
-pub fn install_base_packages() {
+pub fn install_base_packages(kernel: String) {
+    let mut kernel_to_install: String = String::new();
     std::fs::create_dir_all("/mnt/etc").unwrap();
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
+    if kernel.is_empty() {
+        kernel_to_install = "linux".to_string
+    } else {
+        match kernel.as_str() {
+            "linux" => kernel_to_install = "linux".to_string(),
+            "linux-lts" => kernel_to_install = "linux-lts".to_string(),
+            "linux-zen" => kernel_to_install = "linux-zen".to_string(),
+            "linux-hardened" => kernel_to_install = "linux-hardened".to_string(),
+            _ => {
+                warn!("Unknown kernel: {}, using default instead", kernel);
+                kernel_to_install = "linux".to_string();
+            }
+        }
+    }
     install::install(vec![
         "base",
-        "linux",
+        kernel_to_install.as_str(),
         "linux-firmware",
         "systemd-sysvcompat",
         "networkmanager",

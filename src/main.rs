@@ -16,8 +16,10 @@ fn main() {
             let mut partitions = args.partitions;
             partition::partition(args.device, args.mode, args.efi, &mut partitions, args.unakite);
         }
-        Command::InstallBase => {
-            base::install_base_packages();
+        Command::InstallBase(args) => {
+            base::install_base_packages(
+                args.kernel,
+            );
         }
         Command::GenFstab => {
             base::genfstab();

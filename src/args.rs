@@ -18,9 +18,9 @@ pub enum Command {
     #[clap(name = "partition")]
     Partition(PartitionArgs),
 
-    /// Install base packages
+    /// Install base packages, optionally define a different kernel
     #[clap(name = "install-base")]
-    InstallBase,
+    InstallBase(InstallBaseArgs),
 
     /// Generate fstab file for mounting partitions
     #[clap(name = "genfstab")]
@@ -101,6 +101,12 @@ pub struct PartitionArgs {
     /// The partitions to use for manual partitioning
     #[clap(required_if_eq("mode", "Partition::Manual"), parse(try_from_str = parse_partitions))]
     pub partitions: Vec<Partition>,
+}
+
+#[derive(Debug, Args)]
+pub struct InstallBaseArgs {
+    #[clap(long)]
+    pub kernel: String,
 }
 
 #[derive(Debug, Args)]

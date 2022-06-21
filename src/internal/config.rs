@@ -7,6 +7,7 @@ use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize)]
 struct Config {
+    kernel: String,
     partition: Partition,
     bootloader: Bootloader,
     locale: Locale,
@@ -106,7 +107,7 @@ pub fn read_config(configpath: PathBuf) {
         &mut partitions,
         config.unakite.enable
     );
-    base::install_base_packages();
+    base::install_base_packages(kernel);
     base::genfstab();
     println!();
     log::info!("Installing bootloader : {}", config.bootloader.r#type);
