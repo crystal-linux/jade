@@ -1,6 +1,9 @@
 use crate::internal::*;
 
-pub fn set_hostname(hostname: &str) {
+pub fn set_hostname(mut hostname: &str) {
+    if hostname == "---------" {
+        hostname = "crystal";
+    }
     println!("Setting hostname to {}", hostname);
     files::create_file("/mnt/etc/hostname");
     files_eval(
