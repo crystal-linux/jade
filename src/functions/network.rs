@@ -1,7 +1,7 @@
 use crate::internal::*;
 
 pub fn set_hostname(mut hostname: &str) {
-    if hostname == "---------" {
+    if hostname == "" {
         hostname = "crystal";
     }
     println!("Setting hostname to {}", hostname);
