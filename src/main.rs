@@ -68,7 +68,6 @@ fn main() {
                 args.efi,
                 &args.efidir,
                 &args.bootdev,
-                &args.kernel,
             );
         },
         Command::Config { config } => {
