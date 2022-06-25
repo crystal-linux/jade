@@ -126,9 +126,6 @@ pub struct UnakiteArgs {
     /// device of boot device
     #[clap(long)]
     pub bootdev: String,
-    /// name of kernel to use
-    #[clap(long)]
-    pub kernel: String,
 }
 
 #[derive(Debug)]
