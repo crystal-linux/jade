@@ -9,7 +9,7 @@ pub fn install_base_packages(kernel: String) {
     std::fs::create_dir_all("/mnt/etc").unwrap();
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
     if kernel.is_empty() {
-        kernel_to_install = "linux".to_string
+        kernel_to_install = "linux".to_string();
     } else {
         match kernel.as_str() {
             "linux" => kernel_to_install = "linux".to_string(),
