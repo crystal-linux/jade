@@ -115,7 +115,7 @@ Tested on latest Cargo (1.60.0-nightly)
 
 - `cargo build --release`
 
-
+## Non-secret Secret
 echo "JADE_UWU=true" >> ~/.zshrc <br>
 echo "JADE_UWU=true" >> ~/.bashrc <br>
 set -Ux JADE_UWU true <br>
