@@ -1,11 +1,12 @@
 <p align="center">
-  <a href="https://git.tar.black/crystal/ame/">
+  <a href="https://github.com/crystal-linux/jade/">
     <img src="https://raw.githubusercontent.com/crystal-linux/branding/main/logos/crystal-logo-minimal.png" alt="Logo" width="150" height="150">
   </a>
 </p>
 <h2 align="center">Jade</h2>
 <p align="center">
     <a href="https://discord.gg/yp4xpZeAgW"><img alt="Discord" src="https://img.shields.io/discord/825473796227858482?color=blue&label=Discord&logo=Discord&logoColor=white"?link=https://discord.gg/yp4xpZeAgW&link=https://discord.gg/yp4xpZeAgW></a>
+    <img src="https://img.shields.io/badge/Maintainer-@amy-brightgreen" alt=The maintainer of this repository" href="https://github.com/axtloss">
 </p>
 
 <p align="center">Jade is the backend and TUI installer for crystal linux.</p>
