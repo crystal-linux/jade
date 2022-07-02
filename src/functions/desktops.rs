@@ -56,6 +56,11 @@ fn install_xfce() {
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
         "xfce4-goodies",
+        "pipewire",
+        "pipewire-pulse",
+        "pipewire-jack",
+        "pipewire-alsa",
+        "pavucontrol",
     ]);
     files_eval(
         files::append_file(
