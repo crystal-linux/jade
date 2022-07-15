@@ -9,13 +9,9 @@
     <a href="https://github/crystal-linux/jade"><img alt="GitHub isses" src="https://img.shields.io/github/issues-raw/crystal-linux/jade"></a>
     <a href="https://github/crystal-linux/jade"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr-raw/crystal-linux/jade"></a><br>
     <a href="https://discord.gg/hYJgu8K5aA"><img alt="Discord" src="https://img.shields.io/discord/825473796227858482?color=blue&label=Discord&logo=Discord&logoColor=white"> </a>
-<<<<<<< Updated upstream
     <a href="https://github.com/axtloss"><img src="https://img.shields.io/badge/Maintainer-@axtloss-brightgreen" alt=The maintainer of this repository" href="https://github.com/axtloss"></a>
-=======
-    <a href="https://github.com/axtloss"><img src="https://img.shields.io/badge/Maintainer-@axtloss-brightgreen" alt="The maintainer of this repository" href="https://github.com/axtloss"></a><br>
     <a href="https://fosstodon.org/@crystal_linux"><img alt="Mastodon Follow" src="https://img.shields.io/mastodon/follow/108618426259408142?domain=https%3A%2F%2Ffosstodon.org">
     <a href="https://twitter.com/crystal_linux"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/crystal_linux"></a>
->>>>>>> Stashed changes
 </p>
 
 <p align="center">Jade is the backend and TUI installer for crystal linux.</p>
