@@ -154,7 +154,7 @@ fn install_gnome() {
         "xdg-user-dirs",
         "gdm",
         "xorg",
-        "gnome-tweaks".
+        "gnome-tweaks",
     ]);
     enable_dm("gdm");
 }
