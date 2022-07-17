@@ -56,6 +56,11 @@ fn install_xfce() {
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
         "xfce4-goodies",
+        "pipewire",
+        "pipewire-pulse",
+        "pipewire-jack",
+        "pipewire-alsa",
+        "pavucontrol",
     ]);
     files_eval(
         files::append_file(
@@ -142,11 +147,14 @@ fn install_kde() {
 
 fn install_gnome() {
     install(vec![
-        "xorg",
-        "gnome",
-        "gnome-tweaks",
-        "chrome-gnome-shell",
+        "gnome-shell",
+        "nautilus",
+        "gnome-terminal",
+        "gnome-control-center",
+        "xdg-user-dirs",
         "gdm",
+        "xorg",
+        "gnome-tweaks",
     ]);
     enable_dm("gdm");
 }
