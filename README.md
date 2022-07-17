@@ -68,10 +68,10 @@ jade networking getcryst.al --ipv6
 ```sh
 # make a new user called nonRootHaver, without sudo and easytohack as the password
 # jade uses prehashed passwords for user creation, so you'll have to calculate the hash of the password
-jade users newUser nonRootHaver $(openssl passwd -1 easytohack)
+jade users newUser nonRootHaver $(openssl passwd -6 easytohack)
 
 # make a user called rootHaver, with sudo and omgsosuperhardtohack as the password
-jade users newUser rootHaver $(openssl passwd -1 omgsuperhardtohack) --sudoer
+jade users newUser rootHaver $(openssl passwd -6 omgsuperhardtohack) --sudoer
 ```
 
 ### set root password
