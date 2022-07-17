@@ -147,11 +147,14 @@ fn install_kde() {
 
 fn install_gnome() {
     install(vec![
-        "xorg",
-        "gnome",
-        "gnome-tweaks",
-        "chrome-gnome-shell",
+        "gnome-shell",
+        "nautilus",
+        "gnome-terminal",
+        "gnome-control-center",
+        "xdg-user-dirs",
         "gdm",
+        "xorg",
+        "gnome-tweaks".
     ]);
     enable_dm("gdm");
 }
