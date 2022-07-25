@@ -79,7 +79,7 @@ jade users newUser rootHaver $(openssl passwd -6 omgsuperhardtohack) --sudoer
 ```sh
 # set the root password to 'muchSecurity,veryHardToHack'
 # the same hashing thing goes for root passwords
-jade users rootPass $(openssl passwd -1 muchSecurity,veryHardToHack)
+jade users rootPass $(openssl passwd -6 muchSecurity,veryHardToHack)
 ```
 
 ### install a desktop environment
