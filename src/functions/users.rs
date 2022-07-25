@@ -21,10 +21,8 @@ pub fn new_user(username: &str, hasroot: bool, password: &str) {
             exec_chroot(
                 "usermod",
                 vec![
-                    String::from("-a"),
-                    String::from("-G"),
+                    String::from("-aG"),
                     String::from("wheel"),
-                    String::from("nix-users"),
                     String::from(username),
                 ],
             ),
