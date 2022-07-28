@@ -142,6 +142,7 @@ pub fn read_config(configpath: PathBuf) {
             config.users[i].name.as_str(),
             config.users[i].hasroot,
             config.users[i].password.as_str(),
+            false,
         );
         println!("---------");
     }
