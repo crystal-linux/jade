@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use log::warn;
 
 pub fn install_base_packages(kernel: String) {
-    let mut kernel_to_install: String = String::new();
+    let kernel_to_install: String;
     std::fs::create_dir_all("/mnt/etc").unwrap();
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
     if kernel.is_empty() {

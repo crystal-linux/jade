@@ -154,6 +154,7 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
         "unakite",
         true,
         "Cp7oN04ZY0PsA", // unakite
+        false,
     );
     exec_eval(
         exec(

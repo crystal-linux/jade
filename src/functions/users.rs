@@ -5,7 +5,7 @@ use std::process::Command;
 pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: bool) {
     if do_hash_pass {
         let hashed_pass = &*hash_pass(password).stdout;
-        let password = match std::str::from_utf8(hashed_pass) {
+        let _password = match std::str::from_utf8(hashed_pass) {
             Ok(v) => v,
             Err(e) => panic!("Failed to hash password, invalid UTF-8 sequence {}", e),
         };
@@ -18,7 +18,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
                 String::from("-s"),
                 String::from("/bin/bash"),
                 String::from("-p"),
-                String::from(password).replace("\n", ""),
+                String::from(password).replace('\n', ""),
                 String::from(username),
             ],
         ),
@@ -56,7 +56,7 @@ pub fn hash_pass(password: &str) -> std::process::Output {
         ])
         .output()
         .expect("Failed to hash password");
-    return output;
+    output
 
 }
 
