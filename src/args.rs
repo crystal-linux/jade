@@ -154,7 +154,6 @@ pub fn parse_partitions(s: &str) -> Result<Partition, &'static str> {
     ))
 }
 
-
 #[derive(Debug, ArgEnum, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Serialize, Deserialize)]
 pub enum PartitionMode {
     #[clap(name = "auto")]

@@ -1,30 +1,29 @@
 use crate::internal::exec::*;
-use crate::internal::*;
 use crate::internal::files::append_file;
-use std::path::PathBuf;
+use crate::internal::*;
 use log::warn;
+use std::path::PathBuf;
 
 pub fn install_base_packages(kernel: String) {
-    let kernel_to_install: String;
     std::fs::create_dir_all("/mnt/etc").unwrap();
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
-    if kernel.is_empty() {
-        kernel_to_install = "linux".to_string();
+    let kernel_to_install = if kernel.is_empty() {
+        "linux"
     } else {
         match kernel.as_str() {
-            "linux" => kernel_to_install = "linux".to_string(),
-            "linux-lts" => kernel_to_install = "linux-lts".to_string(),
-            "linux-zen" => kernel_to_install = "linux-zen".to_string(),
-            "linux-hardened" => kernel_to_install = "linux-hardened".to_string(),
+            "linux" => "linux",
+            "linux-lts" => "linux-lts",
+            "linux-zen" => "linux-zen",
+            "linux-hardened" => "linux-hardened",
             _ => {
                 warn!("Unknown kernel: {}, using default instead", kernel);
-                kernel_to_install = "linux".to_string();
+                "linux"
             }
         }
-    }
+    };
     install::install(vec![
         "base",
-        kernel_to_install.as_str(),
+        kernel_to_install,
         "linux-firmware",
         "systemd-sysvcompat",
         "networkmanager",
@@ -55,7 +54,13 @@ pub fn genfstab() {
 }
 
 pub fn install_bootloader_efi(efidir: PathBuf) {
-    install::install(vec!["grub", "efibootmgr", "grub-btrfs", "crystal-grub-theme", "os-prober"]);
+    install::install(vec![
+        "grub",
+        "efibootmgr",
+        "grub-btrfs",
+        "crystal-grub-theme",
+        "os-prober",
+    ]);
     let efidir = std::path::Path::new("/mnt").join(efidir);
     let efi_str = efidir.to_str().unwrap();
     if !std::path::Path::new(&format!("/mnt{efi_str}")).exists() {
@@ -66,7 +71,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
             "grub-install",
             vec![
                 String::from("--target=x86_64-efi"),
-                format!("--efi-directory={}" , efi_str),
+                format!("--efi-directory={}", efi_str),
                 String::from("--bootloader-id=crystal"),
                 String::from("--removable"),
             ],
@@ -85,8 +90,11 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
         "install grub as efi without --removable",
     );
     files_eval(
-        append_file("/mnt/etc/default/grub", "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\""),
-        "enable crystal grub theme"
+        append_file(
+            "/mnt/etc/default/grub",
+            "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\"",
+        ),
+        "enable crystal grub theme",
     );
     exec_eval(
         exec_chroot(
@@ -98,7 +106,12 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
 }
 
 pub fn install_bootloader_legacy(device: PathBuf) {
-    install::install(vec!["grub", "grub-btrfs", "crystal-grub-theme", "os-prober"]);
+    install::install(vec![
+        "grub",
+        "grub-btrfs",
+        "crystal-grub-theme",
+        "os-prober",
+    ]);
     if !device.exists() {
         crash(format!("The device {device:?} does not exist"), 1);
     }
@@ -111,8 +124,11 @@ pub fn install_bootloader_legacy(device: PathBuf) {
         "install grub as legacy",
     );
     files_eval(
-        append_file("/mnt/etc/default/grub", "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\""),
-        "enable crystal grub theme"
+        append_file(
+            "/mnt/etc/default/grub",
+            "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\"",
+        ),
+        "enable crystal grub theme",
     );
     exec_eval(
         exec_chroot(
@@ -138,7 +154,15 @@ pub fn install_homemgr() {
 pub fn install_flatpak() {
     install(vec!["flatpak"]);
     exec_eval(
-        exec_chroot("flatpak", vec![String::from("remote-add"), String::from("--if-not-exists"), String::from("flathub"), String::from("https://flathub.org/repo/flathub.flatpakrepo")]),
+        exec_chroot(
+            "flatpak",
+            vec![
+                String::from("remote-add"),
+                String::from("--if-not-exists"),
+                String::from("flathub"),
+                String::from("https://flathub.org/repo/flathub.flatpakrepo"),
+            ],
+        ),
         "add flathub remote",
     )
 }

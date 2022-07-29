@@ -1,11 +1,16 @@
+use crate::args::DesktopSetup;
+use crate::functions::partition::mount;
+use crate::functions::*;
 use crate::internal::exec::*;
 use crate::internal::*;
-use crate::functions::*;
-use crate::functions::partition::mount;
 use std::path::PathBuf;
-use crate::args::DesktopSetup;
 pub fn install_bootloader_efi(efidir: PathBuf) {
-    install::install(vec!["grub", "efibootmgr", "grub-btrfs", "crystal-grub-theme"]);
+    install::install(vec![
+        "grub",
+        "efibootmgr",
+        "grub-btrfs",
+        "crystal-grub-theme",
+    ]);
     let efidir = std::path::Path::new("/mnt").join(efidir);
     let efi_str = efidir.to_str().unwrap();
     if !std::path::Path::new(&format!("/mnt{efi_str}")).exists() {
@@ -16,7 +21,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
             "grub-install",
             vec![
                 String::from("--target=x86_64-efi"),
-                format!("--efi-directory={}" , efi_str),
+                format!("--efi-directory={}", efi_str),
                 String::from("--bootloader-id=unakite"),
                 String::from("--removable"),
             ],
@@ -35,8 +40,11 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
         "install unakite grub as efi without --removable",
     );
     files_eval(
-        files::append_file("/mnt/etc/default/grub", "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\""),
-        "enable crystal grub theme"
+        files::append_file(
+            "/mnt/etc/default/grub",
+            "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\"",
+        ),
+        "enable crystal grub theme",
     );
     exec_eval(
         exec_chroot(
@@ -50,88 +58,52 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
 pub fn remount(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev: &str, firstrun: bool) {
     if efi && firstrun {
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(bootdev)],
-            ),
+            exec("umount", vec![String::from(bootdev)]),
             &format!("Unmount {}", bootdev),
         );
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(oldroot)],
-            ),
+            exec("umount", vec![String::from(oldroot)]),
             "Unmount old root",
         );
         mount(root, "/mnt", "");
         exec_eval(
-            exec(
-                "mkdir",
-                vec![
-                    String::from("-p"),
-                    String::from(efidir),
-                ],
-            ),
+            exec("mkdir", vec![String::from("-p"), String::from(efidir)]),
             format!("Creating mountpoint {efidir} for {bootdev}").as_str(),
         );
         mount(bootdev, efidir, "");
     } else if efi && !firstrun {
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(bootdev)],
-            ),
+            exec("umount", vec![String::from(bootdev)]),
             &format!("Unmount {}", bootdev),
         );
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(root)],
-            ),
+            exec("umount", vec![String::from(root)]),
             "Unmount unakite root",
         );
         mount(oldroot, "/mnt", "");
         mount(bootdev, efidir, "");
     } else if !efi && firstrun {
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(bootdev)],
-            ),
+            exec("umount", vec![String::from(bootdev)]),
             &format!("Unmount {}", bootdev),
         );
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(oldroot)],
-            ),
+            exec("umount", vec![String::from(oldroot)]),
             "Unmount old root",
         );
         mount(root, "/mnt", "");
         exec_eval(
-            exec(
-                "mkdir",
-                vec![
-                    String::from("-p"),
-                    String::from("/mnt/boot"),
-                ],
-            ),
+            exec("mkdir", vec![String::from("-p"), String::from("/mnt/boot")]),
             format!("Creating mountpoint /boot for {bootdev}").as_str(),
         );
         mount(bootdev, "/mnt/boot", "");
     } else if !efi && !firstrun {
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(bootdev)],
-            ),
+            exec("umount", vec![String::from(bootdev)]),
             &format!("Unmount {}", bootdev),
         );
         exec_eval(
-            exec(
-                "umount",
-                vec![String::from(root)],
-            ),
+            exec("umount", vec![String::from(root)]),
             "Unmount unakite root",
         );
         mount(oldroot, "/mnt", "");
@@ -192,7 +164,7 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
             vec![
                 String::from("/tmp/jade.json"),
                 String::from("/mnt/etc/installSettings.json"),
-            ]
+            ],
         ),
         "Copy jade.json to /etc/installSettings.json in unakite",
     );
@@ -202,6 +174,6 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
             "grub-mkconfig",
             vec![String::from("-o"), String::from("/boot/grub/grub.cfg")],
         ),
-        "Recreate grub.cfg in crystal"
+        "Recreate grub.cfg in crystal",
     );
 }
