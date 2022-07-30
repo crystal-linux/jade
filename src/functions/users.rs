@@ -49,15 +49,10 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
 
 pub fn hash_pass(password: &str) -> std::process::Output {
     let output = Command::new("openssl")
-        .args([
-            "passwd",
-            "-1",
-            password
-        ])
+        .args(["passwd", "-1", password])
         .output()
         .expect("Failed to hash password");
     output
-
 }
 
 pub fn root_pass(root_pass: &str) {
@@ -66,9 +61,7 @@ pub fn root_pass(root_pass: &str) {
             "bash",
             vec![
                 String::from("-c"),
-                format!(
-                    r#"'usermod --password {root_pass} root'"#
-                ),
+                format!(r#"'usermod --password {root_pass} root'"#),
             ],
         ),
         "set root password",
