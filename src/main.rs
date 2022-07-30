@@ -14,12 +14,16 @@ fn main() {
     match opt.command {
         Command::Partition(args) => {
             let mut partitions = args.partitions;
-            partition::partition(args.device, args.mode, args.efi, &mut partitions, args.unakite);
+            partition::partition(
+                args.device,
+                args.mode,
+                args.efi,
+                &mut partitions,
+                args.unakite,
+            );
         }
         Command::InstallBase(args) => {
-            base::install_base_packages(
-                args.kernel,
-            );
+            base::install_base_packages(args.kernel);
         }
         Command::GenFstab => {
             base::genfstab();
@@ -49,7 +53,7 @@ fn main() {
         }
         Command::Users { subcommand } => match subcommand {
             UsersSubcommand::NewUser(args) => {
-                users::new_user(&args.username, args.hasroot, &args.password);
+                users::new_user(&args.username, args.hasroot, &args.password, true);
             }
             UsersSubcommand::RootPass { password } => {
                 users::root_pass(&password);
@@ -57,7 +61,7 @@ fn main() {
         },
         Command::Nix => {
             base::install_homemgr();
-        },
+        }
         Command::Flatpak => {
             base::install_flatpak();
         }
@@ -69,7 +73,7 @@ fn main() {
                 &args.efidir,
                 &args.bootdev,
             );
-        },
+        }
         Command::Config { config } => {
             crate::internal::config::read_config(config);
         }

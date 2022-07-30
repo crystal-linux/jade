@@ -32,7 +32,7 @@ pub fn copy_file(path: &str, destpath: &str) {
 pub fn append_file(path: &str, content: &str) -> std::io::Result<()> {
     log::info!("Append '{}' to file {}", content.trim_end(), path);
     let mut file = OpenOptions::new().append(true).open(path)?;
-    file.write_all(content.as_bytes())?;
+    file.write_all(format!("\n{content}\n").as_bytes())?;
     Ok(())
 }
 
