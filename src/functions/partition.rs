@@ -785,7 +785,7 @@ pub fn mount(partition: &str, mountpoint: &str, options: &str) {
     }
 }
 
-fn umount(mountpoint: &str) {
+pub fn umount(mountpoint: &str) {
     exec_eval(
         exec("umount", vec![String::from(mountpoint)]),
         format!("unmount {}", mountpoint).as_str(),
