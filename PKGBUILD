@@ -1,14 +1,14 @@
 # Maintainer: Matt C <matt[at]getcryst[dot]al>
 
 pkgname=jade
-pkgver=1.0.5
+pkgver=1.0.6
 pkgrel=2
 pkgdesc="Scriptable backend & TUI Installer for Crystal Linux"
 license=('GPL3')
 arch=('x86_64')
-url="https://git.tar.black/crystal/programs/jade"
+url="https://github.com/crystal-linux/jade"
 license=('Nolicense')
-source=("git+https://git.tar.black/crystal/programs/jade")
+source=("git+$url")
 sha256sums=('SKIP')
 depends=('parted')
 makedepends=('cargo')
