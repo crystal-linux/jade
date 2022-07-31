@@ -155,6 +155,8 @@ fn install_gnome() {
         "gdm",
         "xorg",
         "gnome-tweaks",
+        "gnome-backgrounds",
+        "sushi",
     ]);
     enable_dm("gdm");
 }
@@ -166,6 +168,7 @@ fn install_onyx() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
+        "sushi",
     ]);
     files_eval(
         files::append_file(

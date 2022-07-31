@@ -1,5 +1,4 @@
 use crate::internal::*;
-use crate::functions::partition::mount;
 use crate::functions::partition::umount;
 use std::process::Command;
 
