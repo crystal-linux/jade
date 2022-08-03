@@ -58,11 +58,11 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
     }
     let shell_path = match shell {
         "bash" => "/bin/bash",
-        "csh" => "/bin/csh",
-        "fish" => "/bin/fish",
-        "tcsh" => "/bin/tcsh",
-        "zsh" => "/bin/zsh",
-        &_ => "/bin/fish",
+        "csh" => "/usr/bin/csh",
+        "fish" => "/usr/bin/fish",
+        "tcsh" => "/usr/bin/tcsh",
+        "zsh" => "/usr/bin/zsh",
+        &_ => "/usr/bin/fish",
     };
     exec_eval(
         exec_chroot(
