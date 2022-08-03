@@ -3,7 +3,7 @@ use crate::internal::*;
 use std::process::Command;
 
 pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: bool, shell: &str) {
-    let mut shell: &str = shell;
+    let shell: &str = shell;
     if do_hash_pass {
         let hashed_pass = &*hash_pass(password).stdout;
         let _password = match std::str::from_utf8(hashed_pass) {
@@ -11,51 +11,25 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
             Err(e) => panic!("Failed to hash password, invalid UTF-8 sequence {}", e),
         };
     }
-    if shell == "fish" {
-         exec_eval(
-            exec_chroot(
-                "bash",
-                vec![
-                    String::from("pacman -S fish --noconfirm"),
-                ],
-            ),
-            "installed fish",
-        );
-    }
-    if shell == "zsh" {
-        exec_eval(
-            exec_chroot(
-                "bash",
-                vec![
-                    String::from("pacman -S zsh --noconfirm"),
-                ],
-            ),
-            "installed zsh",
-        );
-    }
-    else if shell == "tcsh" || shell == "csh" {
-        exec_eval(
-            exec_chroot(
-                "bash",
-                vec![
-                    String::from("pacman -S tcsh --noconfirm"),
-                ],
-            ),
-            "installed tcsh and csh",
-        );
-    }
-    else {
-        exec_eval(
-            exec_chroot(
-                "bash",
-                vec![
-                    String::from("pacman -S fish --noconfirm"),
-                ],
-            ),
-            "no shell or unknown shell specified, installed fish",
-        );
-        shell = "fish";
-    }
+    let shell_to_install = match shell {
+        "bash" => "bash",
+        "csh" => "tcsh",
+        "fish" => "fish",
+        "tcsh" => "tcsh",
+        "zsh" => "zsh",
+        &_ => "bash",
+    };
+    exec_eval(
+        exec_chroot(
+            "bash",
+            vec![
+                String::from("pacman -S "),
+                String::from(shell_to_install),
+                String::from("--noconfirm"),
+            ],
+        ),
+        format!("installed {shell:?}").as_str(),
+    );
     let shell_path = match shell {
         "bash" => "/bin/bash",
         "csh" => "/usr/bin/csh",
@@ -103,7 +77,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
 
 pub fn hash_pass(password: &str) -> std::process::Output {
     let output = Command::new("openssl")
-        .args(["passwd", "-6", password])
+        .args(["passwd", "-1", password])
         .output()
         .expect("Failed to hash password");
     output
