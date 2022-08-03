@@ -127,6 +127,7 @@ pub fn setup_unakite(root: &str, oldroot: &str, efi: bool, efidir: &str, bootdev
         true,
         "Cp7oN04ZY0PsA", // unakite
         false,
+        "/bin/bash",
     );
     exec_eval(
         exec(
