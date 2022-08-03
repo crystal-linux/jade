@@ -2,7 +2,8 @@ use crate::internal::exec::*;
 use crate::internal::*;
 use std::process::Command;
 
-pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: bool) {
+pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: bool, shell: &str) {
+    let shell: &str = shell;
     if do_hash_pass {
         let hashed_pass = &*hash_pass(password).stdout;
         let _password = match std::str::from_utf8(hashed_pass) {
@@ -10,13 +11,40 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
             Err(e) => panic!("Failed to hash password, invalid UTF-8 sequence {}", e),
         };
     }
+    let shell_to_install = match shell {
+        "bash" => "bash",
+        "csh" => "tcsh",
+        "fish" => "fish",
+        "tcsh" => "tcsh",
+        "zsh" => "zsh",
+        &_ => "bash",
+    };
+    exec_eval(
+        exec_chroot(
+            "bash",
+            vec![
+                String::from("pacman -S "),
+                String::from(shell_to_install),
+                String::from("--noconfirm"),
+            ],
+        ),
+        format!("installed {shell:?}").as_str(),
+    );
+    let shell_path = match shell {
+        "bash" => "/bin/bash",
+        "csh" => "/usr/bin/csh",
+        "fish" => "/usr/bin/fish",
+        "tcsh" => "/usr/bin/tcsh",
+        "zsh" => "/usr/bin/zsh",
+        &_ => "/usr/bin/fish",
+    };
     exec_eval(
         exec_chroot(
             "useradd",
             vec![
                 String::from("-m"),
                 String::from("-s"),
-                String::from("/bin/bash"),
+                String::from(shell_path),
                 String::from("-p"),
                 String::from(password).replace('\n', ""),
                 String::from(username),
@@ -67,3 +95,4 @@ pub fn root_pass(root_pass: &str) {
         "set root password",
     );
 }
+

@@ -53,6 +53,7 @@ struct Users {
     name: String,
     password: String,
     hasroot: bool,
+    shell: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -138,11 +139,13 @@ pub fn read_config(configpath: PathBuf) {
         log::info!("Creating user : {}", config.users[i].name);
         log::info!("Setting use password : {}", config.users[i].password);
         log::info!("Enabling root for user : {}", config.users[i].hasroot);
+        log::info!("Setting user shell : {}", config.users[i].shell);
         users::new_user(
             config.users[i].name.as_str(),
             config.users[i].hasroot,
             config.users[i].password.as_str(),
             false,
+            config.users[i].shell.as_str(),
         );
         println!("---------");
     }
