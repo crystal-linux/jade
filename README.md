@@ -67,17 +67,17 @@ jade networking getcryst.al --ipv6
 
 ### configure users
 ```sh
-# make a new user called nonRootHaver, without sudo and easytohack as the password
-jade users newUser nonRootHaver easytohack
+# make a new user called nonRootHaver, without sudo, easytohack as the password and bash as the default shell
+jade users new-user nonRootHaver easytohack bash
 
-# make a user called rootHaver, with sudo and omgsosuperhardtohack as the password
-jade users newUser rootHaver omgsuperhardtohack --sudoer
+# make a user called rootHaver, with sudo, omgsosuperhardtohack as the password and fish as the default shell
+jade users new-user rootHaver omgsuperhardtohack fish --hasroot
 ```
 
 ### set root password
 ```sh
 # set the root password to 'muchSecurity,veryHardToHack'
-jade users rootPass muchSecurity,veryHardToHack
+jade users root-password muchSecurity,veryHardToHack
 ```
 
 ### install a desktop environment
