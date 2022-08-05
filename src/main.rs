@@ -53,7 +53,13 @@ fn main() {
         }
         Command::Users { subcommand } => match subcommand {
             UsersSubcommand::NewUser(args) => {
-                users::new_user(&args.username, args.hasroot, &args.password, true, &args.shell);
+                users::new_user(
+                    &args.username,
+                    args.hasroot,
+                    &args.password,
+                    true,
+                    &args.shell,
+                );
             }
             UsersSubcommand::RootPass { password } => {
                 users::root_pass(&password);

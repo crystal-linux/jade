@@ -95,4 +95,3 @@ pub fn root_pass(root_pass: &str) {
         "set root password",
     );
 }
-

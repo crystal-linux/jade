@@ -1,5 +1,5 @@
-use crate::internal::*;
 use crate::functions::partition::umount;
+use crate::internal::*;
 use std::process::Command;
 
 pub fn install(pkgs: Vec<&str>) {

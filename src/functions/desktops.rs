@@ -5,7 +5,7 @@ use crate::internal::*;
 pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
     log::debug!("Installing {:?}", desktop_setup);
     match desktop_setup {
-       // DesktopSetup::Onyx => install_onyx(),
+        // DesktopSetup::Onyx => install_onyx(),
         DesktopSetup::Gnome => install_gnome(),
         DesktopSetup::Kde => install_kde(),
         DesktopSetup::Budgie => install_budgie(),

@@ -238,7 +238,6 @@ pub struct NewUserArgs {
 pub enum DesktopSetup {
     //#[clap(name = "onyx")]
     //Onyx,
-
     #[clap(name = "gnome")]
     Gnome,
 
