@@ -158,7 +158,7 @@ pub fn read_config(configpath: PathBuf) {
         desktops::install_desktop_setup(*desktop);
     }*/
     match config.desktop.as_str() {
-        "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
+       // "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
         "plasma" => desktops::install_desktop_setup(DesktopSetup::Kde),
         "mate" => desktops::install_desktop_setup(DesktopSetup::Mate),
         "gnome" => desktops::install_desktop_setup(DesktopSetup::Gnome),

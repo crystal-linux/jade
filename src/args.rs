@@ -236,8 +236,8 @@ pub struct NewUserArgs {
 
 #[derive(Debug, ArgEnum, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Serialize, Deserialize)]
 pub enum DesktopSetup {
-    #[clap(name = "onyx")]
-    Onyx,
+    //#[clap(name = "onyx")]
+    //Onyx,
 
     #[clap(name = "gnome")]
     Gnome,
