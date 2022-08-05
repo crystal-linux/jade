@@ -228,13 +228,16 @@ pub struct NewUserArgs {
     /// When not providing a password openssl jumps into an interactive masked input mode allowing you to hide your password
     /// from the terminal history.
     pub password: String,
+
+    /// The shell to use for the user. The current options are bash, csh, fish, tcsh, and zsh.
+    /// If a shell is not specified or unknown, it defaults to fish.
+    pub shell: String,
 }
 
 #[derive(Debug, ArgEnum, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Serialize, Deserialize)]
 pub enum DesktopSetup {
-    #[clap(name = "onyx")]
-    Onyx,
-
+    //#[clap(name = "onyx")]
+    //Onyx,
     #[clap(name = "gnome")]
     Gnome,
 
@@ -255,6 +258,24 @@ pub enum DesktopSetup {
 
     #[clap(name = "enlightenment")]
     Enlightenment,
+
+    #[clap(name = "lxqt")]
+    Lxqt,
+
+    #[clap(name = "sway")]
+    Sway,
+
+    #[clap(name = "i3gaps")]
+    I3gaps,
+
+    #[clap(name = "herbstluftwm")]
+    Herbstluftwm,
+
+    #[clap(name = "awesome")]
+    Awesome,
+
+    #[clap(name = "bspwm")]
+    Bspwm,
 
     #[clap(name = "None/DIY")]
     None,

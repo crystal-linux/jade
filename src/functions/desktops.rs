@@ -5,7 +5,7 @@ use crate::internal::*;
 pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
     log::debug!("Installing {:?}", desktop_setup);
     match desktop_setup {
-        DesktopSetup::Onyx => install_onyx(),
+        // DesktopSetup::Onyx => install_onyx(),
         DesktopSetup::Gnome => install_gnome(),
         DesktopSetup::Kde => install_kde(),
         DesktopSetup::Budgie => install_budgie(),
@@ -13,6 +13,12 @@ pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
         DesktopSetup::Mate => install_mate(),
         DesktopSetup::Xfce => install_xfce(),
         DesktopSetup::Enlightenment => install_enlightenment(),
+        DesktopSetup::Lxqt => install_lxqt(),
+        DesktopSetup::Sway => install_sway(),
+        DesktopSetup::I3gaps => install_i3gaps(),
+        DesktopSetup::Herbstluftwm => install_herbstluftwm(),
+        DesktopSetup::Awesome => install_awesome(),
+        DesktopSetup::Bspwm => install_bspwm(),
         DesktopSetup::None => log::debug!("No desktop setup selected"),
     }
     install_networkmanager();
@@ -27,6 +33,126 @@ fn install_networkmanager() {
         ),
         "Enable network manager",
     );
+}
+
+fn install_bspwm() {
+    install(vec![
+        "xorg",
+        "bspwm",
+        "sxhkd",
+        "xdo",
+        "lightdm",
+        "lightdm-gtk-greeter",
+        "lightdm-gtk-greeter-settings",
+    ]);
+    files_eval(
+        files::append_file(
+            "/mnt/etc/lightdm/lightdm.conf",
+            "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
+        ),
+        "Add lightdm greeter",
+    );
+    enable_dm("lightdm");
+}
+
+fn install_awesome() {
+    install(vec![
+        "xorg",
+        "awesome",
+        "dex",
+        "rlwrap",
+        "vicious",
+        "lightdm",
+        "lightdm-gtk-greeter",
+        "lightdm-gtk-greeter-settings",
+    ]);
+    files_eval(
+        files::append_file(
+            "/mnt/etc/lightdm/lightdm.conf",
+            "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
+        ),
+        "Add lightdm greeter",
+    );
+    enable_dm("lightdm");
+}
+
+fn install_herbstluftwm() {
+    install(vec![
+        "xorg",
+        "herbstluftwm",
+        "dmenu",
+        "dzen2",
+        "xorg-xsetroot",
+        "xterm",
+        "lightdm",
+        "lightdm-gtk-greeter",
+        "lightdm-gtk-greeter-settings",
+    ]);
+    files_eval(
+        files::append_file(
+            "/mnt/etc/lightdm/lightdm.conf",
+            "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
+        ),
+        "Add lightdm greeter",
+    );
+    enable_dm("lightdm");
+}
+
+fn install_i3gaps() {
+    install(vec![
+        "xorg",
+        "i3-gaps",
+        "dmenu",
+        "i3lock",
+        "i3status",
+        "rxvt-unicode",
+        "lightdm",
+        "lightdm-gtk-greeter",
+        "lightdm-gtk-greeter-settings",
+    ]);
+    files_eval(
+        files::append_file(
+            "/mnt/etc/lightdm/lightdm.conf",
+            "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
+        ),
+        "Add lightdm greeter",
+    );
+    enable_dm("lightdm");
+}
+
+fn install_sway() {
+    install(vec![
+        "xorg-xwayland",
+        "sway",
+        "bemenu",
+        "foot",
+        "mako",
+        "polkit",
+        "swaybg",
+        "lightdm",
+        "lightdm-gtk-greeter",
+        "lightdm-gtk-greeter-settings",
+    ]);
+    files_eval(
+        files::append_file(
+            "/mnt/etc/lightdm/lightdm.conf",
+            "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
+        ),
+        "Add lightdm greeter",
+    );
+    enable_dm("lightdm");
+}
+
+fn install_lxqt() {
+    install(vec![
+        "xorg",
+        "lxqt",
+        "breeze-icons",
+        "nm-tray",
+        "xscreensaver",
+        "sddm",
+    ]);
+    enable_dm("sddm");
 }
 
 fn install_enlightenment() {
@@ -155,6 +281,8 @@ fn install_gnome() {
         "gdm",
         "xorg",
         "gnome-tweaks",
+        "gnome-backgrounds",
+        "sushi",
     ]);
     enable_dm("gdm");
 }
@@ -166,6 +294,7 @@ fn install_onyx() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
+        "sushi",
     ]);
     files_eval(
         files::append_file(

@@ -53,6 +53,7 @@ struct Users {
     name: String,
     password: String,
     hasroot: bool,
+    shell: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -138,11 +139,13 @@ pub fn read_config(configpath: PathBuf) {
         log::info!("Creating user : {}", config.users[i].name);
         log::info!("Setting use password : {}", config.users[i].password);
         log::info!("Enabling root for user : {}", config.users[i].hasroot);
+        log::info!("Setting user shell : {}", config.users[i].shell);
         users::new_user(
             config.users[i].name.as_str(),
             config.users[i].hasroot,
             config.users[i].password.as_str(),
             false,
+            config.users[i].shell.as_str(),
         );
         println!("---------");
     }
@@ -155,7 +158,7 @@ pub fn read_config(configpath: PathBuf) {
         desktops::install_desktop_setup(*desktop);
     }*/
     match config.desktop.as_str() {
-        "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
+        // "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
         "plasma" => desktops::install_desktop_setup(DesktopSetup::Kde),
         "mate" => desktops::install_desktop_setup(DesktopSetup::Mate),
         "gnome" => desktops::install_desktop_setup(DesktopSetup::Gnome),
@@ -163,6 +166,12 @@ pub fn read_config(configpath: PathBuf) {
         "xfce" => desktops::install_desktop_setup(DesktopSetup::Xfce),
         "budgie" => desktops::install_desktop_setup(DesktopSetup::Budgie),
         "enlightenment" => desktops::install_desktop_setup(DesktopSetup::Enlightenment),
+        "lxqt" => desktops::install_desktop_setup(DesktopSetup::Lxqt),
+        "sway" => desktops::install_desktop_setup(DesktopSetup::Sway),
+        "i3-gaps" => desktops::install_desktop_setup(DesktopSetup::I3gaps),
+        "herbstluftwm" => desktops::install_desktop_setup(DesktopSetup::Herbstluftwm),
+        "awesome" => desktops::install_desktop_setup(DesktopSetup::Awesome),
+        "bspwm" => desktops::install_desktop_setup(DesktopSetup::Bspwm),
         "None/DIY" => desktops::install_desktop_setup(DesktopSetup::None),
         _ => log::info!("No desktop setup selected!"),
     }
