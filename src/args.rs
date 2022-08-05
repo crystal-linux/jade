@@ -260,6 +260,24 @@ pub enum DesktopSetup {
     #[clap(name = "enlightenment")]
     Enlightenment,
 
+    #[clap(name = "lxqt")]
+    Lxqt,
+
+    #[clap(name = "sway")]
+    Sway,
+
+    #[clap(name = "i3gaps")]
+    I3gaps,
+
+    #[clap(name = "herbstluftwm")]
+    Herbstluftwm,
+
+    #[clap(name = "awesome")]
+    Awesome,
+
+    #[clap(name = "bspwm")]
+    Bspwm,
+
     #[clap(name = "None/DIY")]
     None,
 }

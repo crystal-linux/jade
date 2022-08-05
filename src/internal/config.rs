@@ -166,6 +166,12 @@ pub fn read_config(configpath: PathBuf) {
         "xfce" => desktops::install_desktop_setup(DesktopSetup::Xfce),
         "budgie" => desktops::install_desktop_setup(DesktopSetup::Budgie),
         "enlightenment" => desktops::install_desktop_setup(DesktopSetup::Enlightenment),
+        "lxqt" => desktops::install_desktop_setup(DesktopSetup::Lxqt),
+        "sway" => desktops::install_desktop_setup(DesktopSetup::Sway),
+        "i3-gaps" => desktops::install_desktop_setup(DesktopSetup::I3gaps),
+        "herbstluftwm" => desktops::install_desktop_setup(DesktopSetup::Herbstluftwm),
+        "awesome" => desktops::install_desktop_setup(DesktopSetup::Awesome),
+        "bspwm" => desktops::install_desktop_setup(DesktopSetup::Bspwm),
         "None/DIY" => desktops::install_desktop_setup(DesktopSetup::None),
         _ => log::info!("No desktop setup selected!"),
     }
