@@ -2,7 +2,7 @@
 
 pkgname=jade
 pkgver=1.0.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Scriptable backend & TUI Installer for Crystal Linux"
 license=('GPL3')
 arch=('x86_64')
