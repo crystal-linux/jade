@@ -14,11 +14,7 @@
     <a href="https://twitter.com/crystal_linux"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/crystal_linux"></a>
 </p>
 
-<p align="center">Jade is the backend and TUI installer for crystal linux.</p>
-
-## Use the TUI (not implemented yet)
-just run <br>
-`jade`
+<p align="center">Jade is an intaller backend for crystal linux.</p>
 
 ## Backend usage
 
