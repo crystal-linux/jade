@@ -58,6 +58,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
         "grub",
         "efibootmgr",
         "grub-btrfs",
+        "crystal-grub-theme",
         "os-prober",
     ]);
     let efidir = std::path::Path::new("/mnt").join(efidir);
@@ -87,6 +88,13 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
             ],
         ),
         "install grub as efi without --removable",
+    );
+    files_eval(
+        append_file(
+            "/mnt/etc/default/grub",
+            "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\"",
+        ),
+        "enable crystal grub theme",
     );
     exec_eval(
         exec_chroot(
