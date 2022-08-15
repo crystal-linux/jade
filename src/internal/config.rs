@@ -157,9 +157,9 @@ pub fn read_config(configpath: PathBuf) {
     /*if let Some(desktop) = &config.desktop {
         desktops::install_desktop_setup(*desktop);
     }*/
-    match config.desktop.as_str() {
+    match config.desktop.to_lowercase().as_str() {
         // "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
-        "plasma" => desktops::install_desktop_setup(DesktopSetup::Kde),
+        "kde" => desktops::install_desktop_setup(DesktopSetup::Kde),
         "mate" => desktops::install_desktop_setup(DesktopSetup::Mate),
         "gnome" => desktops::install_desktop_setup(DesktopSetup::Gnome),
         "cinnamon" => desktops::install_desktop_setup(DesktopSetup::Cinnamon),
@@ -172,7 +172,7 @@ pub fn read_config(configpath: PathBuf) {
         "herbstluftwm" => desktops::install_desktop_setup(DesktopSetup::Herbstluftwm),
         "awesome" => desktops::install_desktop_setup(DesktopSetup::Awesome),
         "bspwm" => desktops::install_desktop_setup(DesktopSetup::Bspwm),
-        "None/DIY" => desktops::install_desktop_setup(DesktopSetup::None),
+        "none/diy" => desktops::install_desktop_setup(DesktopSetup::None),
         _ => log::info!("No desktop setup selected!"),
     }
     println!();
