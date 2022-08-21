@@ -168,7 +168,7 @@ pub fn install_flatpak() {
 }
 
 pub fn install_zram() {
-    install(vec!["zram"]);
+    install(vec!["zramd"]);
     exec_eval(
         exec_chroot(
             "systemctl",
