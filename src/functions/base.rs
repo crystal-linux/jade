@@ -166,3 +166,14 @@ pub fn install_flatpak() {
         "add flathub remote",
     )
 }
+
+pub fn install_zram() {
+    install(vec!["zram"]);
+    exec_eval(
+        exec_chroot(
+            "systemctl",
+            vec![String::from("enable"), String::from("zramd")],
+        ),
+        "Enable zramd service",
+    );
+}
