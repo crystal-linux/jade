@@ -45,8 +45,8 @@ pub enum Command {
     #[clap(name = "networking")]
     Networking(NetworkingArgs),
 
-    /// Set up zram
-    #[clap(name = "zram")]
+    /// Set up zramd
+    #[clap(name = "zramd")]
     Zram,
 
     /// Configure users and passwords

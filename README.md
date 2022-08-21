@@ -61,6 +61,12 @@ jade networking getcryst.al
 jade networking getcryst.al --ipv6
 ```
 
+### setup zramd
+```sh
+# install and enable zramd
+jade zramd
+```
+
 ### configure users
 ```sh
 # make a new user called nonRootHaver, without sudo, easytohack as the password and bash as the default shell
