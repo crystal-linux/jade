@@ -2,11 +2,15 @@
     "partition": {
         "device": "sda",
         "mode": "auto",
-        "efi": true
+        "efi": true,
+        "partitions": [
+            "/home:sdb:btrfs" // This would be disk /dev/sdb, formatted with btrfs mounted at /home
+        ] // this is only needed for manual partitioning, it would contain all the partitions for jade to use and the filesystem as well as mountpoint
+          // Note that the mountpoint has the root at the installation destination, so instead of /mnt/boot it would be /boot
     },
     "bootloader": {
-        "type": "grub-efi",
-        "location": "/boot/efi"
+        "type": "grub-efi", // for legacy this would be grub-legacy
+        "location": "/boot/efi" // for efi this is the esp directory, for legacy boot this would be the device on which to install grub on
     },
     "locale": {
         "locale": [
@@ -22,22 +26,27 @@
     "users": [
         {
             "name": "jade",
-            "password": "jade",
-            "hasroot": true
+            "password": "TaCVRgYCAHag6", // The password has to be encrypted with `openssl passwd -crypt <passord>`
+            "hasroot": true,
+            "shell": "bash" // this can be either bash, csh, fish, tcsh or zsh. If a value is not recognized the default will be bash
         },
-        {
+        { // Multiple users can be specified by just following this format
             "name": "jade2",
-            "password": "jade2",
-            "hasroot": false
+            "password": "TzSMi3EezsXZM",
+            "hasroot": false,
+            "shell": "fish"
         }
-    ],
-    "rootpass": "jaderoot",
-    "desktop": "onyx",
-    "timeshift": true,
+    ], 
+    "rootpass": "3IwCDE/t39wuQ", // Same as other passwords, this has to be encrypted with `openssl passwd -crypt <password>`
+    "desktop": "onyx", // The desktop environment to install can be onyx, gnome, kde, mate, cinnamon, xfce, budgie, enlightenment, etc. for a full list check https://github.com/crystal-linux/jade/blob/main/src/internal/config.rs#L162
+    "timeshift": true, // Whether to enable timeshift as well as timeshift-autosnap, note that this may only work with root on btrfs
+    "zramd": true, // Whether to enable zramd
     "extra_packages": [
         "firefox",
         "vim",
         "git",
         "tmux"
-    ]
+    ],
+    "unakite": false, // Whether to install the recorvery partition, note that this currently is just a secondary smaller crystal installation
+    "kernel": "linux" // which kernel to install, available options are linux, linux-zen, linux-lts, linux-hardened. When an unknown option is passed it will default to linux
 }
