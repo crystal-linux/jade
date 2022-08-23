@@ -287,7 +287,7 @@ fn install_gnome() {
     enable_dm("gdm");
 }
 
-fn install_onyx() {
+/*fn install_onyx() {
     install(vec![
         "xorg",
         "onyx",
@@ -304,7 +304,7 @@ fn install_onyx() {
         "Add lightdm greeter",
     );
     enable_dm("lightdm");
-}
+}*/
 
 fn enable_dm(dm: &str) {
     log::debug!("Enabling {}", dm);

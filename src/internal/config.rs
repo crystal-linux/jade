@@ -16,6 +16,7 @@ struct Config {
     desktop: String,
     timeshift: bool,
     flatpak: bool,
+    zramd: bool,
     extra_packages: Vec<String>,
     unakite: Unakite,
     kernel: String,
@@ -132,6 +133,12 @@ pub fn read_config(configpath: PathBuf) {
     network::create_hosts();
     if config.networking.ipv6 {
         network::enable_ipv6();
+    }
+    println!();
+    println!("---------");
+    log::info!("Enabling zramd : {}", config.zramd);
+    if config.zramd {
+        base::install_zram();
     }
     println!();
     println!("---------");

@@ -51,6 +51,9 @@ fn main() {
             }
             network::set_hostname(&args.hostname);
         }
+        Command::Zram => {
+            base::install_zram();
+        }
         Command::Users { subcommand } => match subcommand {
             UsersSubcommand::NewUser(args) => {
                 users::new_user(
