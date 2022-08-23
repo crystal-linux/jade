@@ -47,6 +47,12 @@
         "git",
         "tmux"
     ],
-    "unakite": false, // Whether to install the recorvery partition, note that this currently is just a secondary smaller crystal installation
+    "unakite": {
+        "enable": false, // Whether to install the recorvery partition, note that this currently is just a secondary smaller crystal installation
+        "root": "/dev/sda2", // The root partition for unakite
+        "oldroot": "/dev/sda3", // The root partition that the main crystal installation uses
+        "efidir": "/boot/efi", // The esp mountpoint in unakite, note that this is only read when using it on an efi system
+        "bootdev": "/dev/sda1" // the partition for the boot/efi partition
+    },
     "kernel": "linux" // which kernel to install, available options are linux, linux-zen, linux-lts, linux-hardened. When an unknown option is passed it will default to linux
 }
