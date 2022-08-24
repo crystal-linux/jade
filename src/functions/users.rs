@@ -19,17 +19,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
         "zsh" => "zsh",
         &_ => "bash",
     };
-    exec_eval(
-        exec_chroot(
-            "bash",
-            vec![
-                String::from("pacman -S "),
-                String::from(shell_to_install),
-                String::from("--noconfirm"),
-            ],
-        ),
-        format!("installed {shell:?}").as_str(),
-    );
+    install::install(vec![shell_to_install]);
     let shell_path = match shell {
         "bash" => "/bin/bash",
         "csh" => "/usr/bin/csh",
