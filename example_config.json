@@ -1,7 +1,7 @@
 {
     "partition": {
         "device": "sda",
-        "mode": "auto",
+        "mode": "Auto",
         "efi": true,
         "partitions": [
             "/home:sdb:btrfs" // This would be disk /dev/sdb, formatted with btrfs mounted at /home
