@@ -6,7 +6,6 @@ use std::path::PathBuf;
 
 pub fn install_base_packages(kernel: String) {
     std::fs::create_dir_all("/mnt/etc").unwrap();
-    files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
     let kernel_to_install = if kernel.is_empty() {
         "linux"
     } else {
@@ -38,6 +37,7 @@ pub fn install_base_packages(kernel: String) {
         "btrfs-progs",
         "which",
     ]);
+    files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
 }
 
 pub fn genfstab() {
