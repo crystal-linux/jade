@@ -41,6 +41,7 @@ fn install_bspwm() {
         "bspwm",
         "sxhkd",
         "xdo",
+        "xterm",
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
@@ -57,11 +58,12 @@ fn install_bspwm() {
 
 fn install_awesome() {
     install(vec![
-        "xorg",
+        "xorg", "xterm",
         "awesome",
         "dex",
         "rlwrap",
         "vicious",
+        "xterm",
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
@@ -106,6 +108,7 @@ fn install_i3gaps() {
         "i3lock",
         "i3status",
         "rxvt-unicode",
+        "xterm",
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
