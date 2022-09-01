@@ -229,6 +229,7 @@ fn install_cinnamon() {
         "lightdm-gtk-greeter-settings",
         "metacity",
         "gnome-shell",
+        "gnome-terminal",
     ]);
     files_eval(
         files::append_file(
