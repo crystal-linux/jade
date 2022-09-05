@@ -12,23 +12,18 @@
       naersk-lib = naersk.lib."${system}";
     in rec 
     {
-      packages.amethyst = naersk-lib.buildPackage {
-        pname = "ame";
+      packages.jade = naersk-lib.buildPackage {
+        pname = "jade";
         root = ./.;
-        nativeBuildInputs = with pkgs; [
-          openssl
-          sqlite
-          pkg-config
-        ];
       };
       
-      packages.default = packages.amethyst;
+      packages.default = packages.jade;
 
-      apps.amethyst = utils.lib.mkApp {
-        drv = packages.amethyst;
+      apps.jade = utils.lib.mkApp {
+        drv = packages.jade;
       };
       
-      apps.default = apps.amethyst;
+      apps.default = apps.jade;
 
       devShells.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
@@ -37,9 +32,6 @@
           rustfmt
           cargo-audit
           clippy
-          openssl
-          sqlite
-          pkg-config
         ];
       };
     });
