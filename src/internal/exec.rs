@@ -10,7 +10,7 @@ pub fn exec_chroot(
     args: Vec<String>,
 ) -> Result<std::process::ExitStatus, std::io::Error> {
     let returncode = Command::new("bash")
-        .args(&[
+        .args([
             "-c",
             format!("arch-chroot /mnt {} {}", command, args.join(" ")).as_str(),
         ])
