@@ -58,7 +58,7 @@ fn install_bspwm() {
 
 fn install_awesome() {
     install(vec![
-        "xorg", "xterm",
+        "xorg",
         "awesome",
         "dex",
         "rlwrap",
