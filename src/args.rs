@@ -26,7 +26,7 @@ pub enum Command {
     #[clap(name = "genfstab")]
     GenFstab,
 
-    /// Setup timeshift
+    /// Setup Timeshift
     #[clap(name = "setup-timeshift")]
     SetupTimeshift,
 
@@ -37,11 +37,11 @@ pub enum Command {
         subcommand: BootloaderSubcommand,
     },
 
-    /// Set locale stuff
+    /// Set locale
     #[clap(name = "locale")]
     Locale(LocaleArgs),
 
-    /// Set networking stuff
+    /// Set up networking
     #[clap(name = "networking")]
     Networking(NetworkingArgs),
 
@@ -56,26 +56,26 @@ pub enum Command {
         subcommand: UsersSubcommand,
     },
 
-    /// Install the nix package manager
+    /// Install the Nix package manager
     #[clap(name = "nix")]
     Nix,
 
-    /// Install flatpak and enable flathub
+    /// Install Flatpak and enable FlatHub
     #[clap(name = "flatpak")]
     Flatpak,
 
-    /// Setup unakite
+    /// Setup Unakite
     #[clap(name = "unakite")]
     Unakite(UnakiteArgs),
 
-    /// Read jade installation config
+    /// Read Jade installation config
     #[clap(name = "config")]
     Config {
-        /// The config to read
+        /// The config file to read
         config: PathBuf,
     },
 
-    /// Install a graphical desktop setup
+    /// Install a graphical desktop
     #[clap(name = "desktops")]
     Desktops {
         /// The desktop setup to use
@@ -115,19 +115,19 @@ pub struct InstallBaseArgs {
 
 #[derive(Debug, Args)]
 pub struct UnakiteArgs {
-    /// root device of unakite
+    /// Root device of Unakite
     #[clap(long)]
     pub root: String,
-    /// root device of crystal
+    /// Root device of Crystal
     #[clap(long)]
     pub oldroot: String,
-    /// wether it is efi
+    /// Whether the system is an EFI system
     #[clap(long)]
     pub efi: bool,
-    /// boot directory (if not efi) or efi directory (if efi)
+    /// Boot directory (if not EFI), or EFI directory
     #[clap(long)]
     pub efidir: String,
-    /// device of boot device
+    /// Blockdev of boot device
     #[clap(long)]
     pub bootdev: String,
 }
@@ -168,14 +168,14 @@ pub enum PartitionMode {
 
 #[derive(Debug, Subcommand)]
 pub enum BootloaderSubcommand {
-    /// Install grub in efi mode
+    /// Install GRUB in EFI mode
     #[clap(name = "grub-efi")]
     GrubEfi {
         /// The directory to install the EFI bootloader to
         efidir: PathBuf,
     },
 
-    /// Install grub in legacy (BIOS) mode
+    /// Install GRUB in legacy (BIOS) mode
     #[clap(name = "grub-legacy")]
     GrubLegacy {
         /// The device to install the bootloader to
@@ -200,7 +200,7 @@ pub struct NetworkingArgs {
     /// The hostname to assign to the system
     pub hostname: String,
 
-    /// Whether ipv6 should be enabled
+    /// Whether IPv6 loopback should be enabled
     #[clap(long)]
     pub ipv6: bool,
 }
