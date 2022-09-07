@@ -36,6 +36,17 @@ pub fn append_file(path: &str, content: &str) -> std::io::Result<()> {
     Ok(())
 }
 
+pub fn sed_file(path: &str, find: &str, replace: &str) -> std::io::Result<()> {
+    log::info!("Sed '{}' to '{}' in file {}", find, replace, path);
+    let mut file = OpenOptions::new().read(true).write(true).open(path)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    contents = contents.replace(find, replace);
+    file.set_len(0)?;
+    file.write_all(contents.as_bytes())?;
+    Ok(())
+}
+
 pub fn create_directory(path: &str) -> std::io::Result<()> {
     std::fs::create_dir(path)
 }
