@@ -1,0 +1,31 @@
+name: Lint Code
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  formatting:
+    name: cargo fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+      - name: Format
+        uses: actions-rust-lang/rustfmt@v1.0.0
+  clippy:
+    name: cargo clippy
+    runs-on: ubuntu-latest
+    container: ghcr.io/crystal-linux/crystal:latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: |
+          sudo pacman -Syu --needed --noconfirm
+          sudo pacman -S --noconfirm rust
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
