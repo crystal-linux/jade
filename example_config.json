@@ -4,9 +4,8 @@
         "mode": "Auto",
         "efi": true,
         "partitions": [
-            "/home:sdb2:btrfs" // This would be partition /dev/sdb2, formatted with btrfs mounted at /home
+            "/mnt/home:/dev/sdb2:btrfs" // This would be partition /dev/sdb2, formatted with btrfs mounted at /home
         ] // this is only needed for manual partitioning, it would contain all the partitions for jade to use and the filesystem as well as mountpoint
-          // Note that the mountpoint has the root at the installation destination, so instead of /mnt/boot it would be /boot
     },
     "bootloader": {
         "type": "grub-efi", // for legacy this would be grub-legacy
