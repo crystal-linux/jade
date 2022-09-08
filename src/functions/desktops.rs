@@ -5,7 +5,7 @@ use crate::internal::*;
 pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
     log::debug!("Installing {:?}", desktop_setup);
     match desktop_setup {
-        // DesktopSetup::Onyx => install_onyx(),
+        DesktopSetup::Onyx => install_onyx(),
         DesktopSetup::Gnome => install_gnome(),
         DesktopSetup::Kde => install_kde(),
         DesktopSetup::Budgie => install_budgie(),
@@ -276,28 +276,24 @@ fn install_kde() {
 }
 
 fn install_gnome() {
-    install(vec!["xorg", "gnome", "sushi", "gdm"]);
+    install(vec![
+        "xorg",
+        "gnome",
+        "sushi",
+        "gdm"
+    ]);
     enable_dm("gdm");
 }
 
-/*fn install_onyx() {
+fn install_onyx() {
     install(vec![
         "xorg",
         "onyx",
-        "lightdm",
-        "lightdm-gtk-greeter",
-        "lightdm-gtk-greeter-settings",
         "sushi",
+        "gdm"
     ]);
-    files_eval(
-        files::append_file(
-            "/mnt/etc/lightdm/lightdm.conf",
-            "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
-        ),
-        "Add lightdm greeter",
-    );
-    enable_dm("lightdm");
-}*/
+    enable_dm("gdm");
+}
 
 fn enable_dm(dm: &str) {
     log::debug!("Enabling {}", dm);
