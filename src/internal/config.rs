@@ -165,8 +165,9 @@ pub fn read_config(configpath: PathBuf) {
         desktops::install_desktop_setup(*desktop);
     }*/
     match config.desktop.to_lowercase().as_str() {
-        // "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
+        "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
         "kde" => desktops::install_desktop_setup(DesktopSetup::Kde),
+        "plasma" => desktops::install_desktop_setup(DesktopSetup::Kde),
         "mate" => desktops::install_desktop_setup(DesktopSetup::Mate),
         "gnome" => desktops::install_desktop_setup(DesktopSetup::Gnome),
         "cinnamon" => desktops::install_desktop_setup(DesktopSetup::Cinnamon),

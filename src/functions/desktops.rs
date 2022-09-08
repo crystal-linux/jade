@@ -276,22 +276,12 @@ fn install_kde() {
 }
 
 fn install_gnome() {
-    install(vec![
-        "xorg",
-        "gnome",
-        "sushi",
-        "gdm"
-    ]);
+    install(vec!["xorg", "gnome", "sushi", "gdm"]);
     enable_dm("gdm");
 }
 
 fn install_onyx() {
-    install(vec![
-        "xorg",
-        "onyx",
-        "sushi",
-        "gdm"
-    ]);
+    install(vec!["xorg", "onyx", "sushi", "gdm"]);
     enable_dm("gdm");
 }
 
