@@ -1,5 +1,5 @@
 use crate::internal::*;
-use std::fs::{File, OpenOptions, read_to_string};
+use std::fs::{self, File, OpenOptions};
 use std::io::prelude::*;
 
 pub fn create_file(path: &str) {
@@ -38,15 +38,10 @@ pub fn append_file(path: &str, content: &str) -> std::io::Result<()> {
 
 pub fn sed_file(path: &str, find: &str, replace: &str) -> std::io::Result<()> {
     log::info!("Sed '{}' to '{}' in file {}", find, replace, path);
-
-    let mut file = OpenOptions::new().read(true).write(true).open(path)?;
-    
-    let contents = read_to_string(path)?;
-    let contents = contents.replace(find, replace);
-
-    file.set_len(0)?;
-    file.write_all(contents.as_bytes())?;
-
+    let contents = fs::read_to_string(path)?;
+    let new_contents = contents.replace(find, replace);
+    let mut file = OpenOptions::new().write(true).truncate(true).open(path)?;
+    file.write_all(new_contents.as_bytes())?;
     Ok(())
 }
 
