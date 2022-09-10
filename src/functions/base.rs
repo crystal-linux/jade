@@ -29,7 +29,7 @@ pub fn install_base_packages(kernel: String) {
         "man-db",
         "man-pages",
         "texinfo",
-        "micro",
+        "nano",
         "sudo",
         "curl",
         "archlinux-keyring",
