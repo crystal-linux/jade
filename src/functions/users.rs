@@ -57,8 +57,8 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
         files_eval(
             files::sed_file(
                 "/mnt/etc/sudoers",
-                "# %wheel ALL=(ALL) ALL",
-                "%wheel ALL=(ALL) ALL",
+                "# %wheel ALL=(ALL:ALL) ALL",
+                "%wheel ALL=(ALL:ALL) ALL",
             ),
             "Add wheel group to sudoers",
         );
