@@ -5,7 +5,7 @@ use crate::internal::*;
 use std::path::{Path, PathBuf};
 
 /*mkfs.bfs mkfs.cramfs mkfs.ext3  mkfs.fat mkfs.msdos  mkfs.xfs
-mkfs.btrfs mkfs.ext2  mkfs.ext4  mkfs.minix mkfs.vfat */
+mkfs.btrfs mkfs.ext2  mkfs.ext4  mkfs.minix mkfs.vfat mkfs.f2fs */
 
 pub fn fmt_mount(mountpoint: &str, filesystem: &str, blockdevice: &str) {
     match filesystem {
@@ -62,6 +62,10 @@ pub fn fmt_mount(mountpoint: &str, filesystem: &str, blockdevice: &str) {
         "minix" => exec_eval(
             exec("mkfs.minix", vec![String::from(blockdevice)]),
             format!("Formatting {blockdevice} as minix").as_str(),
+        ),
+        "f2fs" => exec_eval(
+            exec("mkfs.f2fs", vec![String::from(blockdevice)]),
+            format!("Formatting {blockdevice} as f2fs").as_str(),
         ),
         "don't format" => {
             log::debug!("Not formatting {}", blockdevice);
