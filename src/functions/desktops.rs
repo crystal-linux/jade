@@ -152,18 +152,9 @@ fn install_sway() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
-        "lightdm",
-        "lightdm-gtk-greeter",
-        "lightdm-gtk-greeter-settings",
+        "sddm",
     ]);
-    files_eval(
-        files::append_file(
-            "/mnt/etc/lightdm/lightdm.conf",
-            "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
-        ),
-        "Add lightdm greeter",
-    );
-    enable_dm("lightdm");
+    enable_dm("sddm");
 }
 
 fn install_lxqt() {
