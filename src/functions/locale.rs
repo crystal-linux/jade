@@ -3,12 +3,15 @@ use crate::internal::*;
 
 pub fn set_timezone(timezone: &str) {
     exec_eval(
-        exec(
+        // Remember this should run in a chroot
+        // not on the host, as linking to /mnt/usr/share/zoneinfo
+        // will mean you're gonna have a bad time
+        exec_chroot(
             "ln",
             vec![
                 "-sf".to_string(),
-                format!("/mnt/usr/share/zoneinfo/{}", timezone),
-                "/mnt/etc/localtime".to_string(),
+                format!("/usr/share/zoneinfo/{}", timezone),
+                "/etc/localtime".to_string(),
             ],
         ),
         "Set timezone",
@@ -21,20 +24,18 @@ pub fn set_timezone(timezone: &str) {
 
 pub fn set_locale(locale: String) {
     files_eval(
-        files::append_file("/mnt/etc/locale.gen", "en_US.UTF-8 UTF-8\n"),
+        files::append_file("/mnt/etc/locale.gen", "en_US.UTF-8 UTF-8"),
         "add en_US.UTF-8 UTF-8 to locale.gen",
     );
-    // TODO: Refactor this
     for i in (0..locale.split(' ').count()).step_by(2) {
         files_eval(
             files::append_file(
                 "/mnt/etc/locale.gen",
-                format!(
+                &format!(
                     "{} {}\n",
                     locale.split(' ').collect::<Vec<&str>>()[i],
                     locale.split(' ').collect::<Vec<&str>>()[i + 1]
-                )
-                .as_str(),
+                ),
             ),
             "add locales to locale.gen",
         );
