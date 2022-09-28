@@ -38,6 +38,7 @@ pub fn install_base_packages(kernel: String) {
         "neofetch",
         "btrfs-progs",
         "which",
+        "pkg-warner",
         // Fonts
         "noto-fonts",
         "noto-fonts-emoji",
