@@ -39,6 +39,7 @@ pub fn install_base_packages(kernel: String) {
         "btrfs-progs",
         "which",
         "pkg-warner",
+        "base-devel",
         // Fonts
         "noto-fonts",
         "noto-fonts-emoji",
