@@ -21,6 +21,7 @@ pub fn install_base_packages(kernel: String) {
         }
     };
     install::install(vec![
+        // Base Arch
         "base",
         kernel_to_install,
         "linux-firmware",
@@ -33,9 +34,21 @@ pub fn install_base_packages(kernel: String) {
         "sudo",
         "curl",
         "archlinux-keyring",
+        // Extra goodies
         "neofetch",
         "btrfs-progs",
         "which",
+        // Fonts
+        "noto-fonts",
+        "noto-fonts-emoji",
+        "noto-fonts-cjk",
+        "noto-fonts-extra",
+        // Common packages for all desktops
+        "xterm",
+        "pipewire",
+        "pipewire-pulse",
+        "pipewire-alsa",
+        "pipewire-jack",
     ]);
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
 }
