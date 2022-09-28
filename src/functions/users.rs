@@ -66,6 +66,21 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
             files::append_file("/mnt/etc/sudoers", "\nDefaults pwfeedback\n"),
             "Add pwfeedback to sudoers",
         );
+        files_eval(
+            Ok(files::create_file(&format!(
+                "/mnt/var/lib/AccountsService/users/{}",
+                username
+            ))),
+            format!("Create AccountsService user file for {}", username).as_str(),
+        );
+        files_eval(
+            files::append_file(
+                &format!("/mnt/var/lib/AccountsService/users/{}", username),
+                r#"[User]
+                Session=onyx"#,
+            ),
+            format!("Populate AccountsService user file for {}", username).as_str(),
+        )
     }
 }
 
