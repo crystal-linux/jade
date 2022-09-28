@@ -43,6 +43,7 @@ pub fn install_base_packages(kernel: String) {
         "noto-fonts-emoji",
         "noto-fonts-cjk",
         "noto-fonts-extra",
+        "ttf-nerd-fonts-symbols-common",
         // Common packages for all desktops
         "xterm",
         "pipewire",
