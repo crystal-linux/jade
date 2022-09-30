@@ -14,7 +14,7 @@
     <a href="https://twitter.com/crystal_linux"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/crystal_linux"></a>
 </p>
 
-<p align="center">Jade is an intaller backend for crystal linux.</p>
+<p align="center">Jade is an installer backend for crystal linux.</p>
 
 ## Backend usage
 
