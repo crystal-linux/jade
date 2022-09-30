@@ -132,4 +132,4 @@ echo "JADE_UWU=true" >> ~/.zshrc <br>
 echo "JADE_UWU=true" >> ~/.bashrc <br>
 set -Ux JADE_UWU true <br>
 <br>
-if you want to have your log and crash output be "cute"
+if you want to have your log and crash output be “cute”
