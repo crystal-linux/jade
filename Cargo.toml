@@ -2,8 +2,8 @@
 name = "jade"
 description = "The new installer for crystal linux, contains backend and TUI"
 authors = ["Amy <axtlos@tar.black>"]
-version = "0.1.0"
-edition = "2021"
+version = "1.2.0"
+edition = "2022"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
