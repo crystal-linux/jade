@@ -11,7 +11,7 @@ pub fn fmt_mount(mountpoint: &str, filesystem: &str, blockdevice: &str) {
     match filesystem {
         "vfat" => exec_eval(
             exec(
-                "mkfs.vfat",
+                "mkfs.fat",
                 vec![
                     String::from("-F"),
                     String::from("32"),
@@ -292,7 +292,7 @@ fn part_nvme(device: &Path, efi: bool, unakite: bool) {
     let device = device.to_string_lossy().to_string();
     if efi && !unakite {
         exec_eval(
-            exec("mkfs.vfat", vec![format!("-F32, {}p1", device)]),
+            exec("mkfs.fat", vec![format!("-F32, {}p1", device)]),
             format!("format {}p1 as fat32", device).as_str(),
         );
         exec_eval(
@@ -390,7 +390,7 @@ fn part_nvme(device: &Path, efi: bool, unakite: bool) {
         mount(format!("{}p1", device).as_str(), "/mnt/boot", "");
     } else if efi && unakite {
         exec_eval(
-            exec("mkfs.vfat", vec![format!("-F32 {}p1", device)]),
+            exec("mkfs.fat", vec![format!("-F32 {}p1", device)]),
             format!("format {}p1 as fat32", device).as_str(),
         );
         exec_eval(
@@ -500,7 +500,7 @@ fn part_disk(device: &Path, efi: bool, unakite: bool) {
     let device = device.to_string_lossy().to_string();
     if efi && !unakite {
         exec_eval(
-            exec("mkfs.vfat", vec![format!("-F32 {}1", device)]),
+            exec("mkfs.fat", vec![format!("-F32 {}1", device)]),
             format!("format {}1 as fat32", device).as_str(),
         );
         exec_eval(
@@ -590,7 +590,7 @@ fn part_disk(device: &Path, efi: bool, unakite: bool) {
         mount(format!("{}1", device).as_str(), "/mnt/boot", "");
     } else if efi && unakite {
         exec_eval(
-            exec("mkfs.vfat", vec![format!("-F32 {}1", device)]),
+            exec("mkfs.fat", vec![format!("-F32 {}1", device)]),
             format!("format {}1 as fat32", device).as_str(),
         );
         exec_eval(
