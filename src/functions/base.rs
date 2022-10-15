@@ -34,6 +34,9 @@ pub fn install_base_packages(kernel: String) {
         "sudo",
         "curl",
         "archlinux-keyring",
+	// Base Crystal
+	"crystal-core",
+	"crystal-branding"
         // Extra goodies
         "neofetch",
         "btrfs-progs",
@@ -76,6 +79,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
         "grub-btrfs",
         "crystal-grub-theme",
         "os-prober",
+        "crystal-branding",
     ]);
     let efidir = std::path::Path::new("/mnt").join(efidir);
     let efi_str = efidir.to_str().unwrap();
@@ -127,6 +131,7 @@ pub fn install_bootloader_legacy(device: PathBuf) {
         "grub-btrfs",
         "crystal-grub-theme",
         "os-prober",
+        "crystal-branding",
     ]);
     if !device.exists() {
         crash(format!("The device {device:?} does not exist"), 1);
