@@ -36,7 +36,7 @@ pub fn install_base_packages(kernel: String) {
         "archlinux-keyring",
 	// Base Crystal
 	"crystal-core",
-	"crystal-branding"
+	"crystal-branding",
         // Extra goodies
         "neofetch",
         "btrfs-progs",
