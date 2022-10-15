@@ -34,9 +34,9 @@ pub fn install_base_packages(kernel: String) {
         "sudo",
         "curl",
         "archlinux-keyring",
-	// Base Crystal
-	"crystal-core",
-	"crystal-branding",
+        // Base Crystal
+        "crystal-core",
+        "crystal-branding",
         // Extra goodies
         "neofetch",
         "btrfs-progs",
