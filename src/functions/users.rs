@@ -68,7 +68,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
         );
         files_eval(
             files::create_directory("/mnt/var/lib/AccountsService"),
-            format!("Create /mnt/var/lib/AcountsService"),
+            format!("Create /mnt/var/lib/AcountsService").as_str(),
         );
         files::create_file(&format!("/mnt/var/lib/AccountsService/users/{}", username));
         files_eval(
