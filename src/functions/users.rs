@@ -66,7 +66,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
             files::append_file("/mnt/etc/sudoers", "\nDefaults pwfeedback\n"),
             "Add pwfeedback to sudoers",
         );
-        file_eval(
+        files_eval(
             files::create_directory("/mnt/var/lib/AccountsService"),
             format!("Create /mnt/var/lib/AcountsService"),
         );
