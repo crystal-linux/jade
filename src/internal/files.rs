@@ -46,5 +46,5 @@ pub fn sed_file(path: &str, find: &str, replace: &str) -> std::io::Result<()> {
 }
 
 pub fn create_directory(path: &str) -> std::io::Result<()> {
-    std::fs::create_dir(path)
+    std::fs::create_dir_all(path)
 }
